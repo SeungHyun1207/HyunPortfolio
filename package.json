@@ -13,9 +13,11 @@
     "url": "git+https://github.com/SeungHyun1207/HyunPortfolio.git"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-router-dom": "^7.13.0"
+    "react-router-dom": "^7.13.0",
+    "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
     "@types/node": "^25.0.10",

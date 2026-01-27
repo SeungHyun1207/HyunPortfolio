@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
-import styles from './Hero.module.css'
+import { cn } from '@utils'
 
+/**
+ * Hero 섹션 컴포넌트
+ * 타이핑 애니메이션과 그라디언트 배경 효과
+ */
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false)
 
@@ -8,6 +12,7 @@ const Hero = () => {
     setIsVisible(true)
   }, [])
 
+  // 타이핑 애니메이션
   const roles = ['Frontend Developer', 'UI Engineer', 'React Specialist']
   const [currentRole, setCurrentRole] = useState(0)
   const [displayText, setDisplayText] = useState('')
@@ -36,49 +41,109 @@ const Hero = () => {
   }, [displayText, isDeleting, currentRole, roles])
 
   return (
-    <section className={styles.hero}>
-      <div className={styles.backgroundGrid} />
-      <div className={styles.gradientOrb} />
+    <section
+      id="hero"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+    >
+      {/* Background Grid */}
+      <div
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px',
+        }}
+      />
 
-      <div className={`container ${styles.content} ${isVisible ? styles.visible : ''}`}>
-        <div className={styles.greeting}>
-          <span className={styles.wave}>Hello</span>
-          <span className={styles.dot}>.</span>
+      {/* Gradient Orb */}
+      <div
+        className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-30"
+        style={{
+          background: 'radial-gradient(circle, var(--color-accent) 0%, transparent 70%)',
+        }}
+      />
+
+      {/* Content */}
+      <div
+        className={cn(
+          'relative z-10 max-w-[1200px] mx-auto px-4 md:px-8 text-center',
+          'transition-all duration-1000',
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
+        )}
+      >
+        {/* Greeting */}
+        <div className="flex items-center justify-center gap-1 mb-6">
+          <span className="text-4xl md:text-5xl animate-bounce">
+            Hello
+          </span>
+          <span className="text-4xl md:text-5xl text-accent">.</span>
         </div>
 
-        <h1 className={styles.title}>
+        {/* Title */}
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6">
           I'm <span className="gradient-text">Hyun</span>
         </h1>
 
-        <div className={styles.roleWrapper}>
-          <span className={styles.role}>
+        {/* Role with typing effect */}
+        <div className="h-12 md:h-16 mb-8">
+          <span className="text-xl md:text-3xl text-text-secondary font-mono">
             {displayText}
-            <span className={styles.cursor}>|</span>
+            <span className="inline-block w-[2px] h-6 md:h-8 bg-accent ml-1 animate-pulse" />
           </span>
         </div>
 
-        <p className={styles.description}>
-          사용자 경험을 최우선으로 생각하며,<br />
+        {/* Description */}
+        <p className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto mb-12 leading-relaxed">
+          사용자 경험을 최우선으로 생각하며,
+          <br className="hidden md:block" />
           클린 코드와 모던 기술로 가치를 만드는 개발자입니다.
         </p>
 
-        <div className={styles.cta}>
-          <a href="#about" className={styles.primaryBtn}>
+        {/* CTA Buttons */}
+        <div className="flex items-center justify-center gap-4 mb-16">
+          <a
+            href="#devinfo"
+            className={cn(
+              'group flex items-center gap-2 px-6 py-3 rounded-lg',
+              'bg-accent hover:bg-accent-hover',
+              'text-white font-medium',
+              'transition-all duration-300',
+              'hover:shadow-lg hover:shadow-accent/25',
+            )}
+          >
             About Me
-            <svg viewBox="0 0 24 24" className={styles.arrow}>
-              <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" fill="currentColor"/>
+            <svg
+              viewBox="0 0 24 24"
+              className="w-5 h-5 transition-transform group-hover:translate-x-1"
+            >
+              <path
+                d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+                fill="currentColor"
+              />
             </svg>
           </a>
-          <a href="#contact" className={styles.secondaryBtn}>
+          <a
+            href="#contact"
+            className={cn(
+              'px-6 py-3 rounded-lg',
+              'border border-border hover:border-accent',
+              'text-text-primary font-medium',
+              'transition-all duration-300',
+              'hover:bg-secondary',
+            )}
+          >
             Contact
           </a>
         </div>
 
-        <div className={styles.scrollIndicator}>
-          <div className={styles.mouse}>
-            <div className={styles.wheel} />
+        {/* Scroll Indicator */}
+        <div className="flex flex-col items-center gap-2 text-text-muted animate-bounce">
+          <div className="w-6 h-10 rounded-full border-2 border-text-muted flex justify-center pt-2">
+            <div className="w-1 h-2 bg-text-muted rounded-full animate-pulse" />
           </div>
-          <span>Scroll</span>
+          <span className="text-xs uppercase tracking-widest">Scroll</span>
         </div>
       </div>
     </section>
