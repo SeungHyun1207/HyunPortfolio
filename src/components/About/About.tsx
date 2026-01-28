@@ -1,16 +1,18 @@
 import { useScrollAnimation } from '@hooks'
+import { useSettings } from '@/contexts/SettingsContext'
 import { cn } from '@utils'
 
 /**
  * About (DevInfo) 섹션 컴포넌트
  */
 const About = () => {
+  const { t } = useSettings()
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.2 })
 
   const stats = [
-    { number: '3+', label: 'Years Experience' },
-    { number: '20+', label: 'Projects Completed' },
-    { number: '10+', label: 'Happy Clients' },
+    { number: '3+', labelKey: 'about.yearsExp' },
+    { number: '20+', labelKey: 'about.projects' },
+    { number: '10+', labelKey: 'about.clients' },
   ]
 
   const highlights = [
@@ -22,8 +24,8 @@ const About = () => {
           <path d="M2 12l10 5 10-5" />
         </svg>
       ),
-      title: 'Clean Architecture',
-      description: '유지보수성과 확장성을 고려한 설계',
+      titleKey: 'about.cleanArchitecture',
+      descKey: 'about.cleanArchitectureDesc',
     },
     {
       icon: (
@@ -32,8 +34,8 @@ const About = () => {
           <path d="M12 6v6l4 2" />
         </svg>
       ),
-      title: 'Performance First',
-      description: '최적화된 렌더링과 빠른 로딩 속도',
+      titleKey: 'about.performanceFirst',
+      descKey: 'about.performanceFirstDesc',
     },
     {
       icon: (
@@ -43,8 +45,8 @@ const About = () => {
           <path d="M9 21V9" />
         </svg>
       ),
-      title: 'Responsive Design',
-      description: '모든 디바이스에서 완벽한 경험',
+      titleKey: 'about.responsiveDesign',
+      descKey: 'about.responsiveDesignDesc',
     },
   ]
 
@@ -99,7 +101,7 @@ const About = () => {
                     {stat.number}
                   </span>
                   <span className="text-xs md:text-sm text-text-muted">
-                    {stat.label}
+                    {t(stat.labelKey)}
                   </span>
                 </div>
               ))}
@@ -109,25 +111,18 @@ const About = () => {
           {/* Right - Content */}
           <div>
             <span className="text-accent text-sm font-medium uppercase tracking-wider">
-              About Me
+              {t('about.label')}
             </span>
 
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-4 mb-6">
-              열정을 코드로 표현하는
+              {t('about.title1')}
               <br />
-              <span className="gradient-text">프론트엔드 개발자</span>
+              <span className="gradient-text">{t('about.title2')}</span>
             </h2>
 
             <div className="space-y-4 text-text-secondary mb-8">
-              <p>
-                안녕하세요! 저는 사용자 중심의 웹 경험을 만드는 것에 열정을 가진
-                프론트엔드 개발자입니다. React, TypeScript를 주력으로 사용하며,
-                항상 최신 기술 트렌드를 학습하고 적용합니다.
-              </p>
-              <p>
-                클린 코드와 최적화된 성능, 그리고 직관적인 UI/UX를 통해
-                사용자와 비즈니스 모두에게 가치를 전달하는 것이 제 목표입니다.
-              </p>
+              <p>{t('about.description1')}</p>
+              <p>{t('about.description2')}</p>
             </div>
 
             {/* Highlights */}
@@ -146,8 +141,8 @@ const About = () => {
                     {item.icon}
                   </div>
                   <div>
-                    <h4 className="font-semibold text-text-primary">{item.title}</h4>
-                    <p className="text-sm text-text-muted">{item.description}</p>
+                    <h4 className="font-semibold text-text-primary">{t(item.titleKey)}</h4>
+                    <p className="text-sm text-text-muted">{t(item.descKey)}</p>
                   </div>
                 </div>
               ))}

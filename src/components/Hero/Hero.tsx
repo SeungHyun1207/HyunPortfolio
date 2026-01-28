@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSettings } from '@/contexts/SettingsContext'
 import { cn } from '@utils'
 
 /**
@@ -6,6 +7,7 @@ import { cn } from '@utils'
  * 타이핑 애니메이션과 그라디언트 배경 효과
  */
 const Hero = () => {
+  const { t } = useSettings()
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -76,14 +78,14 @@ const Hero = () => {
         {/* Greeting */}
         <div className="flex items-center justify-center gap-1 mb-6">
           <span className="text-4xl md:text-5xl animate-bounce">
-            Hello
+            {t('hero.greeting')}
           </span>
           <span className="text-4xl md:text-5xl text-accent">.</span>
         </div>
 
         {/* Title */}
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6">
-          I'm <span className="gradient-text">Hyun</span>
+          {t('hero.intro')} <span className="gradient-text">Hyun</span>
         </h1>
 
         {/* Role with typing effect */}
@@ -95,10 +97,8 @@ const Hero = () => {
         </div>
 
         {/* Description */}
-        <p className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto mb-12 leading-relaxed">
-          사용자 경험을 최우선으로 생각하며,
-          <br className="hidden md:block" />
-          클린 코드와 모던 기술로 가치를 만드는 개발자입니다.
+        <p className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto mb-12 leading-relaxed whitespace-pre-line">
+          {t('hero.description')}
         </p>
 
         {/* CTA Buttons */}
@@ -113,7 +113,7 @@ const Hero = () => {
               'hover:shadow-lg hover:shadow-accent/25',
             )}
           >
-            About Me
+            {t('hero.aboutMe')}
             <svg
               viewBox="0 0 24 24"
               className="w-5 h-5 transition-transform group-hover:translate-x-1"
@@ -134,7 +134,7 @@ const Hero = () => {
               'hover:bg-secondary',
             )}
           >
-            Contact
+            {t('hero.contact')}
           </a>
         </div>
 
@@ -143,7 +143,7 @@ const Hero = () => {
           <div className="w-6 h-10 rounded-full border-2 border-text-muted flex justify-center pt-2">
             <div className="w-1 h-2 bg-text-muted rounded-full animate-pulse" />
           </div>
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
+          <span className="text-xs uppercase tracking-widest">{t('hero.scroll')}</span>
         </div>
       </div>
     </section>

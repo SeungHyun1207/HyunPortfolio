@@ -1,5 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import GNB from '@components/GNB'
+import Settings from '@components/Settings'
+import { useSettings } from '@/contexts/SettingsContext'
 
 /**
  * 메인 레이아웃
@@ -9,11 +11,15 @@ import GNB from '@components/GNB'
  * - GNB: 글로벌 네비게이션 (로고, 메뉴, 전체메뉴)
  * - Main: 페이지 콘텐츠 (Outlet)
  * - Footer: 소셜 링크, 저작권
+ * - Settings: 고정 설정 버튼 (우측 하단)
  */
 const MainLayout = () => {
+  const { t } = useSettings()
+
   return (
     <div className="flex flex-col min-h-screen">
       <GNB />
+      <Settings />
 
       <main className="flex-1 pt-16">
         <Outlet />
@@ -25,7 +31,7 @@ const MainLayout = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex flex-col items-center md:items-start gap-2">
               <span className="text-xl font-bold gradient-text">Hyun</span>
-              <p className="text-sm text-text-muted">Frontend Developer</p>
+              <p className="text-sm text-text-muted">{t('footer.role')}</p>
             </div>
 
             <div className="flex items-center gap-6">
@@ -48,7 +54,7 @@ const MainLayout = () => {
 
           <div className="mt-8 pt-6 border-t border-border text-center">
             <p className="text-sm text-text-muted">
-              &copy; {new Date().getFullYear()} Hyun. All rights reserved.
+              &copy; {new Date().getFullYear()} Hyun. {t('footer.rights')}
             </p>
           </div>
         </div>

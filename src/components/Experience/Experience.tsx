@@ -1,13 +1,14 @@
 import { useScrollAnimation } from '@hooks'
+import { useSettings } from '@/contexts/SettingsContext'
 import { cn } from '@utils'
 
 interface ExperienceItem {
   id: string
   type: 'work' | 'education'
-  title: string
-  organization: string
-  period: string
-  description: string[]
+  titleKey: string
+  organizationKey: string
+  periodKey: string
+  descriptionKeys: string[]
   techStack?: string[]
 }
 
@@ -16,49 +17,55 @@ interface ExperienceItem {
  * 경력 및 학력 사항
  */
 const Experience = () => {
+  const { t } = useSettings()
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 })
 
   const experiences: ExperienceItem[] = [
     {
       id: '1',
       type: 'work',
-      title: 'Frontend Developer',
-      organization: 'Tech Company',
-      period: '2022.03 - Present',
-      description: [
-        'React, TypeScript를 활용한 대규모 웹 애플리케이션 개발',
-        '성능 최적화를 통해 페이지 로딩 속도 40% 개선',
-        'CI/CD 파이프라인 구축 및 자동화 테스트 도입',
-        '주니어 개발자 멘토링 및 코드 리뷰 진행',
+      titleKey: 'experience.work1.title',
+      organizationKey: 'experience.work1.org',
+      periodKey: 'experience.work1.period',
+      descriptionKeys: [
+        'experience.work1.desc1',
+        'experience.work1.desc2',
+        'experience.work1.desc3',
+        'experience.work1.desc4',
       ],
       techStack: ['React', 'TypeScript', 'Next.js', 'TailwindCSS'],
     },
     {
       id: '2',
       type: 'work',
-      title: 'Web Developer',
-      organization: 'Startup Inc.',
-      period: '2020.06 - 2022.02',
-      description: [
-        '스타트업 초기 멤버로 서비스 런칭 참여',
-        '반응형 웹 디자인 및 크로스 브라우저 호환성 구현',
-        'RESTful API 연동 및 상태 관리 설계',
-        '애자일 방법론 기반의 스프린트 개발 진행',
+      titleKey: 'experience.work2.title',
+      organizationKey: 'experience.work2.org',
+      periodKey: 'experience.work2.period',
+      descriptionKeys: [
+        'experience.work2.desc1',
+        'experience.work2.desc2',
+        'experience.work2.desc3',
+        'experience.work2.desc4',
       ],
       techStack: ['React', 'Redux', 'Styled Components', 'Node.js'],
     },
     {
       id: '3',
       type: 'education',
-      title: '컴퓨터공학과',
-      organization: '서울대학교',
-      period: '2016.03 - 2020.02',
-      description: [
-        '컴퓨터 과학 전공 학사 학위 취득',
-        '알고리즘, 자료구조, 소프트웨어 공학 수강',
-        '졸업 프로젝트: AI 기반 추천 시스템 개발',
+      titleKey: 'experience.edu1.title',
+      organizationKey: 'experience.edu1.org',
+      periodKey: 'experience.edu1.period',
+      descriptionKeys: [
+        'experience.edu1.desc1',
+        'experience.edu1.desc2',
+        'experience.edu1.desc3',
       ],
     },
+  ]
+
+  const certifications = [
+    { nameKey: 'experience.cert1.name', orgKey: 'experience.cert1.org', year: '2020' },
+    { nameKey: 'experience.cert2.name', orgKey: 'experience.cert2.org', year: '2022' },
   ]
 
   const workExperiences = experiences.filter((e) => e.type === 'work')
@@ -76,13 +83,13 @@ const Experience = () => {
           )}
         >
           <span className="text-accent text-sm font-medium uppercase tracking-wider">
-            Experience
+            {t('experience.label')}
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-4 mb-6">
-            경력 <span className="gradient-text">& 학력</span>
+            {t('experience.title1')} <span className="gradient-text">{t('experience.title2')}</span>
           </h2>
           <p className="text-text-secondary max-w-2xl mx-auto">
-            개발자로서 걸어온 길과 성장의 발자취입니다
+            {t('experience.description')}
           </p>
         </div>
 
@@ -101,7 +108,7 @@ const Experience = () => {
                   <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                 </svg>
               </span>
-              Work Experience
+              {t('experience.workTitle')}
             </h3>
 
             <div className="relative">
@@ -123,18 +130,18 @@ const Experience = () => {
                       )}
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                        <h4 className="font-bold text-lg">{exp.title}</h4>
+                        <h4 className="font-bold text-lg">{t(exp.titleKey)}</h4>
                         <span className="text-xs text-accent bg-accent/10 px-2 py-1 rounded">
-                          {exp.period}
+                          {t(exp.periodKey)}
                         </span>
                       </div>
-                      <p className="text-text-secondary mb-4">{exp.organization}</p>
+                      <p className="text-text-secondary mb-4">{t(exp.organizationKey)}</p>
 
                       <ul className="space-y-2 mb-4">
-                        {exp.description.map((desc, i) => (
+                        {exp.descriptionKeys.map((descKey, i) => (
                           <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
                             <span className="text-accent mt-1">•</span>
-                            {desc}
+                            {t(descKey)}
                           </li>
                         ))}
                       </ul>
@@ -172,7 +179,7 @@ const Experience = () => {
                   <path d="M6 12v5c3 3 9 3 12 0v-5" />
                 </svg>
               </span>
-              Education
+              {t('experience.eduTitle')}
             </h3>
 
             <div className="relative">
@@ -194,18 +201,18 @@ const Experience = () => {
                       )}
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                        <h4 className="font-bold text-lg">{exp.title}</h4>
+                        <h4 className="font-bold text-lg">{t(exp.titleKey)}</h4>
                         <span className="text-xs text-accent bg-accent/10 px-2 py-1 rounded">
-                          {exp.period}
+                          {t(exp.periodKey)}
                         </span>
                       </div>
-                      <p className="text-text-secondary mb-4">{exp.organization}</p>
+                      <p className="text-text-secondary mb-4">{t(exp.organizationKey)}</p>
 
                       <ul className="space-y-2">
-                        {exp.description.map((desc, i) => (
+                        {exp.descriptionKeys.map((descKey, i) => (
                           <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
                             <span className="text-accent mt-1">•</span>
-                            {desc}
+                            {t(descKey)}
                           </li>
                         ))}
                       </ul>
@@ -224,14 +231,11 @@ const Experience = () => {
                     <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
                   </svg>
                 </span>
-                Certifications
+                {t('experience.certTitle')}
               </h3>
 
               <div className="space-y-4">
-                {[
-                  { name: '정보처리기사', org: '한국산업인력공단', year: '2020' },
-                  { name: 'AWS Certified Developer', org: 'Amazon', year: '2022' },
-                ].map((cert, index) => (
+                {certifications.map((cert, index) => (
                   <div
                     key={index}
                     className={cn(
@@ -242,8 +246,8 @@ const Experience = () => {
                     )}
                   >
                     <div>
-                      <h4 className="font-medium">{cert.name}</h4>
-                      <p className="text-sm text-text-muted">{cert.org}</p>
+                      <h4 className="font-medium">{t(cert.nameKey)}</h4>
+                      <p className="text-sm text-text-muted">{t(cert.orgKey)}</p>
                     </div>
                     <span className="text-sm text-accent">{cert.year}</span>
                   </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useSettings } from '@/contexts/SettingsContext'
 import { cn } from '@utils'
 import FullMenu from './FullMenu'
 
@@ -7,9 +8,9 @@ import FullMenu from './FullMenu'
  * GNB 메뉴 아이템 타입
  */
 export interface MenuItem {
-  label: string
+  labelKey: string
   href: string
-  description?: string
+  descKey?: string
 }
 
 /**
@@ -17,11 +18,11 @@ export interface MenuItem {
  * 개발자 포트폴리오에 필요한 메뉴 구성
  */
 export const menuItems: MenuItem[] = [
-  { label: 'DevInfo', href: '#devinfo', description: '개발자 소개' },
-  { label: 'Skills', href: '#skills', description: '기술 스택' },
-  { label: 'Projects', href: '#projects', description: '프로젝트' },
-  { label: 'Experience', href: '#experience', description: '경력 사항' },
-  { label: 'Contact', href: '#contact', description: '연락처' },
+  { labelKey: 'nav.devInfo', href: '#devinfo', descKey: 'nav.devInfoDesc' },
+  { labelKey: 'nav.skills', href: '#skills', descKey: 'nav.skillsDesc' },
+  { labelKey: 'nav.projects', href: '#projects', descKey: 'nav.projectsDesc' },
+  { labelKey: 'nav.experience', href: '#experience', descKey: 'nav.experienceDesc' },
+  { labelKey: 'nav.contact', href: '#contact', descKey: 'nav.contactDesc' },
 ]
 
 /**
@@ -33,6 +34,7 @@ export const menuItems: MenuItem[] = [
  * - 우측: 전체메뉴 버튼
  */
 const GNB = () => {
+  const { t } = useSettings()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isFullMenuOpen, setIsFullMenuOpen] = useState(false)
 
@@ -76,7 +78,7 @@ const GNB = () => {
             <Link
               to="/"
               className="group flex items-center gap-2"
-              aria-label="홈으로 이동"
+              aria-label={t('nav.goHome')}
             >
               <span className="text-2xl font-bold gradient-text transition-opacity duration-150 group-hover:opacity-80">
                 Hyun
@@ -99,7 +101,7 @@ const GNB = () => {
                       'hover:after:w-full',
                     )}
                   >
-                    {item.label}
+                    {t(item.labelKey)}
                   </a>
                 </li>
               ))}
@@ -116,9 +118,9 @@ const GNB = () => {
                 'transition-all duration-150',
                 'hover:bg-secondary',
               )}
-              aria-label="전체 메뉴 열기"
+              aria-label={t('nav.openMenu')}
             >
-              <span className="hidden sm:inline">Menu</span>
+              <span className="hidden sm:inline">{t('nav.menu')}</span>
               {/* Hamburger Icon */}
               <div className="flex flex-col gap-1">
                 <span className="w-4 h-0.5 bg-current transition-all duration-150" />

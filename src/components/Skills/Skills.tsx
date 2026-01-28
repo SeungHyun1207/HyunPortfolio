@@ -1,4 +1,5 @@
 import { useScrollAnimation } from '@hooks'
+import { useSettings } from '@/contexts/SettingsContext'
 import { cn } from '@utils'
 
 interface Skill {
@@ -11,6 +12,7 @@ interface Skill {
  * Skills 섹션 컴포넌트
  */
 const Skills = () => {
+  const { t } = useSettings()
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.2 })
 
   const skills: Skill[] = [
@@ -48,13 +50,13 @@ const Skills = () => {
           )}
         >
           <span className="text-accent text-sm font-medium uppercase tracking-wider">
-            Skills
+            {t('skills.label')}
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-4 mb-6">
-            기술 <span className="gradient-text">스택</span>
+            {t('skills.title1')} <span className="gradient-text">{t('skills.title2')}</span>
           </h2>
           <p className="text-text-secondary max-w-2xl mx-auto">
-            지속적인 학습과 실무 경험을 통해 다양한 기술을 습득했습니다
+            {t('skills.description')}
           </p>
         </div>
 
@@ -101,7 +103,7 @@ const Skills = () => {
 
           {/* Tech Stack */}
           <div className="mb-12">
-            <h3 className="text-xl font-semibold text-center mb-6">주로 사용하는 기술</h3>
+            <h3 className="text-xl font-semibold text-center mb-6">{t('skills.mainTech')}</h3>
             <div className="flex flex-wrap justify-center gap-3">
               {techStack.map((tech, index) => (
                 <div

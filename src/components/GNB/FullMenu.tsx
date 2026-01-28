@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { useSettings } from '@/contexts/SettingsContext'
 import { cn } from '@utils'
 import type { MenuItem } from './GNB'
 
@@ -18,6 +19,7 @@ interface FullMenuProps {
  * - 메뉴 아이템: 순차적 슬라이드 업
  */
 const FullMenu = ({ isOpen, onClose, menuItems }: FullMenuProps) => {
+  const { t } = useSettings()
   const menuRef = useRef<HTMLDivElement>(null)
 
   // ESC 키로 닫기
@@ -77,7 +79,7 @@ const FullMenu = ({ isOpen, onClose, menuItems }: FullMenuProps) => {
                 to="/"
                 className="group flex items-center gap-2"
                 onClick={onClose}
-                aria-label="홈으로 이동"
+                aria-label={t('nav.goHome')}
               >
                 <span className="text-2xl font-bold gradient-text transition-opacity duration-150 group-hover:opacity-80">
                   Hyun
@@ -86,7 +88,7 @@ const FullMenu = ({ isOpen, onClose, menuItems }: FullMenuProps) => {
 
               {/* 타이틀 - 중앙 */}
               <span className="text-sm font-medium text-text-secondary">
-                Full Menu
+                {t('nav.fullMenu')}
               </span>
 
               {/* Close Button - 우측 */}
@@ -100,9 +102,9 @@ const FullMenu = ({ isOpen, onClose, menuItems }: FullMenuProps) => {
                   'transition-all duration-150',
                   'hover:bg-secondary',
                 )}
-                aria-label="메뉴 닫기"
+                aria-label={t('nav.closeMenu')}
               >
-                <span className="hidden sm:inline">Close</span>
+                <span className="hidden sm:inline">{t('nav.close')}</span>
                 {/* X Icon */}
                 <div className="relative w-4 h-4">
                   <span className="absolute top-1/2 left-0 w-4 h-0.5 bg-current transform -translate-y-1/2 rotate-45" />
@@ -144,9 +146,9 @@ const FullMenu = ({ isOpen, onClose, menuItems }: FullMenuProps) => {
                         'group-hover:gradient-text',
                       )}
                     >
-                      {item.label}
+                      {t(item.labelKey)}
                     </span>
-                    {item.description && (
+                    {item.descKey && (
                       <span
                         className={cn(
                           'text-sm text-text-muted',
@@ -154,7 +156,7 @@ const FullMenu = ({ isOpen, onClose, menuItems }: FullMenuProps) => {
                           'group-hover:text-text-secondary',
                         )}
                       >
-                        {item.description}
+                        {t(item.descKey)}
                       </span>
                     )}
                   </a>
@@ -180,7 +182,7 @@ const FullMenu = ({ isOpen, onClose, menuItems }: FullMenuProps) => {
           <div className="max-w-[1200px] mx-auto px-4 md:px-8">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <p className="text-sm text-text-muted">
-                &copy; {new Date().getFullYear()} Hyun. All rights reserved.
+                &copy; {new Date().getFullYear()} Hyun. {t('footer.rights')}
               </p>
               <div className="flex items-center gap-6">
                 <a

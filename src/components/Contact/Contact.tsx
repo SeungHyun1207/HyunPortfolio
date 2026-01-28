@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useScrollAnimation } from '@hooks'
+import { useSettings } from '@/contexts/SettingsContext'
 import { cn } from '@utils'
 
 /**
  * Contact 섹션 컴포넌트
  */
 const Contact = () => {
+  const { t } = useSettings()
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 })
   const [formData, setFormData] = useState({
     name: '',
@@ -15,9 +17,8 @@ const Contact = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // 폼 제출 로직
     console.log('Form submitted:', formData)
-    alert('메시지가 전송되었습니다! (데모)')
+    alert(t('contact.submitAlert'))
     setFormData({ name: '', email: '', message: '' })
   }
 
@@ -60,8 +61,8 @@ const Contact = () => {
           <circle cx="12" cy="10" r="3" />
         </svg>
       ),
-      label: 'Location',
-      value: 'Seoul, South Korea',
+      labelKey: 'contact.location',
+      valueKey: 'contact.locationValue',
       href: null,
     },
   ]
@@ -78,13 +79,13 @@ const Contact = () => {
           )}
         >
           <span className="text-accent text-sm font-medium uppercase tracking-wider">
-            Contact
+            {t('contact.label')}
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-4 mb-6">
-            함께 <span className="gradient-text">일해요</span>
+            {t('contact.title1')} <span className="gradient-text">{t('contact.title2')}</span>
           </h2>
           <p className="text-text-secondary max-w-2xl mx-auto">
-            프로젝트 협업이나 채용 관련 문의는 언제든지 환영합니다
+            {t('contact.description')}
           </p>
         </div>
 
@@ -97,7 +98,7 @@ const Contact = () => {
         >
           {/* Contact Info */}
           <div>
-            <h3 className="text-xl font-bold mb-6">연락처 정보</h3>
+            <h3 className="text-xl font-bold mb-6">{t('contact.infoTitle')}</h3>
 
             <div className="space-y-4 mb-8">
               {contactInfo.map((info, index) => (
@@ -115,8 +116,12 @@ const Contact = () => {
                     {info.icon}
                   </div>
                   <div>
-                    <p className="text-sm text-text-muted">{info.label}</p>
-                    <p className="font-medium">{info.value}</p>
+                    <p className="text-sm text-text-muted">
+                      {info.labelKey ? t(info.labelKey) : info.label}
+                    </p>
+                    <p className="font-medium">
+                      {info.valueKey ? t(info.valueKey) : info.value}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -124,7 +129,7 @@ const Contact = () => {
 
             {/* Social Links */}
             <div>
-              <h4 className="text-sm font-medium text-text-muted mb-4">Follow Me</h4>
+              <h4 className="text-sm font-medium text-text-muted mb-4">{t('contact.followMe')}</h4>
               <div className="flex gap-3">
                 {[
                   { name: 'GitHub', href: 'https://github.com/SeungHyun1207' },
@@ -153,12 +158,12 @@ const Contact = () => {
 
           {/* Contact Form */}
           <div>
-            <h3 className="text-xl font-bold mb-6">메시지 보내기</h3>
+            <h3 className="text-xl font-bold mb-6">{t('contact.formTitle')}</h3>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium mb-2">
-                  이름
+                  {t('contact.nameLabel')}
                 </label>
                 <input
                   type="text"
@@ -173,13 +178,13 @@ const Contact = () => {
                     'transition-all duration-300',
                     'focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent',
                   )}
-                  placeholder="홍길동"
+                  placeholder={t('contact.namePlaceholder')}
                 />
               </div>
 
               <div>
                 <label htmlFor="email" className="block text-sm font-medium mb-2">
-                  이메일
+                  {t('contact.emailLabel')}
                 </label>
                 <input
                   type="email"
@@ -200,7 +205,7 @@ const Contact = () => {
 
               <div>
                 <label htmlFor="message" className="block text-sm font-medium mb-2">
-                  메시지
+                  {t('contact.messageLabel')}
                 </label>
                 <textarea
                   id="message"
@@ -215,7 +220,7 @@ const Contact = () => {
                     'transition-all duration-300',
                     'focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent',
                   )}
-                  placeholder="프로젝트에 대해 이야기해주세요..."
+                  placeholder={t('contact.messagePlaceholder')}
                 />
               </div>
 
@@ -229,7 +234,7 @@ const Contact = () => {
                   'hover:shadow-lg hover:shadow-accent/25',
                 )}
               >
-                메시지 보내기
+                {t('contact.submit')}
               </button>
             </form>
           </div>

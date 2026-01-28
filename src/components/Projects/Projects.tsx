@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { useScrollAnimation } from '@hooks'
+import { useSettings } from '@/contexts/SettingsContext'
 import { cn } from '@utils'
 
 interface Project {
   id: string
-  title: string
-  description: string
+  titleKey: string
+  descKey: string
   techStack: string[]
   category: 'web' | 'mobile' | 'other'
   demoUrl?: string
@@ -17,14 +18,15 @@ interface Project {
  * Projects 섹션 컴포넌트
  */
 const Projects = () => {
+  const { t } = useSettings()
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 })
   const [activeFilter, setActiveFilter] = useState<'all' | 'web' | 'mobile' | 'other'>('all')
 
   const projects: Project[] = [
     {
       id: '1',
-      title: 'E-Commerce Platform',
-      description: '현대적인 UI/UX를 갖춘 풀스택 이커머스 플랫폼. 결제 시스템, 장바구니, 주문 관리 기능을 포함합니다.',
+      titleKey: 'projects.ecommerce.title',
+      descKey: 'projects.ecommerce.desc',
       techStack: ['React', 'TypeScript', 'Node.js', 'PostgreSQL'],
       category: 'web',
       demoUrl: '#',
@@ -32,8 +34,8 @@ const Projects = () => {
     },
     {
       id: '2',
-      title: 'Task Management App',
-      description: '팀 협업을 위한 태스크 관리 애플리케이션. 실시간 동기화와 드래그 앤 드롭 기능을 지원합니다.',
+      titleKey: 'projects.taskManagement.title',
+      descKey: 'projects.taskManagement.desc',
       techStack: ['Next.js', 'Tailwind CSS', 'Prisma', 'Socket.io'],
       category: 'web',
       demoUrl: '#',
@@ -41,8 +43,8 @@ const Projects = () => {
     },
     {
       id: '3',
-      title: 'Weather Dashboard',
-      description: '날씨 정보를 시각적으로 보여주는 대시보드. 다양한 차트와 지도 기능을 포함합니다.',
+      titleKey: 'projects.weather.title',
+      descKey: 'projects.weather.desc',
       techStack: ['React', 'D3.js', 'OpenWeather API', 'Styled Components'],
       category: 'web',
       demoUrl: '#',
@@ -50,8 +52,8 @@ const Projects = () => {
     },
     {
       id: '4',
-      title: 'Fitness Tracker',
-      description: '운동 기록과 건강 데이터를 추적하는 모바일 앱. 목표 설정과 진행 상황 시각화 기능을 제공합니다.',
+      titleKey: 'projects.fitness.title',
+      descKey: 'projects.fitness.desc',
       techStack: ['React Native', 'TypeScript', 'Firebase', 'Redux'],
       category: 'mobile',
       demoUrl: '#',
@@ -59,8 +61,8 @@ const Projects = () => {
     },
     {
       id: '5',
-      title: 'Portfolio Generator',
-      description: '개발자를 위한 포트폴리오 자동 생성 도구. GitHub 데이터를 기반으로 포트폴리오를 생성합니다.',
+      titleKey: 'projects.portfolio.title',
+      descKey: 'projects.portfolio.desc',
       techStack: ['Vue.js', 'GitHub API', 'Vercel', 'TailwindCSS'],
       category: 'other',
       demoUrl: '#',
@@ -68,8 +70,8 @@ const Projects = () => {
     },
     {
       id: '6',
-      title: 'Real-time Chat App',
-      description: '실시간 채팅 애플리케이션. 1:1 채팅, 그룹 채팅, 파일 공유 기능을 지원합니다.',
+      titleKey: 'projects.chat.title',
+      descKey: 'projects.chat.desc',
       techStack: ['React', 'Socket.io', 'Express', 'MongoDB'],
       category: 'web',
       demoUrl: '#',
@@ -78,10 +80,10 @@ const Projects = () => {
   ]
 
   const filters = [
-    { label: 'All', value: 'all' as const },
-    { label: 'Web', value: 'web' as const },
-    { label: 'Mobile', value: 'mobile' as const },
-    { label: 'Other', value: 'other' as const },
+    { labelKey: 'projects.filterAll', value: 'all' as const },
+    { labelKey: 'projects.filterWeb', value: 'web' as const },
+    { labelKey: 'projects.filterMobile', value: 'mobile' as const },
+    { labelKey: 'projects.filterOther', value: 'other' as const },
   ]
 
   const filteredProjects = activeFilter === 'all'
@@ -100,13 +102,13 @@ const Projects = () => {
           )}
         >
           <span className="text-accent text-sm font-medium uppercase tracking-wider">
-            Portfolio
+            {t('projects.label')}
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-4 mb-6">
-            주요 <span className="gradient-text">프로젝트</span>
+            {t('projects.title1')} <span className="gradient-text">{t('projects.title2')}</span>
           </h2>
           <p className="text-text-secondary max-w-2xl mx-auto">
-            다양한 기술 스택을 활용하여 구현한 프로젝트들입니다
+            {t('projects.description')}
           </p>
         </div>
 
@@ -130,7 +132,7 @@ const Projects = () => {
                   : 'bg-tertiary text-text-secondary hover:text-text-primary hover:bg-tertiary/80',
               )}
             >
-              {filter.label}
+              {t(filter.labelKey)}
             </button>
           ))}
         </div>
@@ -165,10 +167,10 @@ const Projects = () => {
               {/* Content */}
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-2 group-hover:text-accent transition-colors">
-                  {project.title}
+                  {t(project.titleKey)}
                 </h3>
                 <p className="text-text-secondary text-sm mb-4 line-clamp-2">
-                  {project.description}
+                  {t(project.descKey)}
                 </p>
 
                 {/* Tech Stack */}
