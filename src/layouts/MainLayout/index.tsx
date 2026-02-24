@@ -1,65 +1,97 @@
 import { Outlet } from 'react-router-dom'
+import { Box, Container, Typography } from '@mui/material'
 import GNB from '@components/GNB'
 import Settings from '@components/Settings'
 import { useSettings } from '@/contexts/SettingsContext'
 
-/**
- * 메인 레이아웃
- * 모든 페이지에 공통으로 적용되는 레이아웃
- *
- * 구조:
- * - GNB: 글로벌 네비게이션 (로고, 메뉴, 전체메뉴)
- * - Main: 페이지 콘텐츠 (Outlet)
- * - Footer: 소셜 링크, 저작권
- * - Settings: 고정 설정 버튼 (우측 하단)
- */
 const MainLayout = () => {
   const { t } = useSettings()
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <GNB />
       <Settings />
 
-      <main className="flex-1 pt-16">
+      <Box component="main" sx={{ flex: 1, pt: 8 }}>
         <Outlet />
-      </main>
+      </Box>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-secondary">
-        <div className="max-w-[1200px] mx-auto px-4 md:px-8 py-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex flex-col items-center md:items-start gap-2">
-              <span className="text-xl font-bold gradient-text">Hyun</span>
-              <p className="text-sm text-text-muted">{t('footer.role')}</p>
-            </div>
+      <Box
+        component="footer"
+        sx={{
+          borderTop: '1px solid',
+          borderColor: 'divider',
+          bgcolor: 'background.paper',
+        }}
+      >
+        <Container maxWidth="lg" sx={{ px: { xs: 2, md: 4 }, py: 4 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 2,
+            }}
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: { xs: 'center', md: 'flex-start' }, gap: 0.5 }}>
+              <Typography className="gradient-text" sx={{ fontSize: '1.25rem', fontWeight: 700 }}>
+                Hyun
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {t('footer.role')}
+              </Typography>
+            </Box>
 
-            <div className="flex items-center gap-6">
-              <a
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <Typography
+                component="a"
                 href="https://github.com/SeungHyun1207"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-text-secondary hover:text-accent transition-colors"
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                  textDecoration: 'none',
+                  transition: 'color 0.3s ease',
+                  '&:hover': { color: 'primary.main' },
+                }}
               >
                 GitHub
-              </a>
-              <a
+              </Typography>
+              <Typography
+                component="a"
                 href="mailto:contact@example.com"
-                className="text-sm text-text-secondary hover:text-accent transition-colors"
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                  textDecoration: 'none',
+                  transition: 'color 0.3s ease',
+                  '&:hover': { color: 'primary.main' },
+                }}
               >
                 Email
-              </a>
-            </div>
-          </div>
+              </Typography>
+            </Box>
+          </Box>
 
-          <div className="mt-8 pt-6 border-t border-border text-center">
-            <p className="text-sm text-text-muted">
+          <Box
+            sx={{
+              mt: 4,
+              pt: 3,
+              borderTop: '1px solid',
+              borderColor: 'divider',
+              textAlign: 'center',
+            }}
+          >
+            <Typography variant="caption" color="text.secondary">
               &copy; {new Date().getFullYear()} Hyun. {t('footer.rights')}
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
+            </Typography>
+          </Box>
+        </Container>
+      </Box>
+    </Box>
   )
 }
 

@@ -1,10 +1,14 @@
-import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
 
+
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react()],
+  server: {
+    open: true,
+    port: 999,
+  },
   resolve: {
     /**
      * Path Alias 설정
@@ -13,7 +17,6 @@ export default defineConfig({
      * - import App from '@/App'                      → src/App.tsx
      * - import Hero from '@components/Hero'          → src/components/Hero/index.ts
      * - import logo from '@assets/images/logo.png'   → src/assets/images/logo.png
-     * - import HomePage from '@views/Home'           → src/views/Home/index.tsx
      * - import '@styles/global.css'                  → src/styles/global.css
      * - import { useScrollAnimation } from '@hooks'  → src/hooks/index.ts
      * - import { cn } from '@utils'                  → src/utils/index.ts
@@ -21,7 +24,7 @@ export default defineConfig({
      * - import MainLayout from '@layouts/MainLayout' → src/layouts/MainLayout/index.tsx
      */
     alias: {
-      '@': path.resolve(__dirname, './src'),
+    '@': path.resolve(__dirname, './src'),
       '@components': path.resolve(__dirname, './src/components'),
       '@assets': path.resolve(__dirname, './src/assets'),
       '@views': path.resolve(__dirname, './src/views'),

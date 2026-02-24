@@ -1,7 +1,7 @@
 import { useState } from 'react'
+import { Box, Container, Typography, Grid, Button, Chip } from '@mui/material'
 import { useScrollAnimation } from '@hooks'
 import { useSettings } from '@/contexts/SettingsContext'
-import { cn } from '@utils'
 
 interface Project {
   id: string
@@ -11,12 +11,8 @@ interface Project {
   category: 'web' | 'mobile' | 'other'
   demoUrl?: string
   githubUrl?: string
-  thumbnail?: string
 }
 
-/**
- * Projects 섹션 컴포넌트
- */
 const Projects = () => {
   const { t } = useSettings()
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 })
@@ -36,7 +32,7 @@ const Projects = () => {
       id: '2',
       titleKey: 'projects.taskManagement.title',
       descKey: 'projects.taskManagement.desc',
-      techStack: ['Next.js', 'Tailwind CSS', 'Prisma', 'Socket.io'],
+      techStack: ['Next.js', 'MUI', 'Prisma', 'Socket.io'],
       category: 'web',
       demoUrl: '#',
       githubUrl: '#',
@@ -63,7 +59,7 @@ const Projects = () => {
       id: '5',
       titleKey: 'projects.portfolio.title',
       descKey: 'projects.portfolio.desc',
-      techStack: ['Vue.js', 'GitHub API', 'Vercel', 'TailwindCSS'],
+      techStack: ['Vue.js', 'GitHub API', 'Vercel', 'MUI'],
       category: 'other',
       demoUrl: '#',
       githubUrl: '#',
@@ -91,145 +87,232 @@ const Projects = () => {
     : projects.filter((p) => p.category === activeFilter)
 
   return (
-    <section id="projects" ref={ref} className="py-20 md:py-32 bg-secondary">
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
+    <Box
+      component="section"
+      id="projects"
+      ref={ref}
+      sx={{ py: { xs: 10, md: 16 }, bgcolor: 'background.paper' }}
+    >
+      <Container maxWidth="lg">
         {/* Header */}
-        <div
-          className={cn(
-            'text-center mb-12',
-            'transition-all duration-700',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
-          )}
+        <Box
+          sx={{
+            textAlign: 'center',
+            mb: 6,
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
+            transition: 'opacity 0.7s ease, transform 0.7s ease',
+          }}
         >
-          <span className="text-accent text-sm font-medium uppercase tracking-wider">
+          <Typography
+            color="primary"
+            sx={{ fontSize: '0.875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 3 }}
+          >
             {t('projects.label')}
-          </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-4 mb-6">
-            {t('projects.title1')} <span className="gradient-text">{t('projects.title2')}</span>
-          </h2>
-          <p className="text-text-secondary max-w-2xl mx-auto">
+          </Typography>
+          <Typography
+            variant="h3"
+            sx={{ fontWeight: 700, mt: 2, mb: 3, fontSize: { xs: '1.75rem', md: '2.25rem', lg: '2.75rem' } }}
+          >
+            {t('projects.title1')}{' '}
+            <Box component="span" className="gradient-text">{t('projects.title2')}</Box>
+          </Typography>
+          <Typography color="text.secondary" sx={{ maxWidth: 672, mx: 'auto' }}>
             {t('projects.description')}
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
         {/* Filter Buttons */}
-        <div
-          className={cn(
-            'flex justify-center gap-2 mb-12',
-            'transition-all duration-700 delay-100',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
-          )}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 1,
+            mb: 6,
+            flexWrap: 'wrap',
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
+            transition: 'opacity 0.7s ease, transform 0.7s ease',
+            transitionDelay: '100ms',
+          }}
         >
           {filters.map((filter) => (
-            <button
+            <Button
               key={filter.value}
               onClick={() => setActiveFilter(filter.value)}
-              className={cn(
-                'px-4 py-2 rounded-lg text-sm font-medium',
-                'transition-all duration-300',
-                activeFilter === filter.value
-                  ? 'bg-accent text-white'
-                  : 'bg-tertiary text-text-secondary hover:text-text-primary hover:bg-tertiary/80',
-              )}
+              variant={activeFilter === filter.value ? 'contained' : 'outlined'}
+              size="small"
+              sx={{
+                borderRadius: 2,
+                fontSize: '0.875rem',
+                fontWeight: 500,
+                transition: 'all 0.3s ease',
+                ...(activeFilter === filter.value
+                  ? {
+                      background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                      border: 'none',
+                    }
+                  : {
+                      borderColor: 'divider',
+                      color: 'text.secondary',
+                      '&:hover': { borderColor: 'primary.main', color: 'text.primary' },
+                    }),
+              }}
             >
               {t(filter.labelKey)}
-            </button>
+            </Button>
           ))}
-        </div>
+        </Box>
 
         {/* Projects Grid */}
-        <div
-          className={cn(
-            'grid md:grid-cols-2 lg:grid-cols-3 gap-6',
-            'transition-all duration-700 delay-200',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
-          )}
+        <Grid
+          container
+          spacing={3}
+          sx={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
+            transition: 'opacity 0.7s ease, transform 0.7s ease',
+            transitionDelay: '200ms',
+          }}
         >
           {filteredProjects.map((project, index) => (
-            <div
-              key={project.id}
-              className={cn(
-                'group relative rounded-xl overflow-hidden',
-                'bg-tertiary border border-border',
-                'transition-all duration-300',
-                'hover:border-accent/50 hover:-translate-y-1',
-                'hover:shadow-xl hover:shadow-accent/10',
-              )}
-              style={{ transitionDelay: `${index * 50}ms` }}
-            >
-              {/* Thumbnail Placeholder */}
-              <div className="aspect-video bg-primary/50 flex items-center justify-center">
-                <div className="text-4xl opacity-30">
-                  {project.category === 'web' ? '🌐' : project.category === 'mobile' ? '📱' : '🔧'}
-                </div>
-              </div>
+            <Grid key={project.id} size={{ xs: 12, md: 6, lg: 4 }}>
+              <Box
+                sx={{
+                  borderRadius: 3,
+                  overflow: 'hidden',
+                  bgcolor: 'background.default',
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  transition: 'all 0.3s ease',
+                  transitionDelay: `${index * 50}ms`,
+                  '&:hover': {
+                    borderColor: 'rgba(99,102,241,0.5)',
+                    transform: 'translateY(-4px)',
+                    boxShadow: '0 20px 40px rgba(99,102,241,0.1)',
+                  },
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                {/* Thumbnail */}
+                <Box
+                  sx={{
+                    aspectRatio: '16/9',
+                    bgcolor: 'rgba(99,102,241,0.05)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Typography sx={{ fontSize: '2.5rem', opacity: 0.3 }}>
+                    {project.category === 'web' ? '🌐' : project.category === 'mobile' ? '📱' : '🔧'}
+                  </Typography>
+                </Box>
 
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2 group-hover:text-accent transition-colors">
-                  {t(project.titleKey)}
-                </h3>
-                <p className="text-text-secondary text-sm mb-4 line-clamp-2">
-                  {t(project.descKey)}
-                </p>
+                {/* Content */}
+                <Box sx={{ p: 3, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 700,
+                      mb: 1,
+                      transition: 'color 0.3s ease',
+                      '&:hover': { color: 'primary.main' },
+                    }}
+                  >
+                    {t(project.titleKey)}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      mb: 2,
+                      overflow: 'hidden',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                    }}
+                  >
+                    {t(project.descKey)}
+                  </Typography>
 
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.techStack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2 py-1 text-xs rounded-md bg-primary text-text-muted"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+                  {/* Tech Stack */}
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: 2 }}>
+                    {project.techStack.map((tech) => (
+                      <Chip
+                        key={tech}
+                        label={tech}
+                        size="small"
+                        sx={{
+                          fontSize: '0.7rem',
+                          bgcolor: 'background.paper',
+                          border: '1px solid',
+                          borderColor: 'divider',
+                        }}
+                      />
+                    ))}
+                  </Box>
 
-                {/* Links */}
-                <div className="flex gap-3">
-                  {project.demoUrl && (
-                    <a
-                      href={project.demoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(
-                        'flex items-center gap-1 text-sm',
-                        'text-text-secondary hover:text-accent',
-                        'transition-colors',
-                      )}
-                    >
-                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                        <polyline points="15 3 21 3 21 9" />
-                        <line x1="10" y1="14" x2="21" y2="3" />
-                      </svg>
-                      Demo
-                    </a>
-                  )}
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(
-                        'flex items-center gap-1 text-sm',
-                        'text-text-secondary hover:text-accent',
-                        'transition-colors',
-                      )}
-                    >
-                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
-                      </svg>
-                      GitHub
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
+                  {/* Links */}
+                  <Box sx={{ display: 'flex', gap: 2, mt: 'auto' }}>
+                    {project.demoUrl && (
+                      <Typography
+                        component="a"
+                        href={project.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        variant="body2"
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 0.5,
+                          color: 'text.secondary',
+                          textDecoration: 'none',
+                          transition: 'color 0.3s ease',
+                          '&:hover': { color: 'primary.main' },
+                        }}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <polyline points="15 3 21 3 21 9" />
+                          <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                        Demo
+                      </Typography>
+                    )}
+                    {project.githubUrl && (
+                      <Typography
+                        component="a"
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        variant="body2"
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 0.5,
+                          color: 'text.secondary',
+                          textDecoration: 'none',
+                          transition: 'color 0.3s ease',
+                          '&:hover': { color: 'primary.main' },
+                        }}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                        </svg>
+                        GitHub
+                      </Typography>
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+            </Grid>
           ))}
-        </div>
-      </div>
-    </section>
+        </Grid>
+      </Container>
+    </Box>
   )
 }
 

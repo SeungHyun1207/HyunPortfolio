@@ -1,12 +1,13 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react'
+import { createTheme, ThemeProvider, CssBaseline } from '@mui/material'
 
-type Theme = 'dark' | 'light'
+type ThemeMode = 'dark' | 'light'
 type Language = 'ko' | 'en'
 
 interface SettingsContextType {
-  theme: Theme
+  theme: ThemeMode
   language: Language
-  setTheme: (theme: Theme) => void
+  setTheme: (theme: ThemeMode) => void
   setLanguage: (language: Language) => void
   t: (key: string) => string
 }
@@ -14,13 +15,84 @@ interface SettingsContextType {
 const SettingsContext = createContext<SettingsContextType | null>(null)
 
 /**
+ * 커스텀 MUI 테마 팔레트
+ * accent: #6366f1 (인디고)
+ */
+const getTheme = (mode: ThemeMode) =>
+  createTheme({
+    palette: {
+      mode,
+      primary: {
+        main: '#6366f1',
+        light: '#818cf8',
+        dark: '#4f46e5',
+      },
+      secondary: {
+        main: '#a855f7',
+      },
+      background: {
+        default: mode === 'dark' ? '#0a0a0f' : '#ffffff',
+        paper: mode === 'dark' ? '#12121a' : '#f8f9fa',
+      },
+      text: {
+        primary: mode === 'dark' ? '#ffffff' : '#1a1a2e',
+        secondary: mode === 'dark' ? '#a0a0b0' : '#4a4a5a',
+      },
+      divider: mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
+    },
+    typography: {
+      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    },
+    shape: {
+      borderRadius: 12,
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            textTransform: 'none',
+            fontWeight: 500,
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            backgroundImage: 'none',
+          },
+        },
+      },
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            scrollBehavior: 'smooth',
+          },
+          '::-webkit-scrollbar': {
+            width: '8px',
+          },
+          '::-webkit-scrollbar-track': {
+            background: 'transparent',
+          },
+          '::-webkit-scrollbar-thumb': {
+            background: '#6366f1',
+            borderRadius: '4px',
+          },
+          '::-webkit-scrollbar-thumb:hover': {
+            background: '#818cf8',
+          },
+        },
+      },
+    },
+  })
+
+/**
  * 설정 Provider
  * 테마와 언어 설정을 전역으로 관리
  */
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setThemeState] = useState<Theme>(() => {
+  const [theme, setThemeState] = useState<ThemeMode>(() => {
     if (typeof window !== 'undefined') {
-      return (localStorage.getItem('theme') as Theme) || 'dark'
+      return (localStorage.getItem('theme') as ThemeMode) || 'dark'
     }
     return 'dark'
   })
@@ -32,38 +104,32 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     return 'ko'
   })
 
-  // 테마 변경
-  const setTheme = (newTheme: Theme) => {
+  const setTheme = (newTheme: ThemeMode) => {
     setThemeState(newTheme)
     localStorage.setItem('theme', newTheme)
   }
 
-  // 언어 변경
   const setLanguage = (newLanguage: Language) => {
     setLanguageState(newLanguage)
     localStorage.setItem('language', newLanguage)
   }
 
-  // 테마 적용
-  useEffect(() => {
-    const root = document.documentElement
-    if (theme === 'light') {
-      root.classList.add('light')
-      root.classList.remove('dark')
-    } else {
-      root.classList.add('dark')
-      root.classList.remove('light')
-    }
-  }, [theme])
-
-  // 번역 함수
   const t = (key: string): string => {
     return translations[language][key] || key
   }
 
+  const muiTheme = useMemo(() => getTheme(theme), [theme])
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
+
   return (
     <SettingsContext.Provider value={{ theme, language, setTheme, setLanguage, t }}>
-      {children}
+      <ThemeProvider theme={muiTheme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
     </SettingsContext.Provider>
   )
 }

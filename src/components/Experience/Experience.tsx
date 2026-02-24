@@ -1,6 +1,6 @@
+import { Box, Container, Typography, Grid, Chip } from '@mui/material'
 import { useScrollAnimation } from '@hooks'
 import { useSettings } from '@/contexts/SettingsContext'
-import { cn } from '@utils'
 
 interface ExperienceItem {
   id: string
@@ -12,10 +12,6 @@ interface ExperienceItem {
   techStack?: string[]
 }
 
-/**
- * Experience 섹션 컴포넌트
- * 경력 및 학력 사항
- */
 const Experience = () => {
   const { t } = useSettings()
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 })
@@ -33,7 +29,7 @@ const Experience = () => {
         'experience.work1.desc3',
         'experience.work1.desc4',
       ],
-      techStack: ['React', 'TypeScript', 'Next.js', 'TailwindCSS'],
+      techStack: ['React', 'TypeScript', 'Next.js', 'MUI'],
     },
     {
       id: '2',
@@ -71,193 +67,248 @@ const Experience = () => {
   const workExperiences = experiences.filter((e) => e.type === 'work')
   const educationExperiences = experiences.filter((e) => e.type === 'education')
 
-  return (
-    <section id="experience" ref={ref} className="py-20 md:py-32">
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
-        {/* Header */}
-        <div
-          className={cn(
-            'text-center mb-16',
-            'transition-all duration-700',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
-          )}
-        >
-          <span className="text-accent text-sm font-medium uppercase tracking-wider">
-            {t('experience.label')}
-          </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-4 mb-6">
-            {t('experience.title1')} <span className="gradient-text">{t('experience.title2')}</span>
-          </h2>
-          <p className="text-text-secondary max-w-2xl mx-auto">
-            {t('experience.description')}
-          </p>
-        </div>
+  const SectionTitle = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 4 }}>
+      <Box
+        sx={{
+          p: 1,
+          borderRadius: 1.5,
+          bgcolor: 'rgba(99,102,241,0.1)',
+          color: 'primary.main',
+          display: 'flex',
+        }}
+      >
+        {icon}
+      </Box>
+      <Typography variant="h6" sx={{ fontWeight: 700 }}>{label}</Typography>
+    </Box>
+  )
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Work Experience */}
-          <div
-            className={cn(
-              'transition-all duration-700 delay-100',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
-            )}
+  const TimelineItem = ({ exp }: { exp: ExperienceItem }) => (
+    <Box sx={{ position: 'relative', pl: 4, mb: 4, '&:last-child': { mb: 0 } }}>
+      {/* Timeline dot */}
+      <Box
+        sx={{
+          position: 'absolute',
+          left: 0,
+          top: 8,
+          width: 16,
+          height: 16,
+          borderRadius: '50%',
+          bgcolor: 'primary.main',
+          border: '4px solid',
+          borderColor: 'background.default',
+          zIndex: 1,
+        }}
+      />
+      <Box
+        sx={{
+          p: 3,
+          borderRadius: 3,
+          bgcolor: 'background.paper',
+          border: '1px solid',
+          borderColor: 'divider',
+          transition: 'border-color 0.3s ease',
+          '&:hover': { borderColor: 'rgba(99,102,241,0.5)' },
+        }}
+      >
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 1, mb: 1 }}>
+          <Typography variant="body1" sx={{ fontWeight: 700 }}>{t(exp.titleKey)}</Typography>
+          <Chip
+            label={t(exp.periodKey)}
+            size="small"
+            sx={{
+              fontSize: '0.7rem',
+              bgcolor: 'rgba(99,102,241,0.1)',
+              color: 'primary.main',
+              border: 'none',
+            }}
+          />
+        </Box>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          {t(exp.organizationKey)}
+        </Typography>
+        <Box component="ul" sx={{ pl: 0, m: 0, listStyle: 'none', mb: exp.techStack ? 2 : 0 }}>
+          {exp.descriptionKeys.map((descKey, i) => (
+            <Box
+              key={i}
+              component="li"
+              sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, mb: 0.75 }}
+            >
+              <Typography color="primary" sx={{ mt: 0.3, lineHeight: 1 }}>•</Typography>
+              <Typography variant="body2" color="text.secondary">{t(descKey)}</Typography>
+            </Box>
+          ))}
+        </Box>
+        {exp.techStack && (
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
+            {exp.techStack.map((tech) => (
+              <Chip
+                key={tech}
+                label={tech}
+                size="small"
+                sx={{
+                  fontSize: '0.7rem',
+                  bgcolor: 'background.default',
+                  border: '1px solid',
+                  borderColor: 'divider',
+                }}
+              />
+            ))}
+          </Box>
+        )}
+      </Box>
+    </Box>
+  )
+
+  return (
+    <Box
+      component="section"
+      id="experience"
+      ref={ref}
+      sx={{ py: { xs: 10, md: 16 } }}
+    >
+      <Container maxWidth="lg">
+        {/* Header */}
+        <Box
+          sx={{
+            textAlign: 'center',
+            mb: 8,
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
+            transition: 'opacity 0.7s ease, transform 0.7s ease',
+          }}
+        >
+          <Typography
+            color="primary"
+            sx={{ fontSize: '0.875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 3 }}
           >
-            <h3 className="flex items-center gap-2 text-xl font-bold mb-8">
-              <span className="p-2 rounded-lg bg-accent/10 text-accent">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            {t('experience.label')}
+          </Typography>
+          <Typography
+            variant="h3"
+            sx={{ fontWeight: 700, mt: 2, mb: 3, fontSize: { xs: '1.75rem', md: '2.25rem', lg: '2.75rem' } }}
+          >
+            {t('experience.title1')}{' '}
+            <Box component="span" className="gradient-text">{t('experience.title2')}</Box>
+          </Typography>
+          <Typography color="text.secondary" sx={{ maxWidth: 672, mx: 'auto' }}>
+            {t('experience.description')}
+          </Typography>
+        </Box>
+
+        <Grid container spacing={6}>
+          {/* Work Experience */}
+          <Grid
+            size={{ xs: 12, lg: 6 }}
+            sx={{
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
+              transition: 'opacity 0.7s ease, transform 0.7s ease',
+              transitionDelay: '100ms',
+            }}
+          >
+            <SectionTitle
+              icon={
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
                   <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                 </svg>
-              </span>
-              {t('experience.workTitle')}
-            </h3>
+              }
+              label={t('experience.workTitle')}
+            />
+            <Box sx={{ position: 'relative' }}>
+              {/* Timeline line */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: 7,
+                  top: 8,
+                  bottom: 8,
+                  width: 2,
+                  bgcolor: 'divider',
+                }}
+              />
+              {workExperiences.map((exp) => (
+                <TimelineItem key={exp.id} exp={exp} />
+              ))}
+            </Box>
+          </Grid>
 
-            <div className="relative">
-              {/* Timeline Line */}
-              <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-border" />
-
-              <div className="space-y-8">
-                {workExperiences.map((exp) => (
-                  <div key={exp.id} className="relative pl-8">
-                    {/* Timeline Dot */}
-                    <div className="absolute left-0 top-2 w-4 h-4 rounded-full bg-accent border-4 border-primary" />
-
-                    <div
-                      className={cn(
-                        'p-6 rounded-xl',
-                        'bg-secondary border border-border',
-                        'transition-all duration-300',
-                        'hover:border-accent/50',
-                      )}
-                    >
-                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                        <h4 className="font-bold text-lg">{t(exp.titleKey)}</h4>
-                        <span className="text-xs text-accent bg-accent/10 px-2 py-1 rounded">
-                          {t(exp.periodKey)}
-                        </span>
-                      </div>
-                      <p className="text-text-secondary mb-4">{t(exp.organizationKey)}</p>
-
-                      <ul className="space-y-2 mb-4">
-                        {exp.descriptionKeys.map((descKey, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
-                            <span className="text-accent mt-1">•</span>
-                            {t(descKey)}
-                          </li>
-                        ))}
-                      </ul>
-
-                      {exp.techStack && (
-                        <div className="flex flex-wrap gap-2">
-                          {exp.techStack.map((tech) => (
-                            <span
-                              key={tech}
-                              className="px-2 py-1 text-xs rounded-md bg-tertiary text-text-muted"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Education */}
-          <div
-            className={cn(
-              'transition-all duration-700 delay-200',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
-            )}
+          {/* Education & Certifications */}
+          <Grid
+            size={{ xs: 12, lg: 6 }}
+            sx={{
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
+              transition: 'opacity 0.7s ease, transform 0.7s ease',
+              transitionDelay: '200ms',
+            }}
           >
-            <h3 className="flex items-center gap-2 text-xl font-bold mb-8">
-              <span className="p-2 rounded-lg bg-accent/10 text-accent">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <SectionTitle
+              icon={
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
                   <path d="M6 12v5c3 3 9 3 12 0v-5" />
                 </svg>
-              </span>
-              {t('experience.eduTitle')}
-            </h3>
-
-            <div className="relative">
-              {/* Timeline Line */}
-              <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-border" />
-
-              <div className="space-y-8">
-                {educationExperiences.map((exp) => (
-                  <div key={exp.id} className="relative pl-8">
-                    {/* Timeline Dot */}
-                    <div className="absolute left-0 top-2 w-4 h-4 rounded-full bg-accent border-4 border-primary" />
-
-                    <div
-                      className={cn(
-                        'p-6 rounded-xl',
-                        'bg-secondary border border-border',
-                        'transition-all duration-300',
-                        'hover:border-accent/50',
-                      )}
-                    >
-                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                        <h4 className="font-bold text-lg">{t(exp.titleKey)}</h4>
-                        <span className="text-xs text-accent bg-accent/10 px-2 py-1 rounded">
-                          {t(exp.periodKey)}
-                        </span>
-                      </div>
-                      <p className="text-text-secondary mb-4">{t(exp.organizationKey)}</p>
-
-                      <ul className="space-y-2">
-                        {exp.descriptionKeys.map((descKey, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
-                            <span className="text-accent mt-1">•</span>
-                            {t(descKey)}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+              }
+              label={t('experience.eduTitle')}
+            />
+            <Box sx={{ position: 'relative', mb: 6 }}>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: 7,
+                  top: 8,
+                  bottom: 8,
+                  width: 2,
+                  bgcolor: 'divider',
+                }}
+              />
+              {educationExperiences.map((exp) => (
+                <TimelineItem key={exp.id} exp={exp} />
+              ))}
+            </Box>
 
             {/* Certifications */}
-            <div className="mt-12">
-              <h3 className="flex items-center gap-2 text-xl font-bold mb-8">
-                <span className="p-2 rounded-lg bg-accent/10 text-accent">
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="8" r="7" />
-                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-                  </svg>
-                </span>
-                {t('experience.certTitle')}
-              </h3>
-
-              <div className="space-y-4">
-                {certifications.map((cert, index) => (
-                  <div
-                    key={index}
-                    className={cn(
-                      'flex items-center justify-between p-4 rounded-lg',
-                      'bg-secondary border border-border',
-                      'transition-all duration-300',
-                      'hover:border-accent/50',
-                    )}
-                  >
-                    <div>
-                      <h4 className="font-medium">{t(cert.nameKey)}</h4>
-                      <p className="text-sm text-text-muted">{t(cert.orgKey)}</p>
-                    </div>
-                    <span className="text-sm text-accent">{cert.year}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+            <SectionTitle
+              icon={
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="8" r="7" />
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                </svg>
+              }
+              label={t('experience.certTitle')}
+            />
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {certifications.map((cert, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    p: 2,
+                    borderRadius: 2,
+                    bgcolor: 'background.paper',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    transition: 'border-color 0.3s ease',
+                    '&:hover': { borderColor: 'rgba(99,102,241,0.5)' },
+                  }}
+                >
+                  <Box>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>{t(cert.nameKey)}</Typography>
+                    <Typography variant="caption" color="text.secondary">{t(cert.orgKey)}</Typography>
+                  </Box>
+                  <Typography variant="body2" color="primary">{cert.year}</Typography>
+                </Box>
+              ))}
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
   )
 }
 

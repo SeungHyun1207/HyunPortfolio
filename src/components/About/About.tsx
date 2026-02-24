@@ -1,10 +1,7 @@
+import { Box, Container, Typography, Grid } from '@mui/material'
 import { useScrollAnimation } from '@hooks'
 import { useSettings } from '@/contexts/SettingsContext'
-import { cn } from '@utils'
 
-/**
- * About (DevInfo) 섹션 컴포넌트
- */
 const About = () => {
   const { t } = useSettings()
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.2 })
@@ -18,7 +15,7 @@ const About = () => {
   const highlights = [
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 24, height: 24 }}>
           <path d="M12 2L2 7l10 5 10-5-10-5z" />
           <path d="M2 17l10 5 10-5" />
           <path d="M2 12l10 5 10-5" />
@@ -29,7 +26,7 @@ const About = () => {
     },
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 24, height: 24 }}>
           <circle cx="12" cy="12" r="10" />
           <path d="M12 6v6l4 2" />
         </svg>
@@ -39,7 +36,7 @@ const About = () => {
     },
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 24, height: 24 }}>
           <rect x="3" y="3" width="18" height="18" rx="2" />
           <path d="M3 9h18" />
           <path d="M9 21V9" />
@@ -51,106 +48,150 @@ const About = () => {
   ]
 
   return (
-    <section
+    <Box
+      component="section"
       id="devinfo"
       ref={ref}
-      className="py-20 md:py-32 bg-secondary"
+      sx={{ py: { xs: 10, md: 16 }, bgcolor: 'background.paper' }}
     >
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
-        <div
-          className={cn(
-            'grid md:grid-cols-2 gap-12 md:gap-16 items-center',
-            'transition-all duration-700',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
-          )}
+      <Container maxWidth="lg">
+        <Grid
+          container
+          spacing={{ xs: 6, md: 8 }}
+          alignItems="center"
+          sx={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
+            transition: 'opacity 0.7s ease, transform 0.7s ease',
+          }}
         >
           {/* Left - Image & Stats */}
-          <div className="flex flex-col items-center md:items-start gap-8">
-            {/* Profile Image Placeholder */}
-            <div className="relative">
-              <div
-                className={cn(
-                  'w-48 h-48 md:w-64 md:h-64 rounded-2xl',
-                  'bg-tertiary flex items-center justify-center',
-                  'border border-border',
-                )}
-              >
-                <span className="text-6xl md:text-8xl font-bold gradient-text">H</span>
-              </div>
-              {/* Decorative element */}
-              <div
-                className={cn(
-                  'absolute -bottom-4 -right-4 w-full h-full rounded-2xl',
-                  'border-2 border-accent/30 -z-10',
-                )}
-              />
-            </div>
-
-            {/* Stats */}
-            <div className="flex gap-6 md:gap-8">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    'text-center',
-                    'transition-all duration-500',
-                  )}
-                  style={{ transitionDelay: `${200 + index * 100}ms` }}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: { xs: 'center', md: 'flex-start' }, gap: 4 }}>
+              {/* Profile Image Placeholder */}
+              <Box sx={{ position: 'relative' }}>
+                <Box
+                  sx={{
+                    width: { xs: 192, md: 256 },
+                    height: { xs: 192, md: 256 },
+                    borderRadius: 4,
+                    bgcolor: 'background.default',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
                 >
-                  <span className="block text-3xl md:text-4xl font-bold gradient-text">
-                    {stat.number}
-                  </span>
-                  <span className="text-xs md:text-sm text-text-muted">
-                    {t(stat.labelKey)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+                  <Typography
+                    className="gradient-text"
+                    sx={{ fontSize: { xs: '4rem', md: '6rem' }, fontWeight: 700 }}
+                  >
+                    H
+                  </Typography>
+                </Box>
+                {/* Decorative border */}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    bottom: -16,
+                    right: -16,
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 4,
+                    border: '2px solid',
+                    borderColor: 'rgba(99,102,241,0.3)',
+                    zIndex: -1,
+                  }}
+                />
+              </Box>
+
+              {/* Stats */}
+              <Box sx={{ display: 'flex', gap: { xs: 3, md: 4 } }}>
+                {stats.map((stat, index) => (
+                  <Box
+                    key={index}
+                    sx={{ textAlign: 'center', transition: 'all 0.5s ease', transitionDelay: `${200 + index * 100}ms` }}
+                  >
+                    <Typography
+                      className="gradient-text"
+                      sx={{ display: 'block', fontSize: { xs: '1.75rem', md: '2.25rem' }, fontWeight: 700 }}
+                    >
+                      {stat.number}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary" sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' } }}>
+                      {t(stat.labelKey)}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+          </Grid>
 
           {/* Right - Content */}
-          <div>
-            <span className="text-accent text-sm font-medium uppercase tracking-wider">
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Typography
+              color="primary"
+              sx={{ fontSize: '0.875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 3 }}
+            >
               {t('about.label')}
-            </span>
+            </Typography>
 
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-4 mb-6">
+            <Typography
+              variant="h3"
+              sx={{ fontWeight: 700, mt: 2, mb: 3, fontSize: { xs: '1.75rem', md: '2.25rem', lg: '2.75rem' } }}
+            >
               {t('about.title1')}
               <br />
-              <span className="gradient-text">{t('about.title2')}</span>
-            </h2>
+              <Box component="span" className="gradient-text">{t('about.title2')}</Box>
+            </Typography>
 
-            <div className="space-y-4 text-text-secondary mb-8">
-              <p>{t('about.description1')}</p>
-              <p>{t('about.description2')}</p>
-            </div>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}>
+              <Typography color="text.secondary">{t('about.description1')}</Typography>
+              <Typography color="text.secondary">{t('about.description2')}</Typography>
+            </Box>
 
             {/* Highlights */}
-            <div className="space-y-4">
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {highlights.map((item, index) => (
-                <div
+                <Box
                   key={index}
-                  className={cn(
-                    'flex items-start gap-4 p-4 rounded-lg',
-                    'bg-tertiary border border-border',
-                    'transition-all duration-300',
-                    'hover:border-accent/50 hover:bg-tertiary/80',
-                  )}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 2,
+                    p: 2,
+                    borderRadius: 2,
+                    bgcolor: 'background.default',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    transition: 'border-color 0.3s ease',
+                    '&:hover': { borderColor: 'rgba(99,102,241,0.5)' },
+                  }}
                 >
-                  <div className="p-2 rounded-lg bg-accent/10 text-accent">
+                  <Box
+                    sx={{
+                      p: 1,
+                      borderRadius: 1.5,
+                      bgcolor: 'rgba(99,102,241,0.1)',
+                      color: 'primary.main',
+                      flexShrink: 0,
+                      display: 'flex',
+                    }}
+                  >
                     {item.icon}
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-text-primary">{t(item.titleKey)}</h4>
-                    <p className="text-sm text-text-muted">{t(item.descKey)}</p>
-                  </div>
-                </div>
+                  </Box>
+                  <Box>
+                    <Typography variant="body1" sx={{ fontWeight: 600 }}>{t(item.titleKey)}</Typography>
+                    <Typography variant="body2" color="text.secondary">{t(item.descKey)}</Typography>
+                  </Box>
+                </Box>
               ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
   )
 }
 

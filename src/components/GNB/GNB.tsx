@@ -1,22 +1,18 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import {
+  AppBar, Toolbar, Box, Button, Typography, useScrollTrigger,
+} from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
 import { useSettings } from '@/contexts/SettingsContext'
-import { cn } from '@utils'
 import FullMenu from './FullMenu'
 
-/**
- * GNB 메뉴 아이템 타입
- */
 export interface MenuItem {
   labelKey: string
   href: string
   descKey?: string
 }
 
-/**
- * GNB 메뉴 데이터
- * 개발자 포트폴리오에 필요한 메뉴 구성
- */
 export const menuItems: MenuItem[] = [
   { labelKey: 'nav.devInfo', href: '#devinfo', descKey: 'nav.devInfoDesc' },
   { labelKey: 'nav.skills', href: '#skills', descKey: 'nav.skillsDesc' },
@@ -25,113 +21,107 @@ export const menuItems: MenuItem[] = [
   { labelKey: 'nav.contact', href: '#contact', descKey: 'nav.contactDesc' },
 ]
 
-/**
- * GNB (Global Navigation Bar) 컴포넌트
- *
- * 구조:
- * - 좌측: 로고 (클릭 시 메인으로 이동)
- * - 중앙: 메뉴 리스트
- * - 우측: 전체메뉴 버튼
- */
 const GNB = () => {
   const { t } = useSettings()
-  const [isScrolled, setIsScrolled] = useState(false)
   const [isFullMenuOpen, setIsFullMenuOpen] = useState(false)
+  const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 50 })
 
-  // 스크롤 감지
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  // 전체메뉴 열릴 때 body 스크롤 방지
   useEffect(() => {
     if (isFullMenuOpen) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = ''
     }
-
-    return () => {
-      document.body.style.overflow = ''
-    }
+    return () => { document.body.style.overflow = '' }
   }, [isFullMenuOpen])
 
   return (
     <>
-      <header
-        className={cn(
-          'fixed top-0 left-0 right-0 z-50',
-          'transition-all duration-300',
-          isScrolled
-            ? 'glass border-b border-border'
-            : 'bg-transparent',
-        )}
+      <AppBar
+        position="fixed"
+        elevation={trigger ? 2 : 0}
+        sx={{
+          bgcolor: trigger ? 'background.paper' : 'transparent',
+          backdropFilter: trigger ? 'blur(12px)' : 'none',
+          borderBottom: trigger ? '1px solid' : 'none',
+          borderColor: 'divider',
+          transition: 'all 0.3s ease',
+        }}
       >
-        <nav className="max-w-[1200px] mx-auto px-4 md:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo - 좌측 */}
-            <Link
-              to="/"
-              className="group flex items-center gap-2"
-              aria-label={t('nav.goHome')}
+        <Toolbar sx={{ maxWidth: 1200, mx: 'auto', width: '100%', px: { xs: 2, md: 4 } }}>
+          {/* Logo */}
+          <Box component={Link} to="/" sx={{ textDecoration: 'none', flexShrink: 0 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 700,
+                fontSize: '1.4rem',
+                background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                '&:hover': { opacity: 0.8 },
+                transition: 'opacity 0.15s',
+              }}
             >
-              <span className="text-2xl font-bold gradient-text transition-opacity duration-150 group-hover:opacity-80">
-                Hyun
-              </span>
-            </Link>
+              Hyun
+            </Typography>
+          </Box>
 
-            {/* Menu - 중앙 (Desktop) */}
-            <ul className="hidden md:flex items-center gap-8">
-              {menuItems.map((item) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    className={cn(
-                      'relative text-sm font-medium',
-                      'text-text-secondary hover:text-text-primary',
-                      'transition-colors duration-150',
-                      'after:absolute after:bottom-[-4px] after:left-0',
-                      'after:w-0 after:h-0.5 after:bg-accent',
-                      'after:transition-all after:duration-300',
-                      'hover:after:w-full',
-                    )}
-                  >
-                    {t(item.labelKey)}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          {/* Center Menu (Desktop) */}
+          <Box sx={{ flex: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: 1 }}>
+            {menuItems.map((item) => (
+              <Button
+                key={item.href}
+                href={item.href}
+                component="a"
+                sx={{
+                  color: 'text.secondary',
+                  fontSize: '0.875rem',
+                  fontWeight: 500,
+                  px: 2,
+                  '&:hover': { color: 'text.primary', bgcolor: 'transparent' },
+                  position: 'relative',
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    bottom: 4,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 0,
+                    height: 2,
+                    bgcolor: 'primary.main',
+                    transition: 'width 0.3s ease',
+                  },
+                  '&:hover::after': { width: '70%' },
+                }}
+              >
+                {t(item.labelKey)}
+              </Button>
+            ))}
+          </Box>
 
-            {/* Full Menu Button - 우측 */}
-            <button
+          {/* Right - Menu Button */}
+          <Box sx={{ ml: 'auto' }}>
+            <Button
               onClick={() => setIsFullMenuOpen(true)}
-              className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-lg',
-                'text-sm font-medium',
-                'text-text-secondary hover:text-text-primary',
-                'border border-border hover:border-border-light',
-                'transition-all duration-150',
-                'hover:bg-secondary',
-              )}
-              aria-label={t('nav.openMenu')}
+              endIcon={<MenuIcon sx={{ fontSize: 18 }} />}
+              variant="outlined"
+              size="small"
+              sx={{
+                color: 'text.secondary',
+                borderColor: 'divider',
+                fontSize: '0.8rem',
+                '&:hover': { borderColor: 'primary.main', color: 'text.primary' },
+              }}
             >
-              <span className="hidden sm:inline">{t('nav.menu')}</span>
-              {/* Hamburger Icon */}
-              <div className="flex flex-col gap-1">
-                <span className="w-4 h-0.5 bg-current transition-all duration-150" />
-                <span className="w-4 h-0.5 bg-current transition-all duration-150" />
-              </div>
-            </button>
-          </div>
-        </nav>
-      </header>
+              <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                {t('nav.menu')}
+              </Box>
+            </Button>
+          </Box>
+        </Toolbar>
+      </AppBar>
 
-      {/* Full Menu Overlay */}
       <FullMenu
         isOpen={isFullMenuOpen}
         onClose={() => setIsFullMenuOpen(false)}
