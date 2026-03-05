@@ -1,6 +1,6 @@
-import { lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
-import MainLayout from '@/layouts/MainLayout'
+import MainLayout from '@/layouts/MainLayout';
+import { lazy, Suspense } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
 /**
  * Lazy Loading 페이지 컴포넌트
@@ -9,7 +9,7 @@ import MainLayout from '@/layouts/MainLayout'
  * 새 페이지 추가 예시:
  * const Projects = lazy(() => import('@views/Projects'))
  */
-const Home = lazy(() => import('@views/Home'))
+const Home = lazy(() => import('@views/Home'));
 
 /**
  * 로딩 fallback 컴포넌트
@@ -41,10 +41,12 @@ const PageLoader = () => (
       }
     `}</style>
   </div>
-)
+);
 
 /**
  * App 컴포넌트
+ *
+ * Suspense 자식 요소를 로드하기 전까지 화면에 대체 UI
  *
  * 라우트 구조:
  * - "/" : MainLayout 적용
@@ -71,7 +73,7 @@ function App() {
         </Route>
       </Routes>
     </Suspense>
-  )
+  );
 }
 
-export default App
+export default App;

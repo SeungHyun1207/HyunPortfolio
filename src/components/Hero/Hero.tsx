@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Box, Typography, Button, Container } from '@mui/material'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useSettings } from '@/contexts/SettingsContext'
+import { useEffect, useState } from 'react'
 
 const Hero = () => {
   const { t } = useSettings()
@@ -11,7 +9,9 @@ const Hero = () => {
   const [displayText, setDisplayText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
 
-  useEffect(() => { setIsVisible(true) }, [])
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
 
   useEffect(() => {
     const role = roles[currentRole]
@@ -35,189 +35,90 @@ const Hero = () => {
   }, [displayText, isDeleting, currentRole, roles])
 
   return (
-    <Box
-      component="section"
+    <section
       id="hero"
-      sx={{
-        position: 'relative',
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-      }}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Grid Background */}
-      <Box
-        className="grid-bg"
-        sx={{ position: 'absolute', inset: 0, opacity: 0.6, pointerEvents: 'none' }}
-      />
+      <div className="grid-bg absolute inset-0 opacity-60 pointer-events-none" />
 
       {/* Gradient Orb */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '20%',
-          right: '20%',
-          width: { xs: 300, md: 500 },
-          height: { xs: 300, md: 500 },
-          borderRadius: '50%',
+      <div
+        className="absolute top-1/4 right-1/4 w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full pointer-events-none"
+        style={{
           background: 'radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%)',
           filter: 'blur(80px)',
-          pointerEvents: 'none',
         }}
       />
 
       {/* Content */}
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-        <Box
-          sx={{
-            textAlign: 'center',
+      <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 w-full">
+        <div
+          className="text-center transition-all duration-1000"
+          style={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'opacity 1s ease, transform 1s ease',
           }}
         >
           {/* Greeting */}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, mb: 3 }}>
-            <Typography
-              variant="h4"
-              sx={{ fontWeight: 600, display: 'inline-block', animation: 'scrollBounce 2s infinite',
-                '@keyframes scrollBounce': {
-                  '0%,100%': { transform: 'translateY(0)' },
-                  '50%': { transform: 'translateY(-6px)' },
-                },
-              }}
-            >
+          <div className="flex items-center justify-center gap-1 mb-8">
+            <span className="scroll-bounce inline-block text-3xl md:text-4xl font-semibold">
               {t('hero.greeting')}
-            </Typography>
-            <Typography variant="h4" color="primary" sx={{ fontWeight: 600 }}>.</Typography>
-          </Box>
+            </span>
+            <span className="text-3xl md:text-4xl font-semibold text-primary">.</span>
+          </div>
 
           {/* Name */}
-          <Typography
-            variant="h1"
-            sx={{
-              fontWeight: 800,
-              fontSize: { xs: '3rem', md: '5rem', lg: '7rem' },
-              lineHeight: 1.1,
-              mb: 3,
-            }}
-          >
+          <h1 className="font-extrabold leading-tight mb-8 text-5xl md:text-7xl lg:text-[7rem]">
             {t('hero.intro')}{' '}
-            <Box component="span" className="gradient-text">Hyun</Box>
-          </Typography>
+            <span className="gradient-text">Hyun</span>
+          </h1>
 
           {/* Typing Role */}
-          <Box sx={{ height: { xs: 48, md: 64 }, mb: 4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Typography
-              variant="h5"
-              color="text.secondary"
-              sx={{ fontFamily: 'monospace', fontWeight: 400 }}
-            >
+          <div className="h-12 md:h-16 mb-10 flex items-center justify-center">
+            <span className="font-mono text-xl md:text-2xl text-[#4a4a5a] dark:text-[#a0a0b0] font-normal">
               {displayText}
-              <Box component="span" className="typing-cursor" />
-            </Typography>
-          </Box>
+              <span className="typing-cursor" />
+            </span>
+          </div>
 
           {/* Description */}
-          <Typography
-            variant="h6"
-            color="text.secondary"
-            sx={{
-              maxWidth: 600,
-              mx: 'auto',
-              mb: 6,
-              lineHeight: 1.8,
-              fontWeight: 400,
-              whiteSpace: 'pre-line',
-              fontSize: { xs: '1rem', md: '1.1rem' },
-            }}
-          >
+          <p className="max-w-lg mx-auto mb-14 text-[#4a4a5a] dark:text-[#a0a0b0] leading-relaxed whitespace-pre-line text-base md:text-lg font-normal">
             {t('hero.description')}
-          </Typography>
+          </p>
 
           {/* CTA Buttons */}
-          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 8, flexWrap: 'wrap' }}>
-            <Button
+          <div className="flex justify-center gap-4 mb-20 flex-wrap">
+            <a
               href="#devinfo"
-              component="a"
-              variant="contained"
-              size="large"
-              endIcon={<ArrowForwardIcon />}
-              sx={{
-                px: 4,
-                py: 1.5,
-                borderRadius: 2,
-                fontWeight: 600,
-                background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
-                '&:hover': {
-                  background: 'linear-gradient(135deg, #4f46e5 0%, #9333ea 100%)',
-                  boxShadow: '0 8px 30px rgba(99,102,241,0.35)',
-                  transform: 'translateY(-2px)',
-                },
-                transition: 'all 0.3s ease',
-              }}
+              className="inline-flex items-center gap-2 px-8 py-3 rounded-xl font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(99,102,241,0.35)]"
+              style={{ background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)' }}
             >
               {t('hero.aboutMe')}
-            </Button>
-            <Button
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a
               href="#contact"
-              component="a"
-              variant="outlined"
-              size="large"
-              sx={{
-                px: 4,
-                py: 1.5,
-                borderRadius: 2,
-                fontWeight: 600,
-                borderColor: 'divider',
-                color: 'text.primary',
-                '&:hover': { borderColor: 'primary.main', bgcolor: 'action.hover' },
-              }}
+              className="inline-flex items-center px-8 py-3 rounded-xl font-semibold border border-black/[0.08] dark:border-white/[0.08] text-[#1a1a2e] dark:text-white hover:border-primary transition-all duration-300"
             >
               {t('hero.contact')}
-            </Button>
-          </Box>
+            </a>
+          </div>
 
           {/* Scroll Indicator */}
-          <Box
-            className="scroll-bounce"
-            sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}
-          >
-            <Box
-              sx={{
-                width: 24,
-                height: 40,
-                borderRadius: 10,
-                border: '2px solid',
-                borderColor: 'text.disabled',
-                display: 'flex',
-                justifyContent: 'center',
-                pt: 0.5,
-              }}
-            >
-              <Box
-                sx={{
-                  width: 4,
-                  height: 8,
-                  bgcolor: 'text.disabled',
-                  borderRadius: 2,
-                  animation: 'pulse 1.5s infinite',
-                  '@keyframes pulse': {
-                    '0%,100%': { opacity: 1 },
-                    '50%': { opacity: 0.2 },
-                  },
-                }}
-              />
-            </Box>
-            <Typography variant="caption" color="text.disabled" sx={{ letterSpacing: 3, textTransform: 'uppercase' }}>
+          <div className="scroll-bounce flex flex-col items-center gap-2">
+            <div className="w-6 h-10 rounded-full border-2 border-[#4a4a5a]/30 dark:border-[#a0a0b0]/30 flex justify-center pt-1.5">
+              <div className="w-1 h-2 bg-[#4a4a5a]/40 dark:bg-[#a0a0b0]/40 rounded-full animate-pulse" />
+            </div>
+            <span className="text-xs text-[#4a4a5a]/50 dark:text-[#a0a0b0]/50 tracking-[0.2em] uppercase">
               {t('hero.scroll')}
-            </Typography>
-          </Box>
-        </Box>
-      </Container>
-    </Box>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 

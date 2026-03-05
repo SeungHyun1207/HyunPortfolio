@@ -1,4 +1,3 @@
-import { Box, Container, Typography, Grid, Chip } from '@mui/material'
 import { useScrollAnimation } from '@hooks'
 import { useSettings } from '@/contexts/SettingsContext'
 
@@ -29,7 +28,7 @@ const Experience = () => {
         'experience.work1.desc3',
         'experience.work1.desc4',
       ],
-      techStack: ['React', 'TypeScript', 'Next.js', 'MUI'],
+      techStack: ['React', 'TypeScript', 'Next.js', 'Tailwind CSS'],
     },
     {
       id: '2',
@@ -68,143 +67,86 @@ const Experience = () => {
   const educationExperiences = experiences.filter((e) => e.type === 'education')
 
   const SectionTitle = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 4 }}>
-      <Box
-        sx={{
-          p: 1,
-          borderRadius: 1.5,
-          bgcolor: 'rgba(99,102,241,0.1)',
-          color: 'primary.main',
-          display: 'flex',
-        }}
-      >
+    <div className="flex items-center gap-3 mb-8">
+      <div className="p-2 rounded-xl bg-primary/10 text-primary flex">
         {icon}
-      </Box>
-      <Typography variant="h6" sx={{ fontWeight: 700 }}>{label}</Typography>
-    </Box>
+      </div>
+      <h3 className="text-lg font-bold text-[#1a1a2e] dark:text-white">{label}</h3>
+    </div>
   )
 
   const TimelineItem = ({ exp }: { exp: ExperienceItem }) => (
-    <Box sx={{ position: 'relative', pl: 4, mb: 4, '&:last-child': { mb: 0 } }}>
+    <div className="relative pl-8 mb-6 last:mb-0">
       {/* Timeline dot */}
-      <Box
-        sx={{
-          position: 'absolute',
-          left: 0,
-          top: 8,
-          width: 16,
-          height: 16,
-          borderRadius: '50%',
-          bgcolor: 'primary.main',
-          border: '4px solid',
-          borderColor: 'background.default',
-          zIndex: 1,
-        }}
-      />
-      <Box
-        sx={{
-          p: 3,
-          borderRadius: 3,
-          bgcolor: 'background.paper',
-          border: '1px solid',
-          borderColor: 'divider',
-          transition: 'border-color 0.3s ease',
-          '&:hover': { borderColor: 'rgba(99,102,241,0.5)' },
-        }}
-      >
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 1, mb: 1 }}>
-          <Typography variant="body1" sx={{ fontWeight: 700 }}>{t(exp.titleKey)}</Typography>
-          <Chip
-            label={t(exp.periodKey)}
-            size="small"
-            sx={{
-              fontSize: '0.7rem',
-              bgcolor: 'rgba(99,102,241,0.1)',
-              color: 'primary.main',
-              border: 'none',
-            }}
-          />
-        </Box>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+      <div className="absolute left-0 top-2 w-4 h-4 rounded-full bg-primary border-4 border-white dark:border-[#0a0a0f] z-10" />
+      <div className="p-5 rounded-2xl bg-[#f8f9fa] dark:bg-[#12121a] border border-black/[0.08] dark:border-white/[0.08] hover:border-primary/50 transition-all duration-300">
+        <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+          <span className="font-bold text-[#1a1a2e] dark:text-white">{t(exp.titleKey)}</span>
+          <span className="text-xs px-2 py-1 rounded-lg bg-primary/10 text-primary font-medium">
+            {t(exp.periodKey)}
+          </span>
+        </div>
+        <p className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0] mb-3">
           {t(exp.organizationKey)}
-        </Typography>
-        <Box component="ul" sx={{ pl: 0, m: 0, listStyle: 'none', mb: exp.techStack ? 2 : 0 }}>
+        </p>
+        <ul className="list-none p-0 m-0 mb-3 flex flex-col gap-1.5">
           {exp.descriptionKeys.map((descKey, i) => (
-            <Box
-              key={i}
-              component="li"
-              sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, mb: 0.75 }}
-            >
-              <Typography color="primary" sx={{ mt: 0.3, lineHeight: 1 }}>•</Typography>
-              <Typography variant="body2" color="text.secondary">{t(descKey)}</Typography>
-            </Box>
+            <li key={i} className="flex items-start gap-2">
+              <span className="text-primary mt-0.5 leading-none flex-shrink-0">•</span>
+              <span className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0] leading-relaxed">{t(descKey)}</span>
+            </li>
           ))}
-        </Box>
+        </ul>
         {exp.techStack && (
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
+          <div className="flex flex-wrap gap-1.5">
             {exp.techStack.map((tech) => (
-              <Chip
+              <span
                 key={tech}
-                label={tech}
-                size="small"
-                sx={{
-                  fontSize: '0.7rem',
-                  bgcolor: 'background.default',
-                  border: '1px solid',
-                  borderColor: 'divider',
-                }}
-              />
+                className="text-xs px-2 py-0.5 rounded-md bg-white dark:bg-[#0a0a0f] border border-black/[0.08] dark:border-white/[0.08] text-[#4a4a5a] dark:text-[#a0a0b0]"
+              >
+                {tech}
+              </span>
             ))}
-          </Box>
+          </div>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 
   return (
-    <Box
-      component="section"
+    <section
       id="experience"
       ref={ref}
-      sx={{ py: { xs: 10, md: 16 } }}
+      className="py-20 md:py-32 bg-white dark:bg-[#0a0a0f]"
     >
-      <Container maxWidth="lg">
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
         {/* Header */}
-        <Box
-          sx={{
-            textAlign: 'center',
-            mb: 8,
+        <div
+          className="text-center mb-16 transition-all duration-700"
+          style={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
-            transition: 'opacity 0.7s ease, transform 0.7s ease',
           }}
         >
-          <Typography
-            color="primary"
-            sx={{ fontSize: '0.875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 3 }}
-          >
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">
             {t('experience.label')}
-          </Typography>
-          <Typography
-            variant="h3"
-            sx={{ fontWeight: 700, mt: 2, mb: 3, fontSize: { xs: '1.75rem', md: '2.25rem', lg: '2.75rem' } }}
-          >
+          </p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-2 mb-4">
             {t('experience.title1')}{' '}
-            <Box component="span" className="gradient-text">{t('experience.title2')}</Box>
-          </Typography>
-          <Typography color="text.secondary" sx={{ maxWidth: 672, mx: 'auto' }}>
+            <span className="gradient-text">{t('experience.title2')}</span>
+          </h2>
+          <p className="text-[#4a4a5a] dark:text-[#a0a0b0] max-w-2xl mx-auto">
             {t('experience.description')}
-          </Typography>
-        </Box>
+          </p>
+        </div>
 
-        <Grid container spacing={6}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Work Experience */}
-          <Grid
-            size={{ xs: 12, lg: 6 }}
-            sx={{
+          <div
+            className="transition-all duration-700"
+            style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
-              transition: 'opacity 0.7s ease, transform 0.7s ease',
               transitionDelay: '100ms',
             }}
           >
@@ -217,31 +159,21 @@ const Experience = () => {
               }
               label={t('experience.workTitle')}
             />
-            <Box sx={{ position: 'relative' }}>
+            <div className="relative">
               {/* Timeline line */}
-              <Box
-                sx={{
-                  position: 'absolute',
-                  left: 7,
-                  top: 8,
-                  bottom: 8,
-                  width: 2,
-                  bgcolor: 'divider',
-                }}
-              />
+              <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-black/[0.08] dark:bg-white/[0.08]" />
               {workExperiences.map((exp) => (
                 <TimelineItem key={exp.id} exp={exp} />
               ))}
-            </Box>
-          </Grid>
+            </div>
+          </div>
 
           {/* Education & Certifications */}
-          <Grid
-            size={{ xs: 12, lg: 6 }}
-            sx={{
+          <div
+            className="transition-all duration-700"
+            style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
-              transition: 'opacity 0.7s ease, transform 0.7s ease',
               transitionDelay: '200ms',
             }}
           >
@@ -254,21 +186,12 @@ const Experience = () => {
               }
               label={t('experience.eduTitle')}
             />
-            <Box sx={{ position: 'relative', mb: 6 }}>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  left: 7,
-                  top: 8,
-                  bottom: 8,
-                  width: 2,
-                  bgcolor: 'divider',
-                }}
-              />
+            <div className="relative mb-10">
+              <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-black/[0.08] dark:bg-white/[0.08]" />
               {educationExperiences.map((exp) => (
                 <TimelineItem key={exp.id} exp={exp} />
               ))}
-            </Box>
+            </div>
 
             {/* Certifications */}
             <SectionTitle
@@ -280,35 +203,24 @@ const Experience = () => {
               }
               label={t('experience.certTitle')}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <div className="flex flex-col gap-3">
               {certifications.map((cert, index) => (
-                <Box
+                <div
                   key={index}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    p: 2,
-                    borderRadius: 2,
-                    bgcolor: 'background.paper',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    transition: 'border-color 0.3s ease',
-                    '&:hover': { borderColor: 'rgba(99,102,241,0.5)' },
-                  }}
+                  className="flex items-center justify-between p-4 rounded-xl bg-[#f8f9fa] dark:bg-[#12121a] border border-black/[0.08] dark:border-white/[0.08] hover:border-primary/50 transition-all duration-300"
                 >
-                  <Box>
-                    <Typography variant="body2" sx={{ fontWeight: 500 }}>{t(cert.nameKey)}</Typography>
-                    <Typography variant="caption" color="text.secondary">{t(cert.orgKey)}</Typography>
-                  </Box>
-                  <Typography variant="body2" color="primary">{cert.year}</Typography>
-                </Box>
+                  <div>
+                    <p className="text-sm font-medium text-[#1a1a2e] dark:text-white">{t(cert.nameKey)}</p>
+                    <p className="text-xs text-[#4a4a5a] dark:text-[#a0a0b0]">{t(cert.orgKey)}</p>
+                  </div>
+                  <span className="text-sm text-primary font-medium">{cert.year}</span>
+                </div>
               ))}
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 

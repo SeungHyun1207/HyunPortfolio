@@ -1,4 +1,3 @@
-import { Box, Container, Typography, Grid, Chip } from '@mui/material'
 import { useScrollAnimation } from '@hooks'
 import { useSettings } from '@/contexts/SettingsContext'
 
@@ -18,7 +17,7 @@ const Skills = () => {
     { name: 'JavaScript', level: 95, category: 'frontend' },
     { name: 'Next.js', level: 80, category: 'frontend' },
     { name: 'HTML/CSS', level: 95, category: 'frontend' },
-    { name: 'MUI', level: 85, category: 'frontend' },
+    { name: 'Tailwind CSS', level: 85, category: 'frontend' },
     { name: 'Node.js', level: 70, category: 'backend' },
     { name: 'Git', level: 85, category: 'tools' },
     { name: 'Figma', level: 75, category: 'tools' },
@@ -29,170 +28,106 @@ const Skills = () => {
     { name: 'TypeScript', icon: '🔷' },
     { name: 'Next.js', icon: '▲' },
     { name: 'Vite', icon: '⚡' },
-    { name: 'MUI', icon: '🎨' },
+    { name: 'Tailwind CSS', icon: '🎨' },
     { name: 'Zustand', icon: '🐻' },
     { name: 'React Query', icon: '🔄' },
     { name: 'Framer Motion', icon: '✨' },
   ]
 
   return (
-    <Box
-      component="section"
+    <section
       id="skills"
       ref={ref}
-      sx={{ py: { xs: 10, md: 16 } }}
+      className="py-20 md:py-32 bg-white dark:bg-[#0a0a0f]"
     >
-      <Container maxWidth="lg">
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
         {/* Header */}
-        <Box
-          sx={{
-            textAlign: 'center',
-            mb: 8,
+        <div
+          className="text-center mb-16 transition-all duration-700"
+          style={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
-            transition: 'opacity 0.7s ease, transform 0.7s ease',
           }}
         >
-          <Typography
-            color="primary"
-            sx={{ fontSize: '0.875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 3 }}
-          >
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">
             {t('skills.label')}
-          </Typography>
-          <Typography
-            variant="h3"
-            sx={{ fontWeight: 700, mt: 2, mb: 3, fontSize: { xs: '1.75rem', md: '2.25rem', lg: '2.75rem' } }}
-          >
+          </p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-2 mb-4">
             {t('skills.title1')}{' '}
-            <Box component="span" className="gradient-text">{t('skills.title2')}</Box>
-          </Typography>
-          <Typography color="text.secondary" sx={{ maxWidth: 672, mx: 'auto' }}>
+            <span className="gradient-text">{t('skills.title2')}</span>
+          </h2>
+          <p className="text-[#4a4a5a] dark:text-[#a0a0b0] max-w-2xl mx-auto">
             {t('skills.description')}
-          </Typography>
-        </Box>
+          </p>
+        </div>
 
         {/* Content */}
-        <Box
-          sx={{
+        <div
+          className="transition-all duration-700"
+          style={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
-            transition: 'opacity 0.7s ease, transform 0.7s ease',
             transitionDelay: '200ms',
           }}
         >
           {/* Skills Grid */}
-          <Grid container spacing={2} sx={{ mb: 6 }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
             {skills.map((skill, index) => (
-              <Grid key={skill.name} size={{ xs: 12, md: 6, lg: 4 }}>
-                <Box
-                  sx={{
-                    p: 2,
-                    borderRadius: 2,
-                    bgcolor: 'background.paper',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    transition: 'border-color 0.3s ease',
-                    transitionDelay: `${index * 50}ms`,
-                    '&:hover': { borderColor: 'rgba(99,102,241,0.5)' },
-                  }}
-                >
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                    <Typography variant="body2" sx={{ fontWeight: 500 }}>{skill.name}</Typography>
-                    <Typography variant="body2" color="primary" sx={{ fontWeight: 500 }}>{skill.level}%</Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      height: 8,
-                      bgcolor: 'background.default',
-                      borderRadius: 4,
-                      overflow: 'hidden',
+              <div
+                key={skill.name}
+                className="p-4 rounded-xl bg-[#f8f9fa] dark:bg-[#12121a] border border-black/[0.08] dark:border-white/[0.08] hover:border-primary/50 transition-all duration-300"
+                style={{ transitionDelay: `${index * 50}ms` }}
+              >
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-[#1a1a2e] dark:text-white">{skill.name}</span>
+                  <span className="text-sm font-medium text-primary">{skill.level}%</span>
+                </div>
+                <div className="h-2 bg-white dark:bg-[#0a0a0f] rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-1000 ease-out"
+                    style={{
+                      background: 'linear-gradient(90deg, #6366f1, #a855f7)',
+                      width: isVisible ? `${skill.level}%` : '0%',
+                      transitionDelay: `${index * 100 + 300}ms`,
                     }}
-                  >
-                    <Box
-                      sx={{
-                        height: '100%',
-                        borderRadius: 4,
-                        background: 'linear-gradient(90deg, #6366f1, #a855f7)',
-                        width: isVisible ? `${skill.level}%` : '0%',
-                        transition: 'width 1s ease-out',
-                        transitionDelay: `${index * 100 + 300}ms`,
-                      }}
-                    />
-                  </Box>
-                </Box>
-              </Grid>
+                  />
+                </div>
+              </div>
             ))}
-          </Grid>
+          </div>
 
           {/* Tech Stack */}
-          <Box sx={{ mb: 6 }}>
-            <Typography variant="h6" sx={{ fontWeight: 600, textAlign: 'center', mb: 3 }}>
+          <div className="mb-12">
+            <h3 className="text-lg font-semibold text-center mb-6 text-[#1a1a2e] dark:text-white">
               {t('skills.mainTech')}
-            </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1.5 }}>
+            </h3>
+            <div className="flex flex-wrap justify-center gap-3">
               {techStack.map((tech, index) => (
-                <Chip
+                <div
                   key={tech.name}
-                  icon={<span style={{ fontSize: '1.1rem', marginLeft: 8 }}>{tech.icon}</span>}
-                  label={tech.name}
-                  variant="outlined"
-                  sx={{
-                    borderColor: 'divider',
-                    transitionDelay: `${index * 50}ms`,
-                    '&:hover': {
-                      borderColor: 'primary.main',
-                      transform: 'scale(1.05)',
-                    },
-                    transition: 'all 0.3s ease',
-                  }}
-                />
+                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-black/[0.08] dark:border-white/[0.08] text-sm text-[#4a4a5a] dark:text-[#a0a0b0] hover:border-primary hover:scale-105 transition-all duration-300 bg-white dark:bg-[#12121a]"
+                  style={{ transitionDelay: `${index * 50}ms` }}
+                >
+                  <span className="text-lg">{tech.icon}</span>
+                  <span>{tech.name}</span>
+                </div>
               ))}
-            </Box>
-          </Box>
+            </div>
+          </div>
 
           {/* Code Block */}
-          <Box
-            sx={{
-              maxWidth: 672,
-              mx: 'auto',
-              borderRadius: 2,
-              overflow: 'hidden',
-              bgcolor: 'background.paper',
-              border: '1px solid',
-              borderColor: 'divider',
-            }}
-          >
+          <div className="max-w-2xl mx-auto rounded-xl overflow-hidden bg-[#f8f9fa] dark:bg-[#12121a] border border-black/[0.08] dark:border-white/[0.08]">
             {/* Code Header */}
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                px: 2,
-                py: 1.5,
-                bgcolor: 'background.default',
-                borderBottom: '1px solid',
-                borderColor: 'divider',
-              }}
-            >
-              <Box sx={{ display: 'flex', gap: 0.75 }}>
-                <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: 'rgba(239,68,68,0.8)' }} />
-                <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: 'rgba(234,179,8,0.8)' }} />
-                <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: 'rgba(34,197,94,0.8)' }} />
-              </Box>
-              <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>developer.ts</Typography>
-            </Box>
+            <div className="flex items-center gap-3 px-4 py-3 bg-white dark:bg-[#0a0a0f] border-b border-black/[0.08] dark:border-white/[0.08]">
+              <div className="flex gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-400/80" />
+                <div className="w-3 h-3 rounded-full bg-yellow-400/80" />
+                <div className="w-3 h-3 rounded-full bg-green-400/80" />
+              </div>
+              <span className="text-xs text-[#4a4a5a] dark:text-[#a0a0b0] ml-1">developer.ts</span>
+            </div>
             {/* Code Content */}
-            <Box
-              component="pre"
-              sx={{
-                p: 2,
-                fontSize: '0.875rem',
-                fontFamily: 'monospace',
-                overflowX: 'auto',
-                m: 0,
-              }}
-            >
+            <pre className="p-4 text-sm font-mono overflow-x-auto m-0 text-[#1a1a2e] dark:text-white">
               <code>
                 <span style={{ color: '#a855f7' }}>const</span>{' '}
                 <span style={{ color: '#60a5fa' }}>developer</span>{' '}
@@ -220,11 +155,11 @@ const Skills = () => {
                 <span style={{ color: '#facc15' }}>"Always ☕"</span>{'\n'}
                 {'}'};
               </code>
-            </Box>
-          </Box>
-        </Box>
-      </Container>
-    </Box>
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 

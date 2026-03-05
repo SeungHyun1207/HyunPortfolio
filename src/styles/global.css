@@ -1,51 +1,82 @@
-/* MUI 기반 글로벌 스타일 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    @apply bg-white dark:bg-[#0a0a0f] text-[#1a1a2e] dark:text-white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #6366f1;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #818cf8;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
+@layer utilities {
+  .gradient-text {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(99, 102, 241, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
 }
 
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* 스크롤바 스타일 */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #6366f1;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #818cf8;
-}
-
-/* 그라디언트 텍스트 유틸리티 */
-.gradient-text {
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* 타이핑 커서 애니메이션 */
+/* ── 커스텀 애니메이션 ── */
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes timelineGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(99,102,241,0.6), 0 0 20px rgba(99,102,241,0.3); }
+  50%       { box-shadow: 0 0 16px rgba(168,85,247,0.8), 0 0 40px rgba(168,85,247,0.4); }
+}
+
+@keyframes lineFlow {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 200%; }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.2; }
+  50%       { opacity: 0.8; }
 }
 
 .typing-cursor {
@@ -58,32 +89,16 @@ body {
   vertical-align: text-bottom;
 }
 
-/* 스크롤 바운스 */
-@keyframes scrollBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
-}
-
 .scroll-bounce {
   animation: scrollBounce 1.5s infinite;
 }
 
-/* 페이드인 업 */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.timeline-dot {
+  animation: timelineGlow 2.5s ease-in-out infinite;
 }
 
-/* 그리드 배경 패턴 */
-.grid-bg {
-  background-image:
-    linear-gradient(rgba(99, 102, 241, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
-  background-size: 50px 50px;
+.timeline-line {
+  background: linear-gradient(180deg, #6366f1 0%, #a855f7 50%, #6366f1 100%);
+  background-size: 100% 200%;
+  animation: lineFlow 3s linear infinite;
 }

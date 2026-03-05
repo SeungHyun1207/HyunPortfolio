@@ -1,5 +1,4 @@
 import { Outlet } from 'react-router-dom'
-import { Box, Container, Typography } from '@mui/material'
 import GNB from '@components/GNB'
 import Settings from '@components/Settings'
 import { useSettings } from '@/contexts/SettingsContext'
@@ -8,90 +7,53 @@ const MainLayout = () => {
   const { t } = useSettings()
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div className="flex flex-col min-h-screen">
       <GNB />
       <Settings />
 
-      <Box component="main" sx={{ flex: 1, pt: 8 }}>
+      <main className="flex-1 pt-20">
         <Outlet />
-      </Box>
+      </main>
 
       {/* Footer */}
-      <Box
-        component="footer"
-        sx={{
-          borderTop: '1px solid',
-          borderColor: 'divider',
-          bgcolor: 'background.paper',
-        }}
-      >
-        <Container maxWidth="lg" sx={{ px: { xs: 2, md: 4 }, py: 4 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', md: 'row' },
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 2,
-            }}
-          >
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: { xs: 'center', md: 'flex-start' }, gap: 0.5 }}>
-              <Typography className="gradient-text" sx={{ fontSize: '1.25rem', fontWeight: 700 }}>
+      <footer className="border-t border-black/[0.08] dark:border-white/[0.08] bg-[#f8f9fa] dark:bg-[#12121a]">
+        <div className="max-w-6xl mx-auto px-4 md:px-8 py-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex flex-col items-center md:items-start gap-1">
+              <span className="gradient-text text-xl font-bold">
                 Hyun
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
+              </span>
+              <span className="text-xs text-[#4a4a5a] dark:text-[#a0a0b0]">
                 {t('footer.role')}
-              </Typography>
-            </Box>
+              </span>
+            </div>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <Typography
-                component="a"
+            <div className="flex items-center gap-6">
+              <a
                 href="https://github.com/SeungHyun1207"
                 target="_blank"
                 rel="noopener noreferrer"
-                variant="body2"
-                sx={{
-                  color: 'text.secondary',
-                  textDecoration: 'none',
-                  transition: 'color 0.3s ease',
-                  '&:hover': { color: 'primary.main' },
-                }}
+                className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0] no-underline hover:text-primary transition-colors duration-300"
               >
                 GitHub
-              </Typography>
-              <Typography
-                component="a"
+              </a>
+              <a
                 href="mailto:contact@example.com"
-                variant="body2"
-                sx={{
-                  color: 'text.secondary',
-                  textDecoration: 'none',
-                  transition: 'color 0.3s ease',
-                  '&:hover': { color: 'primary.main' },
-                }}
+                className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0] no-underline hover:text-primary transition-colors duration-300"
               >
                 Email
-              </Typography>
-            </Box>
-          </Box>
+              </a>
+            </div>
+          </div>
 
-          <Box
-            sx={{
-              mt: 4,
-              pt: 3,
-              borderTop: '1px solid',
-              borderColor: 'divider',
-              textAlign: 'center',
-            }}
-          >
-            <Typography variant="caption" color="text.secondary">
+          <div className="mt-8 pt-6 border-t border-black/[0.08] dark:border-white/[0.08] text-center">
+            <span className="text-xs text-[#4a4a5a] dark:text-[#a0a0b0]">
               &copy; {new Date().getFullYear()} Hyun. {t('footer.rights')}
-            </Typography>
-          </Box>
-        </Container>
-      </Box>
-    </Box>
+            </span>
+          </div>
+        </div>
+      </footer>
+    </div>
   )
 }
 

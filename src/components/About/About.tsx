@@ -1,4 +1,3 @@
-import { Box, Container, Typography, Grid } from '@mui/material'
 import { useScrollAnimation } from '@hooks'
 import { useSettings } from '@/contexts/SettingsContext'
 
@@ -15,7 +14,7 @@ const About = () => {
   const highlights = [
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 24, height: 24 }}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
           <path d="M12 2L2 7l10 5 10-5-10-5z" />
           <path d="M2 17l10 5 10-5" />
           <path d="M2 12l10 5 10-5" />
@@ -26,7 +25,7 @@ const About = () => {
     },
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 24, height: 24 }}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
           <circle cx="12" cy="12" r="10" />
           <path d="M12 6v6l4 2" />
         </svg>
@@ -36,7 +35,7 @@ const About = () => {
     },
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 24, height: 24 }}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
           <rect x="3" y="3" width="18" height="18" rx="2" />
           <path d="M3 9h18" />
           <path d="M9 21V9" />
@@ -48,150 +47,87 @@ const About = () => {
   ]
 
   return (
-    <Box
-      component="section"
+    <section
       id="devinfo"
       ref={ref}
-      sx={{ py: { xs: 10, md: 16 }, bgcolor: 'background.paper' }}
+      className="py-20 md:py-32 bg-[#f8f9fa] dark:bg-[#12121a]"
     >
-      <Container maxWidth="lg">
-        <Grid
-          container
-          spacing={{ xs: 6, md: 8 }}
-          alignItems="center"
-          sx={{
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center transition-all duration-700"
+          style={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
-            transition: 'opacity 0.7s ease, transform 0.7s ease',
           }}
         >
           {/* Left - Image & Stats */}
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: { xs: 'center', md: 'flex-start' }, gap: 4 }}>
-              {/* Profile Image Placeholder */}
-              <Box sx={{ position: 'relative' }}>
-                <Box
-                  sx={{
-                    width: { xs: 192, md: 256 },
-                    height: { xs: 192, md: 256 },
-                    borderRadius: 4,
-                    bgcolor: 'background.default',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Typography
-                    className="gradient-text"
-                    sx={{ fontSize: { xs: '4rem', md: '6rem' }, fontWeight: 700 }}
-                  >
-                    H
-                  </Typography>
-                </Box>
-                {/* Decorative border */}
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    bottom: -16,
-                    right: -16,
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: 4,
-                    border: '2px solid',
-                    borderColor: 'rgba(99,102,241,0.3)',
-                    zIndex: -1,
-                  }}
-                />
-              </Box>
+          <div className="flex flex-col items-center md:items-start gap-8">
+            {/* Profile Image Placeholder */}
+            <div className="relative">
+              <div className="w-48 h-48 md:w-64 md:h-64 rounded-2xl bg-white dark:bg-[#0a0a0f] border border-black/[0.08] dark:border-white/[0.08] flex items-center justify-center">
+                <span className="gradient-text text-6xl md:text-8xl font-bold">H</span>
+              </div>
+              {/* Decorative border */}
+              <div className="absolute -bottom-4 -right-4 w-full h-full rounded-2xl border-2 border-primary/30 -z-10" />
+            </div>
 
-              {/* Stats */}
-              <Box sx={{ display: 'flex', gap: { xs: 3, md: 4 } }}>
-                {stats.map((stat, index) => (
-                  <Box
-                    key={index}
-                    sx={{ textAlign: 'center', transition: 'all 0.5s ease', transitionDelay: `${200 + index * 100}ms` }}
-                  >
-                    <Typography
-                      className="gradient-text"
-                      sx={{ display: 'block', fontSize: { xs: '1.75rem', md: '2.25rem' }, fontWeight: 700 }}
-                    >
-                      {stat.number}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary" sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' } }}>
-                      {t(stat.labelKey)}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            </Box>
-          </Grid>
+            {/* Stats */}
+            <div className="flex gap-8 md:gap-10">
+              {stats.map((stat, index) => (
+                <div
+                  key={index}
+                  className="text-center transition-all duration-500"
+                  style={{ transitionDelay: `${200 + index * 100}ms` }}
+                >
+                  <span className="gradient-text block text-3xl md:text-4xl font-bold">
+                    {stat.number}
+                  </span>
+                  <span className="text-xs md:text-sm text-[#4a4a5a] dark:text-[#a0a0b0]">
+                    {t(stat.labelKey)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Right - Content */}
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Typography
-              color="primary"
-              sx={{ fontSize: '0.875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 3 }}
-            >
+          <div>
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">
               {t('about.label')}
-            </Typography>
+            </p>
 
-            <Typography
-              variant="h3"
-              sx={{ fontWeight: 700, mt: 2, mb: 3, fontSize: { xs: '1.75rem', md: '2.25rem', lg: '2.75rem' } }}
-            >
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-2 mb-6">
               {t('about.title1')}
               <br />
-              <Box component="span" className="gradient-text">{t('about.title2')}</Box>
-            </Typography>
+              <span className="gradient-text">{t('about.title2')}</span>
+            </h2>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}>
-              <Typography color="text.secondary">{t('about.description1')}</Typography>
-              <Typography color="text.secondary">{t('about.description2')}</Typography>
-            </Box>
+            <div className="flex flex-col gap-4 mb-8">
+              <p className="text-[#4a4a5a] dark:text-[#a0a0b0]">{t('about.description1')}</p>
+              <p className="text-[#4a4a5a] dark:text-[#a0a0b0]">{t('about.description2')}</p>
+            </div>
 
             {/* Highlights */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <div className="flex flex-col gap-3">
               {highlights.map((item, index) => (
-                <Box
+                <div
                   key={index}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: 2,
-                    p: 2,
-                    borderRadius: 2,
-                    bgcolor: 'background.default',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    transition: 'border-color 0.3s ease',
-                    '&:hover': { borderColor: 'rgba(99,102,241,0.5)' },
-                  }}
+                  className="flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-[#0a0a0f] border border-black/[0.08] dark:border-white/[0.08] hover:border-primary/50 transition-all duration-300"
                 >
-                  <Box
-                    sx={{
-                      p: 1,
-                      borderRadius: 1.5,
-                      bgcolor: 'rgba(99,102,241,0.1)',
-                      color: 'primary.main',
-                      flexShrink: 0,
-                      display: 'flex',
-                    }}
-                  >
+                  <div className="p-2 rounded-xl bg-primary/10 text-primary flex-shrink-0 flex">
                     {item.icon}
-                  </Box>
-                  <Box>
-                    <Typography variant="body1" sx={{ fontWeight: 600 }}>{t(item.titleKey)}</Typography>
-                    <Typography variant="body2" color="text.secondary">{t(item.descKey)}</Typography>
-                  </Box>
-                </Box>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-[#1a1a2e] dark:text-white">{t(item.titleKey)}</p>
+                    <p className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0]">{t(item.descKey)}</p>
+                  </div>
+                </div>
               ))}
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 

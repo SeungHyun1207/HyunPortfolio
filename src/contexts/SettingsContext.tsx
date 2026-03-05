@@ -1,5 +1,4 @@
-import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react'
-import { createTheme, ThemeProvider, CssBaseline } from '@mui/material'
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 
 type ThemeMode = 'dark' | 'light'
 type Language = 'ko' | 'en'
@@ -14,81 +13,6 @@ interface SettingsContextType {
 
 const SettingsContext = createContext<SettingsContextType | null>(null)
 
-/**
- * 커스텀 MUI 테마 팔레트
- * accent: #6366f1 (인디고)
- */
-const getTheme = (mode: ThemeMode) =>
-  createTheme({
-    palette: {
-      mode,
-      primary: {
-        main: '#6366f1',
-        light: '#818cf8',
-        dark: '#4f46e5',
-      },
-      secondary: {
-        main: '#a855f7',
-      },
-      background: {
-        default: mode === 'dark' ? '#0a0a0f' : '#ffffff',
-        paper: mode === 'dark' ? '#12121a' : '#f8f9fa',
-      },
-      text: {
-        primary: mode === 'dark' ? '#ffffff' : '#1a1a2e',
-        secondary: mode === 'dark' ? '#a0a0b0' : '#4a4a5a',
-      },
-      divider: mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
-    },
-    typography: {
-      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    },
-    shape: {
-      borderRadius: 12,
-    },
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            textTransform: 'none',
-            fontWeight: 500,
-          },
-        },
-      },
-      MuiPaper: {
-        styleOverrides: {
-          root: {
-            backgroundImage: 'none',
-          },
-        },
-      },
-      MuiCssBaseline: {
-        styleOverrides: {
-          body: {
-            scrollBehavior: 'smooth',
-          },
-          '::-webkit-scrollbar': {
-            width: '8px',
-          },
-          '::-webkit-scrollbar-track': {
-            background: 'transparent',
-          },
-          '::-webkit-scrollbar-thumb': {
-            background: '#6366f1',
-            borderRadius: '4px',
-          },
-          '::-webkit-scrollbar-thumb:hover': {
-            background: '#818cf8',
-          },
-        },
-      },
-    },
-  })
-
-/**
- * 설정 Provider
- * 테마와 언어 설정을 전역으로 관리
- */
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setThemeState] = useState<ThemeMode>(() => {
     if (typeof window !== 'undefined') {
@@ -118,25 +42,23 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     return translations[language][key] || key
   }
 
-  const muiTheme = useMemo(() => getTheme(theme), [theme])
-
+  // Tailwind dark mode: HTML 요소에 'dark' 클래스 토글
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
+    const root = document.documentElement
+    if (theme === 'dark') {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
   }, [theme])
 
   return (
     <SettingsContext.Provider value={{ theme, language, setTheme, setLanguage, t }}>
-      <ThemeProvider theme={muiTheme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
+      {children}
     </SettingsContext.Provider>
   )
 }
 
-/**
- * 설정 Hook
- */
 export const useSettings = () => {
   const context = useContext(SettingsContext)
   if (!context) {
@@ -204,22 +126,11 @@ const translations: Record<Language, Record<string, string>> = {
     'projects.title1': '주요',
     'projects.title2': '프로젝트',
     'projects.description': '다양한 기술 스택을 활용하여 구현한 프로젝트들입니다',
+    'projects.careerTab': '경력 프로젝트',
+    'projects.personalTab': '개인 프로젝트',
     'projects.filterAll': '전체',
-    'projects.filterWeb': '웹',
-    'projects.filterMobile': '모바일',
-    'projects.filterOther': '기타',
-    'projects.ecommerce.title': 'E-Commerce 플랫폼',
-    'projects.ecommerce.desc': '현대적인 UI/UX를 갖춘 풀스택 이커머스 플랫폼. 결제 시스템, 장바구니, 주문 관리 기능을 포함합니다.',
-    'projects.taskManagement.title': '태스크 관리 앱',
-    'projects.taskManagement.desc': '팀 협업을 위한 태스크 관리 애플리케이션. 실시간 동기화와 드래그 앤 드롭 기능을 지원합니다.',
-    'projects.weather.title': '날씨 대시보드',
-    'projects.weather.desc': '날씨 정보를 시각적으로 보여주는 대시보드. 다양한 차트와 지도 기능을 포함합니다.',
-    'projects.fitness.title': '피트니스 트래커',
-    'projects.fitness.desc': '운동 기록과 건강 데이터를 추적하는 모바일 앱. 목표 설정과 진행 상황 시각화 기능을 제공합니다.',
-    'projects.portfolio.title': '포트폴리오 생성기',
-    'projects.portfolio.desc': '개발자를 위한 포트폴리오 자동 생성 도구. GitHub 데이터를 기반으로 포트폴리오를 생성합니다.',
-    'projects.chat.title': '실시간 채팅 앱',
-    'projects.chat.desc': '실시간 채팅 애플리케이션. 1:1 채팅, 그룹 채팅, 파일 공유 기능을 지원합니다.',
+    'projects.personalEmpty.title': '개인 프로젝트 준비 중',
+    'projects.personalEmpty.desc': '사이드 프로젝트와 개인 작업물을 차근차근 추가할 예정입니다.',
 
     // Experience
     'experience.label': '경력',
@@ -340,22 +251,11 @@ const translations: Record<Language, Record<string, string>> = {
     'projects.title1': 'Featured',
     'projects.title2': 'Projects',
     'projects.description': 'Projects implemented using various tech stacks',
+    'projects.careerTab': 'Career Projects',
+    'projects.personalTab': 'Personal Projects',
     'projects.filterAll': 'All',
-    'projects.filterWeb': 'Web',
-    'projects.filterMobile': 'Mobile',
-    'projects.filterOther': 'Other',
-    'projects.ecommerce.title': 'E-Commerce Platform',
-    'projects.ecommerce.desc': 'Full-stack e-commerce platform with modern UI/UX. Includes payment system, shopping cart, and order management.',
-    'projects.taskManagement.title': 'Task Management App',
-    'projects.taskManagement.desc': 'Task management application for team collaboration. Supports real-time sync and drag & drop.',
-    'projects.weather.title': 'Weather Dashboard',
-    'projects.weather.desc': 'Dashboard that visually displays weather information. Includes various charts and map features.',
-    'projects.fitness.title': 'Fitness Tracker',
-    'projects.fitness.desc': 'Mobile app for tracking exercise and health data. Provides goal setting and progress visualization.',
-    'projects.portfolio.title': 'Portfolio Generator',
-    'projects.portfolio.desc': 'Auto portfolio generator for developers. Creates portfolios based on GitHub data.',
-    'projects.chat.title': 'Real-time Chat App',
-    'projects.chat.desc': 'Real-time chat application. Supports 1:1 chat, group chat, and file sharing.',
+    'projects.personalEmpty.title': 'Personal Projects Coming Soon',
+    'projects.personalEmpty.desc': "I'll be adding my side projects and personal work here soon.",
 
     // Experience
     'experience.label': 'Experience',

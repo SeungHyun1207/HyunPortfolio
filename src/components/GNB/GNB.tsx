@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  AppBar, Toolbar, Box, Button, Typography, useScrollTrigger,
-} from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
 import { useSettings } from '@/contexts/SettingsContext'
 import FullMenu from './FullMenu'
 
@@ -24,103 +20,68 @@ export const menuItems: MenuItem[] = [
 const GNB = () => {
   const { t } = useSettings()
   const [isFullMenuOpen, setIsFullMenuOpen] = useState(false)
-  const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 50 })
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    if (isFullMenuOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
+    const handleScroll = () => setScrolled(window.scrollY > 50)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = isFullMenuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [isFullMenuOpen])
 
   return (
     <>
-      <AppBar
-        position="fixed"
-        elevation={trigger ? 2 : 0}
-        sx={{
-          bgcolor: trigger ? 'background.paper' : 'transparent',
-          backdropFilter: trigger ? 'blur(12px)' : 'none',
-          borderBottom: trigger ? '1px solid' : 'none',
-          borderColor: 'divider',
-          transition: 'all 0.3s ease',
-        }}
+      <header
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+          scrolled
+            ? 'bg-white/90 dark:bg-[#12121a]/90 backdrop-blur-xl border-b border-black/[0.08] dark:border-white/[0.08]'
+            : 'bg-transparent'
+        }`}
       >
-        <Toolbar sx={{ maxWidth: 1200, mx: 'auto', width: '100%', px: { xs: 2, md: 4 } }}>
+        <div className="max-w-[1200px] mx-auto px-4 md:px-8 h-16 flex items-center">
           {/* Logo */}
-          <Box component={Link} to="/" sx={{ textDecoration: 'none', flexShrink: 0 }}>
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: 700,
-                fontSize: '1.4rem',
-                background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                '&:hover': { opacity: 0.8 },
-                transition: 'opacity 0.15s',
-              }}
-            >
+          <Link to="/" className="flex-shrink-0 no-underline">
+            <span className="gradient-text font-bold text-2xl hover:opacity-80 transition-opacity duration-150">
               Hyun
-            </Typography>
-          </Box>
+            </span>
+          </Link>
 
-          {/* Center Menu (Desktop) */}
-          <Box sx={{ flex: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: 1 }}>
+          {/* Center Nav (Desktop) */}
+          <nav className="hidden md:flex flex-1 justify-center gap-1">
             {menuItems.map((item) => (
-              <Button
+              <a
                 key={item.href}
                 href={item.href}
-                component="a"
-                sx={{
-                  color: 'text.secondary',
-                  fontSize: '0.875rem',
-                  fontWeight: 500,
-                  px: 2,
-                  '&:hover': { color: 'text.primary', bgcolor: 'transparent' },
-                  position: 'relative',
-                  '&::after': {
-                    content: '""',
-                    position: 'absolute',
-                    bottom: 4,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: 0,
-                    height: 2,
-                    bgcolor: 'primary.main',
-                    transition: 'width 0.3s ease',
-                  },
-                  '&:hover::after': { width: '70%' },
-                }}
+                className="relative px-4 py-2 text-sm font-medium text-[#4a4a5a] dark:text-[#a0a0b0] hover:text-[#1a1a2e] dark:hover:text-white transition-colors duration-200 group"
               >
                 {t(item.labelKey)}
-              </Button>
+                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-[70%]" />
+              </a>
             ))}
-          </Box>
+          </nav>
 
           {/* Right - Menu Button */}
-          <Box sx={{ ml: 'auto' }}>
-            <Button
+          <div className="ml-auto">
+            <button
               onClick={() => setIsFullMenuOpen(true)}
-              endIcon={<MenuIcon sx={{ fontSize: 18 }} />}
-              variant="outlined"
-              size="small"
-              sx={{
-                color: 'text.secondary',
-                borderColor: 'divider',
-                fontSize: '0.8rem',
-                '&:hover': { borderColor: 'primary.main', color: 'text.primary' },
-              }}
+              className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-[#4a4a5a] dark:text-[#a0a0b0] border border-black/[0.08] dark:border-white/[0.08] rounded-lg hover:border-primary hover:text-[#1a1a2e] dark:hover:text-white transition-all duration-200"
+              aria-label={t('nav.openMenu')}
             >
-              <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
-                {t('nav.menu')}
-              </Box>
-            </Button>
-          </Box>
-        </Toolbar>
-      </AppBar>
+              <span className="hidden sm:inline">{t('nav.menu')}</span>
+              {/* Hamburger icon */}
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
 
       <FullMenu
         isOpen={isFullMenuOpen}
