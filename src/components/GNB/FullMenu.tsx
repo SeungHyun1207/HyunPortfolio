@@ -7,9 +7,10 @@ interface FullMenuProps {
   isOpen: boolean
   onClose: () => void
   menuItems: MenuItem[]
+  onSectionClick: (sectionId: string) => void
 }
 
-const FullMenu = ({ isOpen, onClose, menuItems }: FullMenuProps) => {
+const FullMenu = ({ isOpen, onClose, menuItems, onSectionClick }: FullMenuProps) => {
   const { t } = useSettings()
 
   useEffect(() => {
@@ -58,23 +59,20 @@ const FullMenu = ({ isOpen, onClose, menuItems }: FullMenuProps) => {
         <ul className="list-none p-0 m-0 flex flex-col items-center gap-8 md:gap-10">
           {menuItems.map((item, index) => (
             <li
-              key={item.href}
+              key={item.sectionId}
               style={{
                 opacity: isOpen ? 1 : 0,
                 transform: isOpen ? 'translateY(0)' : 'translateY(30px)',
                 transition: `opacity 0.5s ease ${150 + index * 75}ms, transform 0.5s ease ${150 + index * 75}ms`,
               }}
             >
-              <a
-                href={item.href}
-                onClick={onClose}
-                className="flex flex-col items-center gap-1 no-underline group"
+              <button
+                type="button"
+                onClick={() => onSectionClick(item.sectionId)}
+                className="flex flex-col items-center gap-1 bg-transparent border-none cursor-pointer group"
               >
                 <span
-                  className="text-5xl md:text-7xl lg:text-8xl font-bold leading-none text-[#1a1a2e] dark:text-white transition-all duration-300 group-hover:gradient-text"
-                  style={{
-                    WebkitBackgroundClip: undefined,
-                  }}
+                  className="text-5xl md:text-7xl lg:text-8xl font-bold leading-none text-[#1a1a2e] dark:text-white transition-all duration-300"
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)'
                     e.currentTarget.style.webkitBackgroundClip = 'text'
@@ -95,7 +93,7 @@ const FullMenu = ({ isOpen, onClose, menuItems }: FullMenuProps) => {
                     {t(item.descKey)}
                   </span>
                 )}
-              </a>
+              </button>
             </li>
           ))}
         </ul>

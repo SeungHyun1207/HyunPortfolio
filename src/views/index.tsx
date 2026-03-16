@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import Hero from '@components/Hero'
 import About from '@components/About'
 import Skills from '@components/Skills'
@@ -18,6 +20,19 @@ import Contact from '@components/Contact'
  * 6. Contact - 연락처 및 폼
  */
 const Home = () => {
+  const location = useLocation()
+
+  // 서브 페이지에서 navigate('/', { state: { scrollTo: 'sectionId' } })로
+  // 돌아왔을 때 해당 섹션으로 스크롤
+  useEffect(() => {
+    const state = location.state as { scrollTo?: string } | null
+    if (!state?.scrollTo) return
+    const timer = setTimeout(() => {
+      document.getElementById(state.scrollTo!)?.scrollIntoView({ behavior: 'smooth' })
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [location.state])
+
   return (
     <>
       <Hero />

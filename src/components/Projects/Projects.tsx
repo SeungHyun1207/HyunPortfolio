@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useScrollAnimation } from '@hooks'
 import { useSettings } from '@/contexts/SettingsContext'
 
@@ -17,8 +18,75 @@ interface Project {
 type TabType = 'career' | 'personal'
 type FilterType = 'all' | 'react' | 'java' | 'other'
 
+interface PrivateProject {
+  id: string
+  title: { ko: string; en: string }
+  description: { ko: string; en: string }
+  techStack: string[]
+  path: string
+  accentColor: string
+  badge: string
+  icon: string
+}
+
+const PRIVATE_PROJECTS: PrivateProject[] = [
+  {
+    id: 'aiagent',
+    title: { ko: 'AI Agent 대시보드', en: 'AI Agent Dashboard' },
+    description: {
+      ko: 'LLM 기반 멀티 채팅방 어드민 대시보드. GPT-4o / Claude / Gemini / Llama 모델 전환, 스트리밍 응답 시뮬레이션, 피드백 기능을 구현했습니다.',
+      en: 'LLM-based multi-room admin chat dashboard. Supports GPT-4o / Claude / Gemini / Llama model switching, streaming simulation, and message feedback.',
+    },
+    techStack: ['React', 'TypeScript', 'chat-ui-kit'],
+    path: '/privateProject/aiagent',
+    accentColor: '#00c8ff',
+    badge: 'AI / Chat',
+    icon: '🤖',
+  },
+  {
+    id: 'algo',
+    title: { ko: 'Algorithm Visualizer', en: 'Algorithm Visualizer' },
+    description: {
+      ko: '정렬 알고리즘 5종(Bubble / Selection / Insertion / Merge / Quick)을 실시간 막대 애니메이션으로 시각화합니다. 속도·배열 크기 조절, 비교·스왑 통계를 제공합니다.',
+      en: 'Visualizes 5 sorting algorithms (Bubble, Selection, Insertion, Merge, Quick) with real-time bar animations. Includes speed/size controls and live comparison/swap stats.',
+    },
+    techStack: ['React', 'TypeScript', 'CSS Animation'],
+    path: '/privateProject/algo',
+    accentColor: '#00ff88',
+    badge: 'Algorithm',
+    icon: '📊',
+  },
+  {
+    id: 'githeatmap',
+    title: { ko: 'GitHub Heatmap', en: 'GitHub Heatmap' },
+    description: {
+      ko: '연간 GitHub 기여도를 히트맵으로 시각화합니다. 총 커밋 수, 최장 스트릭, 요일·월별 피크 통계, 언어 비율 차트를 한눈에 확인할 수 있습니다.',
+      en: 'Visualizes annual GitHub contributions as a heatmap. Displays total commits, longest streak, peak day/month stats, and language breakdown at a glance.',
+    },
+    techStack: ['React', 'TypeScript', 'SVG'],
+    path: '/privateProject/githeatmap',
+    accentColor: '#39d353',
+    badge: 'Data Viz',
+    icon: '🗓️',
+  },
+  {
+    id: 'snippet',
+    title: { ko: 'Code Snippet Manager', en: 'Code Snippet Manager' },
+    description: {
+      ko: 'LocalStorage 기반 코드 스니펫 저장·관리 도구. 언어별 필터, 태그 검색, 클립보드 복사, CRUD 기능을 지원합니다. 유용한 초기 스니펫이 기본 제공됩니다.',
+      en: 'LocalStorage-powered snippet manager. Supports language filtering, tag search, clipboard copy, and full CRUD. Ships with pre-seeded useful snippets.',
+    },
+    techStack: ['React', 'TypeScript', 'LocalStorage'],
+    path: '/privateProject/snippet',
+    accentColor: '#f43f5e',
+    badge: 'Productivity',
+    icon: '</> ',
+  },
+]
+
 const Projects = () => {
   const { t, language } = useSettings()
+  const navigate = useNavigate()
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 })
   const [activeTab, setActiveTab] = useState<TabType>('career')
   const [activeFilter, setActiveFilter] = useState<FilterType>('all')
@@ -557,25 +625,102 @@ const Projects = () => {
               transitionDelay: '100ms',
             }}
           >
-            {/* 빈 상태 */}
-            <div className="flex flex-col items-center justify-center py-24 px-4 text-center">
-              <div
-                className="w-24 h-24 rounded-2xl flex items-center justify-center mb-6"
-                style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(168,85,247,0.15) 100%)' }}
-              >
-                <span className="text-4xl">🚀</span>
-              </div>
-              <h3 className="text-2xl font-bold text-[#1a1a2e] dark:text-white mb-3">
-                {t('projects.personalEmpty.title')}
+            {/* 소제목 */}
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-[#1a1a2e] dark:text-white mb-2">
+                {language === 'ko' ? '개인 프로젝트' : 'Personal Projects'}
               </h3>
-              <p className="text-[#4a4a5a] dark:text-[#a0a0b0] max-w-md leading-relaxed">
-                {t('projects.personalEmpty.desc')}
+              <p className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0]">
+                {language === 'ko'
+                  ? '직접 기획하고 개발한 사이드 프로젝트입니다. 카드를 클릭하면 데모로 이동합니다.'
+                  : 'Side projects designed and built from scratch. Click a card to view the live demo.'}
               </p>
-              {/* 장식 점선 테두리 */}
-              <div className="mt-10 w-full max-w-sm h-40 rounded-2xl border-2 border-dashed border-black/[0.08] dark:border-white/[0.08] flex items-center justify-center">
-                <span className="text-xs text-[#4a4a5a]/50 dark:text-[#a0a0b0]/50 tracking-widest uppercase">
-                  {language === 'ko' ? '곧 추가 예정' : 'Coming Soon'}
-                </span>
+            </div>
+
+            {/* 카드 그리드 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {PRIVATE_PROJECTS.map((project, index) => (
+                <button
+                  key={project.id}
+                  type="button"
+                  onClick={() => navigate(project.path)}
+                  className="text-left rounded-2xl overflow-hidden bg-white dark:bg-[#0a0a0f] border border-black/[0.08] dark:border-white/[0.08] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] transition-all duration-300 flex flex-col cursor-pointer w-full"
+                  style={{
+                    transitionDelay: `${index * 60}ms`,
+                    boxShadow: 'none',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = `${project.accentColor}55`
+                    e.currentTarget.style.boxShadow = `0 20px 40px ${project.accentColor}18`
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = ''
+                    e.currentTarget.style.boxShadow = 'none'
+                  }}
+                >
+                  {/* 카드 상단 바 */}
+                  <div
+                    className="py-4 px-5 flex items-center justify-between border-b border-black/[0.08] dark:border-white/[0.08]"
+                    style={{ background: `${project.accentColor}0d` }}
+                  >
+                    <span className="text-2xl">{project.icon}</span>
+                    <span
+                      className="text-[0.65rem] font-semibold px-2.5 py-1 rounded-lg"
+                      style={{
+                        color: project.accentColor,
+                        background: `${project.accentColor}18`,
+                        border: `1px solid ${project.accentColor}40`,
+                      }}
+                    >
+                      {project.badge}
+                    </span>
+                  </div>
+
+                  {/* 카드 본문 */}
+                  <div className="p-5 flex-1 flex flex-col">
+                    <h4
+                      className="font-bold text-base mb-3 leading-snug"
+                      style={{ color: project.accentColor }}
+                    >
+                      {project.title[language]}
+                    </h4>
+
+                    <p className="text-xs text-[#4a4a5a] dark:text-[#a0a0b0] leading-relaxed mb-4 flex-1">
+                      {project.description[language]}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {project.techStack.map((tech) => (
+                        <span
+                          key={tech}
+                          className="text-xs px-2 py-0.5 rounded-md bg-[#f8f9fa] dark:bg-[#12121a] border border-black/[0.08] dark:border-white/[0.08] text-[#4a4a5a] dark:text-[#a0a0b0]"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* 이동 CTA */}
+                    <div
+                      className="flex items-center gap-1.5 text-xs font-semibold mt-auto"
+                      style={{ color: project.accentColor }}
+                    >
+                      <span>{language === 'ko' ? '데모 보기' : 'View Demo'}</span>
+                      <span>→</span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+
+              {/* Coming Soon 카드 */}
+              <div className="rounded-2xl border-2 border-dashed border-black/[0.08] dark:border-white/[0.08] flex flex-col items-center justify-center py-16 px-6 text-center">
+                <span className="text-3xl mb-3">✦</span>
+                <p className="text-xs font-semibold tracking-widest uppercase text-[#4a4a5a]/50 dark:text-[#a0a0b0]/50">
+                  {language === 'ko' ? '다음 프로젝트' : 'Next Project'}
+                </p>
+                <p className="text-xs text-[#4a4a5a]/40 dark:text-[#a0a0b0]/40 mt-1">
+                  {language === 'ko' ? '곧 추가됩니다' : 'Coming Soon'}
+                </p>
               </div>
             </div>
           </div>

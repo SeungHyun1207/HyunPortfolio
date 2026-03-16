@@ -1,6 +1,8 @@
 import MainLayout from '@/layouts/MainLayout';
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import ProjectsRouters from './views/routers/projects/ProjectsRouters';
+import PrivateProjectRouters from './views/routers/privateProject/PrivateProjectRouters';
 
 /**
  * Lazy Loading 페이지 컴포넌트
@@ -9,7 +11,7 @@ import { Route, Routes } from 'react-router-dom';
  * 새 페이지 추가 예시:
  * const Projects = lazy(() => import('@views/Projects'))
  */
-const Home = lazy(() => import('@views/Home'));
+const Home = lazy(() => import('@/views'));
 
 /**
  * 로딩 fallback 컴포넌트
@@ -47,7 +49,7 @@ const PageLoader = () => (
  * App 컴포넌트
  *
  * Suspense 자식 요소를 로드하기 전까지 화면에 대체 UI
- *
+ *                                     
  * 라우트 구조:
  * - "/" : MainLayout 적용
  *   - index : Home 페이지
@@ -62,9 +64,9 @@ function App() {
     <Suspense fallback={<PageLoader />}>
       <Routes>
         {/* MainLayout이 적용되는 라우트 그룹 */}
-        <Route path="/" element={<MainLayout />}>
+        <Route path="" element={<MainLayout />}>
           <Route index element={<Home />} />
-          {/* 추가 라우트는 여기에 작성 */}
+          <Route path='/privateProject/*' element={<PrivateProjectRouters />} />
         </Route>
 
         {/* 404 - 모든 미매칭 경로 */}

@@ -1,24 +1,26 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useCallback } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useSettings } from '@/contexts/SettingsContext'
 import FullMenu from './FullMenu'
 
 export interface MenuItem {
   labelKey: string
-  href: string
+  sectionId: string
   descKey?: string
 }
 
 export const menuItems: MenuItem[] = [
-  { labelKey: 'nav.devInfo', href: '#devinfo', descKey: 'nav.devInfoDesc' },
-  { labelKey: 'nav.skills', href: '#skills', descKey: 'nav.skillsDesc' },
-  { labelKey: 'nav.projects', href: '#projects', descKey: 'nav.projectsDesc' },
-  { labelKey: 'nav.experience', href: '#experience', descKey: 'nav.experienceDesc' },
-  { labelKey: 'nav.contact', href: '#contact', descKey: 'nav.contactDesc' },
+  { labelKey: 'nav.devInfo',    sectionId: 'devinfo',    descKey: 'nav.devInfoDesc' },
+  { labelKey: 'nav.skills',     sectionId: 'skills',     descKey: 'nav.skillsDesc' },
+  { labelKey: 'nav.projects',   sectionId: 'projects',   descKey: 'nav.projectsDesc' },
+  { labelKey: 'nav.experience', sectionId: 'experience', descKey: 'nav.experienceDesc' },
+  { labelKey: 'nav.contact',    sectionId: 'contact',    descKey: 'nav.contactDesc' },
 ]
 
 const GNB = () => {
   const { t } = useSettings()
+  const navigate = useNavigate()
+  const location = useLocation()
   const [isFullMenuOpen, setIsFullMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -32,6 +34,17 @@ const GNB = () => {
     document.body.style.overflow = isFullMenuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [isFullMenuOpen])
+
+  // 섹션 스크롤 핸들러
+  // - 메인(/) : scrollIntoView — URL 변화 없음
+  // - 서브 페이지 : navigate('/') 후 state로 스크롤 위치 전달
+  const handleSectionClick = useCallback((sectionId: string) => {
+    if (location.pathname === '/') {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      navigate('/', { state: { scrollTo: sectionId } })
+    }
+  }, [location.pathname, navigate])
 
   return (
     <>
@@ -53,14 +66,15 @@ const GNB = () => {
           {/* Center Nav (Desktop) */}
           <nav className="hidden md:flex flex-1 justify-center gap-1">
             {menuItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="relative px-4 py-2 text-sm font-medium text-[#4a4a5a] dark:text-[#a0a0b0] hover:text-[#1a1a2e] dark:hover:text-white transition-colors duration-200 group"
+              <button
+                key={item.sectionId}
+                type="button"
+                onClick={() => handleSectionClick(item.sectionId)}
+                className="relative px-4 py-2 text-sm font-medium text-[#4a4a5a] dark:text-[#a0a0b0] hover:text-[#1a1a2e] dark:hover:text-white transition-colors duration-200 group bg-transparent border-none cursor-pointer"
               >
                 {t(item.labelKey)}
                 <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-[70%]" />
-              </a>
+              </button>
             ))}
           </nav>
 
@@ -87,6 +101,7 @@ const GNB = () => {
         isOpen={isFullMenuOpen}
         onClose={() => setIsFullMenuOpen(false)}
         menuItems={menuItems}
+        onSectionClick={(id) => { handleSectionClick(id); setIsFullMenuOpen(false) }}
       />
     </>
   )
