@@ -1,7 +1,6 @@
 import MainLayout from '@/layouts/MainLayout';
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import ProjectsRouters from './views/routers/projects/ProjectsRouters';
 import PrivateProjectRouters from './views/routers/privateProject/PrivateProjectRouters';
 
 /**
