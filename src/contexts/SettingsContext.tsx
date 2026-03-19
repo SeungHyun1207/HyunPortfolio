@@ -155,7 +155,7 @@ const translations: Record<Language, Record<string, string>> = {
     'experience.work2.desc3': 'RESTful API 연동 및 상태 관리 설계',
     'experience.work2.desc4': '애자일 방법론 기반의 스프린트 개발 진행',
     'experience.edu1.title': '컴퓨터공학과',
-    'experience.edu1.org': '서울대학교',
+    'experience.edu1.org': '안양대학교',
     'experience.edu1.period': '2016.03 - 2020.02',
     'experience.edu1.desc1': '컴퓨터 과학 전공 학사 학위 취득',
     'experience.edu1.desc2': '알고리즘, 자료구조, 소프트웨어 공학 수강',

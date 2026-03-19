@@ -204,7 +204,7 @@ const Experience = () => {
               label={t('experience.certTitle')}
             />
             <div className="flex flex-col gap-3">
-              {certifications.map((cert, index) => (
+              {/* {certifications.map((cert, index) => (
                 <div
                   key={index}
                   className="flex items-center justify-between p-4 rounded-xl bg-[#f8f9fa] dark:bg-[#12121a] border border-black/[0.08] dark:border-white/[0.08] hover:border-primary/50 transition-all duration-300"
@@ -215,7 +215,7 @@ const Experience = () => {
                   </div>
                   <span className="text-sm text-primary font-medium">{cert.year}</span>
                 </div>
-              ))}
+              ))} */}
             </div>
           </div>
         </div>
