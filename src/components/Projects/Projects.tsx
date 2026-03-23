@@ -2,6 +2,16 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useScrollAnimation } from '@hooks'
 import { useSettings } from '@/contexts/SettingsContext'
+import {
+  Box,
+  Typography,
+  Tabs,
+  Tab,
+  Paper,
+  Chip,
+  Button,
+} from '@mui/material'
+import Grid from '@mui/material/Grid'
 
 interface Project {
   id: string
@@ -15,7 +25,7 @@ interface Project {
   category: 'react' | 'java' | 'other'
 }
 
-type TabType = 'career' | 'personal'
+type TabType = 'career' | 'personal' | 'vibe'
 type FilterType = 'all' | 'react' | 'java' | 'other'
 
 interface PrivateProject {
@@ -27,6 +37,16 @@ interface PrivateProject {
   accentColor: string
   badge: string
   icon: string
+}
+
+interface VibeProject {
+  id: string
+  title: { ko: string; en: string }
+  description: { ko: string; en: string }
+  techStack: string[]
+  emoji: string
+  badge: string
+  accentColor: string
 }
 
 const PRIVATE_PROJECTS: PrivateProject[] = [
@@ -47,8 +67,8 @@ const PRIVATE_PROJECTS: PrivateProject[] = [
     id: 'algo',
     title: { ko: 'Algorithm Visualizer', en: 'Algorithm Visualizer' },
     description: {
-      ko: '정렬 알고리즘 5종(Bubble / Selection / Insertion / Merge / Quick)을 실시간 막대 애니메이션으로 시각화합니다. 속도·배열 크기 조절, 비교·스왑 통계를 제공합니다.',
-      en: 'Visualizes 5 sorting algorithms (Bubble, Selection, Insertion, Merge, Quick) with real-time bar animations. Includes speed/size controls and live comparison/swap stats.',
+      ko: '정렬 알고리즘 5종(Bubble / Selection / Insertion / Merge / Quick)을 실시간 막대 애니메이션으로 시각화합니다.',
+      en: 'Visualizes 5 sorting algorithms (Bubble, Selection, Insertion, Merge, Quick) with real-time bar animations.',
     },
     techStack: ['React', 'TypeScript', 'CSS Animation'],
     path: '/privateProject/algo',
@@ -60,8 +80,8 @@ const PRIVATE_PROJECTS: PrivateProject[] = [
     id: 'githeatmap',
     title: { ko: 'GitHub Heatmap', en: 'GitHub Heatmap' },
     description: {
-      ko: '연간 GitHub 기여도를 히트맵으로 시각화합니다. 총 커밋 수, 최장 스트릭, 요일·월별 피크 통계, 언어 비율 차트를 한눈에 확인할 수 있습니다.',
-      en: 'Visualizes annual GitHub contributions as a heatmap. Displays total commits, longest streak, peak day/month stats, and language breakdown at a glance.',
+      ko: '연간 GitHub 기여도를 히트맵으로 시각화합니다. 총 커밋 수, 최장 스트릭, 요일·월별 피크 통계를 한눈에 확인할 수 있습니다.',
+      en: 'Visualizes annual GitHub contributions as a heatmap. Displays total commits, longest streak, and peak day/month stats.',
     },
     techStack: ['React', 'TypeScript', 'SVG'],
     path: '/privateProject/githeatmap',
@@ -73,14 +93,29 @@ const PRIVATE_PROJECTS: PrivateProject[] = [
     id: 'snippet',
     title: { ko: 'Code Snippet Manager', en: 'Code Snippet Manager' },
     description: {
-      ko: 'LocalStorage 기반 코드 스니펫 저장·관리 도구. 언어별 필터, 태그 검색, 클립보드 복사, CRUD 기능을 지원합니다. 유용한 초기 스니펫이 기본 제공됩니다.',
-      en: 'LocalStorage-powered snippet manager. Supports language filtering, tag search, clipboard copy, and full CRUD. Ships with pre-seeded useful snippets.',
+      ko: 'LocalStorage 기반 코드 스니펫 저장·관리 도구. 언어별 필터, 태그 검색, 클립보드 복사, CRUD 기능을 지원합니다.',
+      en: 'LocalStorage-powered snippet manager. Supports language filtering, tag search, clipboard copy, and full CRUD.',
     },
     techStack: ['React', 'TypeScript', 'LocalStorage'],
     path: '/privateProject/snippet',
     accentColor: '#f43f5e',
     badge: 'Productivity',
     icon: '</> ',
+  },
+]
+
+const VIBE_PROJECTS: VibeProject[] = [
+  {
+    id: 'vibe1',
+    title: { ko: '바이브 프로젝트 준비 중', en: 'Vibe Project Coming Soon' },
+    description: {
+      ko: 'AI 바이브 코딩으로 만들어가는 실험적 프로젝트입니다. 곧 추가될 예정입니다.',
+      en: 'An experimental project built with AI vibe coding. Coming soon.',
+    },
+    techStack: ['React', 'Tailwind CSS', 'AI'],
+    emoji: '🌊',
+    badge: 'Coming Soon',
+    accentColor: '#6366f1',
   },
 ]
 
@@ -273,77 +308,122 @@ const Projects = () => {
   ]
 
   return (
-    <section
+    <Box
+      component="section"
       id="projects"
       ref={ref}
-      className="py-20 md:py-32 bg-[#f8f9fa] dark:bg-[#12121a]"
+      sx={{ py: { xs: 10, md: 16 }, bgcolor: 'background.paper' }}
     >
-      <div className="max-w-6xl mx-auto px-4 md:px-8">
+      <Box sx={{ maxWidth: 1152, mx: 'auto', px: { xs: 2, md: 4 } }}>
 
-        {/* ── 섹션 헤더 ── */}
-        <div
-          className="text-center mb-10 transition-all duration-700"
-          style={{
+        {/* 섹션 헤더 */}
+        <Box
+          sx={{
+            textAlign: 'center',
+            mb: 5,
+            transition: 'all 0.7s ease',
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
           }}
         >
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">
+          <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 600, letterSpacing: '0.2em' }}>
             {t('projects.label')}
-          </p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-2 mb-4">
+          </Typography>
+          <Typography
+            variant="h2"
+            sx={{ fontSize: { xs: '1.875rem', md: '2.25rem', lg: '3rem' }, fontWeight: 700, mt: 1, mb: 2 }}
+          >
             {t('projects.title1')}{' '}
-            <span className="gradient-text">{t('projects.title2')}</span>
-          </h2>
-          <p className="text-[#4a4a5a] dark:text-[#a0a0b0] max-w-2xl mx-auto">
+            <Box component="span" className="gradient-text">{t('projects.title2')}</Box>
+          </Typography>
+          <Typography color="text.secondary" sx={{ maxWidth: 512, mx: 'auto' }}>
             {t('projects.description')}
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
-        {/* ── 탭 네비게이션 ── */}
-        <div
-          className="flex justify-center mb-10 transition-all duration-700"
-          style={{
+        {/* 탭 네비게이션 */}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            mb: 5,
+            transition: 'all 0.7s ease',
             opacity: isVisible ? 1 : 0,
             transitionDelay: '50ms',
           }}
         >
-          <div className="flex gap-1 p-1 rounded-xl bg-white dark:bg-[#0a0a0f] border border-black/[0.08] dark:border-white/[0.08]">
-            {(['career', 'personal'] as TabType[]).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  activeTab === tab
-                    ? 'text-white shadow-sm'
-                    : 'text-[#4a4a5a] dark:text-[#a0a0b0] hover:text-[#1a1a2e] dark:hover:text-white'
-                }`}
-                style={activeTab === tab ? { background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)' } : {}}
-              >
-                {tab === 'career' ? t('projects.careerTab') : t('projects.personalTab')}
-              </button>
-            ))}
-          </div>
-        </div>
+          <Paper
+            elevation={0}
+            sx={{
+              display: 'inline-flex',
+              p: 0.5,
+              borderRadius: 3,
+              border: '1px solid',
+              borderColor: 'divider',
+              bgcolor: 'background.default',
+            }}
+          >
+            <Tabs
+              value={activeTab}
+              onChange={(_, v) => setActiveTab(v)}
+              TabIndicatorProps={{ style: { display: 'none' } }}
+              sx={{ minHeight: 'auto' }}
+            >
+              {(['career', 'personal', 'vibe'] as TabType[]).map((tab) => (
+                <Tab
+                  key={tab}
+                  value={tab}
+                  label={
+                    tab === 'career'
+                      ? t('projects.careerTab')
+                      : tab === 'personal'
+                        ? t('projects.personalTab')
+                        : t('projects.vibeTab')
+                  }
+                  sx={{
+                    minHeight: 36,
+                    px: 3,
+                    py: 1,
+                    borderRadius: 2,
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    color: 'text.secondary',
+                    transition: 'all 0.2s ease',
+                    '&.Mui-selected': {
+                      color: '#fff',
+                      background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                    },
+                  }}
+                />
+              ))}
+            </Tabs>
+          </Paper>
+        </Box>
 
-        {/* ══════════════ 경력 프로젝트 탭 ══════════════ */}
+        {/* ══════ 경력 프로젝트 탭 ══════ */}
         {activeTab === 'career' && (
           <>
-            {/* 야간 3D 타임라인 */}
-            <div
-              className="relative rounded-2xl overflow-hidden mb-12 transition-all duration-700"
-              style={{
-                background: 'linear-gradient(160deg, #05050f 0%, #0a0a1e 40%, #080818 100%)',
-                padding: '2rem',
+            {/* 야간 3D 타임라인 (기존 디자인 유지) */}
+            <Box
+              sx={{
+                position: 'relative',
+                borderRadius: 4,
+                overflow: 'hidden',
+                mb: 6,
+                p: { xs: 2, md: 4 },
+                transition: 'all 0.7s ease',
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
                 transitionDelay: '100ms',
+                background: 'linear-gradient(160deg, #05050f 0%, #0a0a1e 40%, #080818 100%)',
               }}
             >
               {/* 배경 오버레이 */}
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
+              <Box
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  pointerEvents: 'none',
                   background: `
                     radial-gradient(ellipse at 15% 20%, rgba(99,102,241,0.13) 0%, transparent 55%),
                     radial-gradient(ellipse at 85% 75%, rgba(168,85,247,0.11) 0%, transparent 55%)
@@ -352,271 +432,425 @@ const Projects = () => {
               />
 
               {/* 타임라인 헤더 */}
-              <div className="text-center mb-8 relative z-10">
-                <p className="text-[0.7rem] font-bold tracking-[0.3em] text-indigo-400/80 uppercase mb-1">
+              <Box sx={{ textAlign: 'center', mb: 4, position: 'relative', zIndex: 10 }}>
+                <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.3em', color: 'rgba(129,140,248,0.8)', textTransform: 'uppercase', mb: 0.5 }}>
                   Career Journey
-                </p>
-                <h3 className="text-xl font-bold text-white mb-1">
+                </Typography>
+                <Typography sx={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff', mb: 0.5 }}>
                   {language === 'ko' ? '2022 → 현재까지의 여정' : '2022 → Present Journey'}
-                </h3>
-                <span className="text-xs text-white/30">
+                </Typography>
+                <Typography sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)' }}>
                   {language === 'ko'
                     ? `총 ${projects.length}개 프로젝트 · 3년+`
                     : `${projects.length} projects · 3+ years`}
-                </span>
-              </div>
+                </Typography>
+              </Box>
 
               {/* 연도별 그룹 */}
               {yearGroups.map((group, groupIdx) => (
-                <div key={group.year} className={`relative z-10 ${groupIdx > 0 ? 'mt-8' : ''}`}>
-                  {/* 연도 헤더 */}
-                  <div className="flex items-center gap-4 mb-4">
-                    <div
-                      className="px-4 py-1.5 rounded-lg flex-shrink-0"
-                      style={{
+                <Box key={group.year} sx={{ position: 'relative', zIndex: 10, mt: groupIdx > 0 ? 4 : 0 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                    <Box
+                      sx={{
+                        px: 2,
+                        py: 0.75,
+                        borderRadius: 2,
+                        flexShrink: 0,
                         background: 'linear-gradient(135deg, rgba(99,102,241,0.28) 0%, rgba(168,85,247,0.28) 100%)',
                         border: '1px solid rgba(99,102,241,0.45)',
                         boxShadow: '0 0 16px rgba(99,102,241,0.2)',
                       }}
                     >
-                      <span className="font-extrabold text-white tracking-wide">
+                      <Typography sx={{ fontWeight: 800, color: '#fff', letterSpacing: '0.05em' }}>
                         {group.emoji} {group.year}
-                      </span>
-                    </div>
-                    <div
-                      className="flex-1 h-px"
-                      style={{ background: 'linear-gradient(90deg, rgba(99,102,241,0.5), transparent)' }}
-                    />
-                    <span className="text-xs text-white/25 flex-shrink-0">
+                      </Typography>
+                    </Box>
+                    <Box sx={{ flex: 1, height: 1, background: 'linear-gradient(90deg, rgba(99,102,241,0.5), transparent)' }} />
+                    <Typography sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.25)', flexShrink: 0 }}>
                       {group.items.length}{language === 'ko' ? '개' : ' proj'}
-                    </span>
-                  </div>
+                    </Typography>
+                  </Box>
 
-                  {/* 항목 */}
-                  <div className="pl-4 md:pl-7 relative">
+                  <Box sx={{ pl: { xs: 2, md: 3.5 }, position: 'relative' }}>
                     {/* 세로 라인 */}
                     <div
-                      className="timeline-line absolute left-[7px] md:left-[13px] top-2.5 bottom-2.5 w-0.5 rounded-sm"
+                      className="timeline-line"
+                      style={{ position: 'absolute', left: '7px', top: 10, bottom: 10, width: 2, borderRadius: 2 }}
                     />
-
                     {group.items.map((project, itemIdx) => (
-                      <div
+                      <Box
                         key={project.id}
-                        className={`flex items-start gap-4 md:gap-6 relative ${itemIdx < group.items.length - 1 ? 'mb-5' : ''}`}
+                        sx={{ display: 'flex', alignItems: 'flex-start', gap: { xs: 2, md: 3 }, position: 'relative', mb: itemIdx < group.items.length - 1 ? 2.5 : 0 }}
                       >
                         {/* 닷 */}
                         <div
-                          className="timeline-dot w-3 h-3 rounded-full flex-shrink-0 mt-4 ml-0 md:ml-1.5 z-10"
-                          style={{ background: 'linear-gradient(135deg, #6366f1, #a855f7)' }}
+                          className="timeline-dot"
+                          style={{ width: 12, height: 12, borderRadius: '50%', flexShrink: 0, marginTop: 16, marginLeft: 0, zIndex: 10, background: 'linear-gradient(135deg, #6366f1, #a855f7)' }}
                         />
-
                         {/* 3D 카드 */}
-                        <div
-                          className="flex-1 p-4 md:p-5 rounded-xl transition-all duration-300"
-                          style={{
+                        <Box
+                          sx={{
+                            flex: 1,
+                            p: { xs: 2, md: 2.5 },
+                            borderRadius: 3,
                             background: 'rgba(255,255,255,0.03)',
                             border: '1px solid rgba(99,102,241,0.18)',
                             backdropFilter: 'blur(10px)',
                             transformOrigin: 'left center',
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(99,102,241,0.08)'
-                            e.currentTarget.style.border = '1px solid rgba(99,102,241,0.45)'
-                            e.currentTarget.style.boxShadow = '0 8px 40px rgba(99,102,241,0.18), inset 0 1px 0 rgba(255,255,255,0.06)'
-                            e.currentTarget.style.transform = 'perspective(800px) rotateY(-3deg) translateX(6px) translateY(-2px)'
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(255,255,255,0.03)'
-                            e.currentTarget.style.border = '1px solid rgba(99,102,241,0.18)'
-                            e.currentTarget.style.boxShadow = ''
-                            e.currentTarget.style.transform = ''
+                            transition: 'all 0.3s ease',
+                            '&:hover': {
+                              background: 'rgba(99,102,241,0.08)',
+                              border: '1px solid rgba(99,102,241,0.45)',
+                              boxShadow: '0 8px 40px rgba(99,102,241,0.18), inset 0 1px 0 rgba(255,255,255,0.06)',
+                              transform: 'perspective(800px) rotateY(-3deg) translateX(6px) translateY(-2px)',
+                            },
                           }}
                         >
-                          <div className="flex items-start justify-between gap-2 mb-2">
-                            <div>
-                              <span
-                                className="text-xs font-semibold block mb-0.5"
-                                style={{ color: 'rgba(99,102,241,0.85)' }}
-                              >
+                          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1, mb: 1 }}>
+                            <Box>
+                              <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, display: 'block', mb: 0.25, color: 'rgba(99,102,241,0.85)' }}>
                                 {project.client}
-                              </span>
-                              <span className="text-sm font-bold text-white leading-snug">
+                              </Typography>
+                              <Typography sx={{ fontSize: '0.875rem', fontWeight: 700, color: '#fff', lineHeight: 1.3 }}>
                                 {project.title[language]}
-                              </span>
-                            </div>
-                            <div
-                              className="flex-shrink-0 px-2 py-0.5 rounded"
-                              style={{ border: '1px solid rgba(168,85,247,0.3)' }}
-                            >
-                              <span
-                                className="text-[0.58rem] font-semibold whitespace-nowrap"
-                                style={{ color: 'rgba(168,85,247,0.8)' }}
-                              >
+                              </Typography>
+                            </Box>
+                            <Box sx={{ flexShrink: 0, px: 1, py: 0.25, borderRadius: 1, border: '1px solid rgba(168,85,247,0.3)' }}>
+                              <Typography sx={{ fontSize: '0.6rem', fontWeight: 600, whiteSpace: 'nowrap', color: 'rgba(168,85,247,0.8)' }}>
                                 {project.period}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* 핵심 포인트 */}
-                          <div className="flex flex-col gap-1 mb-3">
+                              </Typography>
+                            </Box>
+                          </Box>
+                          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, mb: 1.5 }}>
                             {project.highlights[language].slice(0, 2).map((point, i) => (
-                              <div key={i} className="flex items-start gap-1.5">
-                                <span className="text-[0.58rem] mt-[5px] flex-shrink-0" style={{ color: '#6366f1' }}>▹</span>
-                                <span className="text-[0.71rem] leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                              <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 0.75 }}>
+                                <Typography sx={{ fontSize: '0.6rem', mt: 0.5, flexShrink: 0, color: '#6366f1' }}>▹</Typography>
+                                <Typography sx={{ fontSize: '0.71rem', lineHeight: 1.6, color: 'rgba(255,255,255,0.5)' }}>
                                   {point}
-                                </span>
-                              </div>
+                                </Typography>
+                              </Box>
                             ))}
-                          </div>
-
-                          {/* 기술 스택 */}
-                          <div className="flex flex-wrap gap-1">
+                          </Box>
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                             {project.techStack.map((tech) => (
-                              <span
+                              <Box
                                 key={tech}
-                                className="text-[0.6rem] font-semibold px-2 py-0.5 rounded"
-                                style={{
+                                sx={{
+                                  fontSize: '0.6rem',
+                                  fontWeight: 600,
+                                  px: 1,
+                                  py: 0.25,
+                                  borderRadius: 1,
                                   color: 'rgba(168,85,247,0.85)',
                                   background: 'rgba(168,85,247,0.1)',
                                   border: '1px solid rgba(168,85,247,0.2)',
                                 }}
                               >
                                 {tech}
-                              </span>
+                              </Box>
                             ))}
-                          </div>
-                        </div>
-                      </div>
+                          </Box>
+                        </Box>
+                      </Box>
                     ))}
-                  </div>
-                </div>
+                  </Box>
+                </Box>
               ))}
 
               {/* 하단 라이브 인디케이터 */}
-              <div className="text-center mt-8 relative z-10">
-                <div
-                  className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full"
-                  style={{
+              <Box sx={{ textAlign: 'center', mt: 4, position: 'relative', zIndex: 10 }}>
+                <Box
+                  sx={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 1.5,
+                    px: 3,
+                    py: 1.25,
+                    borderRadius: 10,
                     background: 'rgba(99,102,241,0.1)',
                     border: '1px solid rgba(99,102,241,0.3)',
                     boxShadow: '0 0 24px rgba(99,102,241,0.12)',
                   }}
                 >
-                  <div
-                    className="w-1.5 h-1.5 rounded-full bg-green-400"
-                    style={{ boxShadow: '0 0 8px rgba(74,222,128,0.8)' }}
-                  />
-                  <span className="text-[0.78rem] font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                  <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#4ade80', boxShadow: '0 0 8px rgba(74,222,128,0.8)' }} />
+                  <Typography sx={{ fontSize: '0.78rem', fontWeight: 500, color: 'rgba(255,255,255,0.6)' }}>
                     {language === 'ko' ? '현재 진행 중 · 성장 계속' : 'Currently Active · Still Growing'}
-                  </span>
-                </div>
-              </div>
-            </div>
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
 
             {/* 프로젝트 상세 소제목 */}
-            <div
-              className="text-center mb-6 transition-all duration-700"
-              style={{ opacity: isVisible ? 1 : 0, transitionDelay: '200ms' }}
-            >
-              <h3 className="text-2xl font-bold text-[#1a1a2e] dark:text-white mb-1">
+            <Box sx={{ textAlign: 'center', mb: 3, opacity: isVisible ? 1 : 0, transition: 'opacity 0.7s ease 200ms' }}>
+              <Typography variant="h5" fontWeight={700} mb={0.5}>
                 {language === 'ko' ? '프로젝트 상세' : 'Project Details'}
-              </h3>
-              <p className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0]">
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 {language === 'ko' ? '각 프로젝트의 목표와 기여 내용을 확인하세요' : 'Explore goals and contributions of each project'}
-              </p>
-            </div>
+              </Typography>
+            </Box>
 
             {/* 필터 */}
-            <div
-              className="flex justify-center gap-2 mb-8 flex-wrap transition-all duration-700"
-              style={{ opacity: isVisible ? 1 : 0, transitionDelay: '250ms' }}
-            >
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mb: 4, flexWrap: 'wrap', opacity: isVisible ? 1 : 0, transition: 'opacity 0.7s ease 250ms' }}>
               {filters.map((filter) => (
-                <button
+                <Button
                   key={filter.value}
                   onClick={() => setActiveFilter(filter.value)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 border ${
-                    activeFilter === filter.value
-                      ? 'text-white border-transparent'
-                      : 'text-[#4a4a5a] dark:text-[#a0a0b0] border-black/[0.08] dark:border-white/[0.08] hover:border-primary hover:text-[#1a1a2e] dark:hover:text-white'
-                  }`}
-                  style={activeFilter === filter.value
-                    ? { background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)' }
-                    : {}
-                  }
+                  variant={activeFilter === filter.value ? 'contained' : 'outlined'}
+                  size="small"
+                  sx={{
+                    borderRadius: 3,
+                    fontWeight: 500,
+                    ...(activeFilter === filter.value
+                      ? { background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)', color: '#fff', border: 'none' }
+                      : { borderColor: 'divider', color: 'text.secondary', '&:hover': { borderColor: 'primary.main', color: 'text.primary', bgcolor: 'transparent' } }
+                    ),
+                  }}
                 >
                   {filter.label[language]}
-                </button>
+                </Button>
               ))}
-            </div>
+            </Box>
 
             {/* 카드 그리드 */}
-            <div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 transition-all duration-700"
-              style={{
+            <Grid
+              container
+              spacing={2.5}
+              sx={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                transitionDelay: '300ms',
+                transition: 'all 0.7s ease 300ms',
               }}
             >
               {filteredProjects.map((project, index) => (
-                <div
-                  key={project.id}
-                  className="rounded-2xl overflow-hidden bg-white dark:bg-[#0a0a0f] border border-black/[0.08] dark:border-white/[0.08] hover:border-primary/50 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(99,102,241,0.1)] transition-all duration-300 flex flex-col"
-                  style={{ transitionDelay: `${index * 40}ms` }}
-                >
-                  {/* 카드 상단 바 */}
-                  <div className="py-4 px-5 bg-primary/[0.04] flex items-center justify-between border-b border-black/[0.08] dark:border-white/[0.08]">
-                    <span className="text-2xl">{getCategoryIcon(project.category)}</span>
-                    <span className="text-[0.65rem] font-semibold text-primary px-2.5 py-1 rounded-lg bg-primary/10 border border-primary/25">
-                      {project.period}
-                    </span>
-                  </div>
+                <Grid size={{ xs: 12, md: 6, lg: 4 }} key={project.id}>
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      borderRadius: 4,
+                      overflow: 'hidden',
+                      border: '1px solid',
+                      borderColor: 'divider',
+                      '&:hover': {
+                        borderColor: 'primary.main',
+                        transform: 'translateY(-4px)',
+                        boxShadow: '0 20px 40px rgba(99,102,241,0.1)',
+                      },
+                      transition: `all 0.3s ease ${index * 40}ms`,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      height: '100%',
+                      bgcolor: 'background.default',
+                    }}
+                  >
+                    {/* 카드 상단 바 */}
+                    <Box
+                      sx={{
+                        py: 2,
+                        px: 2.5,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        borderBottom: '1px solid',
+                        borderColor: 'divider',
+                        bgcolor: 'primary.main',
+                        opacity: 0.96,
+                      }}
+                    >
+                      <Typography sx={{ fontSize: '1.5rem' }}>{getCategoryIcon(project.category)}</Typography>
+                      <Chip
+                        label={project.period}
+                        size="small"
+                        sx={{
+                          fontSize: '0.65rem',
+                          fontWeight: 600,
+                          color: 'primary.main',
+                          bgcolor: 'background.default',
+                          border: '1px solid',
+                          borderColor: 'primary.main',
+                          opacity: 0.9,
+                        }}
+                      />
+                    </Box>
 
-                  {/* 카드 본문 */}
-                  <div className="p-5 flex-1 flex flex-col">
-                    <p className="text-xs font-semibold text-primary mb-1.5 tracking-wide">
-                      {project.client}
-                    </p>
-                    <h4 className="font-bold text-[#1a1a2e] dark:text-white mb-4 leading-snug">
-                      {project.title[language]}
-                    </h4>
-
-                    <div className="flex flex-col gap-2 mb-4">
-                      {project.highlights[language].map((point, i) => (
-                        <div key={i} className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0 opacity-80" />
-                          <span className="text-xs text-[#4a4a5a] dark:text-[#a0a0b0] leading-relaxed">
-                            {point}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <p className="text-xs text-[#4a4a5a] dark:text-[#a0a0b0] mb-4">
-                      {language === 'ko' ? '담당: ' : 'Role: '}
-                      <span className="text-[#1a1a2e] dark:text-white font-medium">{project.role[language]}</span>
-                    </p>
-
-                    <div className="flex flex-wrap gap-1.5 mt-auto">
-                      {project.techStack.map((tech) => (
-                        <span
-                          key={tech}
-                          className="text-xs px-2 py-0.5 rounded-md bg-[#f8f9fa] dark:bg-[#12121a] border border-black/[0.08] dark:border-white/[0.08] text-[#4a4a5a] dark:text-[#a0a0b0]"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                    {/* 카드 본문 */}
+                    <Box sx={{ p: 2.5, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                      <Typography variant="caption" sx={{ color: 'primary.main', fontWeight: 600, mb: 0.75, display: 'block', letterSpacing: '0.05em' }}>
+                        {project.client}
+                      </Typography>
+                      <Typography variant="body1" fontWeight={700} mb={2} lineHeight={1.3}>
+                        {project.title[language]}
+                      </Typography>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mb: 2 }}>
+                        {project.highlights[language].map((point, i) => (
+                          <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+                            <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'primary.main', mt: 0.75, flexShrink: 0, opacity: 0.8 }} />
+                            <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                              {point}
+                            </Typography>
+                          </Box>
+                        ))}
+                      </Box>
+                      <Typography variant="caption" color="text.secondary" mb={2}>
+                        {language === 'ko' ? '담당: ' : 'Role: '}
+                        <Box component="span" sx={{ color: 'text.primary', fontWeight: 500 }}>{project.role[language]}</Box>
+                      </Typography>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mt: 'auto' }}>
+                        {project.techStack.map((tech) => (
+                          <Chip
+                            key={tech}
+                            label={tech}
+                            size="small"
+                            variant="outlined"
+                            sx={{ fontSize: '0.7rem', borderColor: 'divider', color: 'text.secondary', height: 20 }}
+                          />
+                        ))}
+                      </Box>
+                    </Box>
+                  </Paper>
+                </Grid>
               ))}
-            </div>
+            </Grid>
           </>
         )}
 
-        {/* ══════════════ 개인 프로젝트 탭 ══════════════ */}
+        {/* ══════ 개인 프로젝트 탭 ══════ */}
         {activeTab === 'personal' && (
+          <Box
+            sx={{
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
+              transition: 'all 0.7s ease 100ms',
+            }}
+          >
+            <Box sx={{ textAlign: 'center', mb: 4 }}>
+              <Typography variant="h5" fontWeight={700} mb={1}>
+                {language === 'ko' ? '개인 프로젝트' : 'Personal Projects'}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {language === 'ko'
+                  ? '직접 기획하고 개발한 사이드 프로젝트입니다. 카드를 클릭하면 데모로 이동합니다.'
+                  : 'Side projects designed and built from scratch. Click a card to view the live demo.'}
+              </Typography>
+            </Box>
+
+            <Grid container spacing={2.5}>
+              {PRIVATE_PROJECTS.map((project, index) => (
+                <Grid size={{ xs: 12, md: 6, lg: 4 }} key={project.id}>
+                  <Paper
+                    component="button"
+                    elevation={0}
+                    onClick={() => navigate(project.path)}
+                    sx={{
+                      width: '100%',
+                      textAlign: 'left',
+                      borderRadius: 4,
+                      overflow: 'hidden',
+                      border: '1px solid',
+                      borderColor: 'divider',
+                      cursor: 'pointer',
+                      '&:hover': {
+                        transform: 'translateY(-4px)',
+                        borderColor: `${project.accentColor}55`,
+                        boxShadow: `0 20px 40px ${project.accentColor}18`,
+                      },
+                      transition: `all 0.3s ease ${index * 60}ms`,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      bgcolor: 'background.default',
+                    }}
+                  >
+                    {/* 카드 상단 바 */}
+                    <Box
+                      sx={{
+                        py: 2,
+                        px: 2.5,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        borderBottom: '1px solid',
+                        borderColor: 'divider',
+                        background: `${project.accentColor}0d`,
+                      }}
+                    >
+                      <Typography sx={{ fontSize: '1.5rem' }}>{project.icon}</Typography>
+                      <Box
+                        sx={{
+                          px: 1.25,
+                          py: 0.5,
+                          borderRadius: 2,
+                          color: project.accentColor,
+                          background: `${project.accentColor}18`,
+                          border: `1px solid ${project.accentColor}40`,
+                          fontSize: '0.65rem',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {project.badge}
+                      </Box>
+                    </Box>
+
+                    {/* 카드 본문 */}
+                    <Box sx={{ p: 2.5, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                      <Typography variant="body1" fontWeight={700} mb={1.5} lineHeight={1.3} sx={{ color: project.accentColor }}>
+                        {project.title[language]}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary" lineHeight={1.6} mb={2} sx={{ flex: 1 }}>
+                        {project.description[language]}
+                      </Typography>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: 2 }}>
+                        {project.techStack.map((tech) => (
+                          <Chip
+                            key={tech}
+                            label={tech}
+                            size="small"
+                            variant="outlined"
+                            sx={{ fontSize: '0.7rem', borderColor: 'divider', color: 'text.secondary', height: 20 }}
+                          />
+                        ))}
+                      </Box>
+                      <Typography variant="caption" fontWeight={600} sx={{ color: project.accentColor, mt: 'auto' }}>
+                        {language === 'ko' ? '데모 보기 →' : 'View Demo →'}
+                      </Typography>
+                    </Box>
+                  </Paper>
+                </Grid>
+              ))}
+
+              {/* Coming Soon 카드 */}
+              <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    borderRadius: 4,
+                    border: '2px dashed',
+                    borderColor: 'divider',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    py: 8,
+                    px: 3,
+                    textAlign: 'center',
+                    bgcolor: 'transparent',
+                    minHeight: 200,
+                  }}
+                >
+                  <Typography sx={{ fontSize: '1.875rem', mb: 1.5 }}>✦</Typography>
+                  <Typography variant="caption" sx={{ fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'text.secondary', opacity: 0.5 }}>
+                    {language === 'ko' ? '다음 프로젝트' : 'Next Project'}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.4, mt: 0.5 }}>
+                    {language === 'ko' ? '곧 추가됩니다' : 'Coming Soon'}
+                  </Typography>
+                </Paper>
+              </Grid>
+            </Grid>
+          </Box>
+        )}
+
+        {/* ══════ 바이브 프로젝트 탭 (Tailwind 사용) ══════ */}
+        {activeTab === 'vibe' && (
           <div
             className="transition-all duration-700"
             style={{
@@ -628,42 +862,27 @@ const Projects = () => {
             {/* 소제목 */}
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-[#1a1a2e] dark:text-white mb-2">
-                {language === 'ko' ? '개인 프로젝트' : 'Personal Projects'}
+                {language === 'ko' ? '바이브 프로젝트' : 'Vibe Projects'}
               </h3>
               <p className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0]">
-                {language === 'ko'
-                  ? '직접 기획하고 개발한 사이드 프로젝트입니다. 카드를 클릭하면 데모로 이동합니다.'
-                  : 'Side projects designed and built from scratch. Click a card to view the live demo.'}
+                {t('projects.vibeDesc')}
               </p>
             </div>
 
-            {/* 카드 그리드 */}
+            {/* 바이브 카드 그리드 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {PRIVATE_PROJECTS.map((project, index) => (
-                <button
+              {VIBE_PROJECTS.map((project, index) => (
+                <div
                   key={project.id}
-                  type="button"
-                  onClick={() => navigate(project.path)}
-                  className="text-left rounded-2xl overflow-hidden bg-white dark:bg-[#0a0a0f] border border-black/[0.08] dark:border-white/[0.08] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] transition-all duration-300 flex flex-col cursor-pointer w-full"
-                  style={{
-                    transitionDelay: `${index * 60}ms`,
-                    boxShadow: 'none',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = `${project.accentColor}55`
-                    e.currentTarget.style.boxShadow = `0 20px 40px ${project.accentColor}18`
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = ''
-                    e.currentTarget.style.boxShadow = 'none'
-                  }}
+                  className="rounded-2xl overflow-hidden bg-white dark:bg-[#0a0a0f] border border-black/[0.08] dark:border-white/[0.08] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(99,102,241,0.1)] transition-all duration-300 flex flex-col"
+                  style={{ transitionDelay: `${index * 60}ms` }}
                 >
                   {/* 카드 상단 바 */}
                   <div
                     className="py-4 px-5 flex items-center justify-between border-b border-black/[0.08] dark:border-white/[0.08]"
-                    style={{ background: `${project.accentColor}0d` }}
+                    style={{ background: 'rgba(99,102,241,0.06)' }}
                   >
-                    <span className="text-2xl">{project.icon}</span>
+                    <span className="text-2xl">{project.emoji}</span>
                     <span
                       className="text-[0.65rem] font-semibold px-2.5 py-1 rounded-lg"
                       style={{
@@ -678,18 +897,13 @@ const Projects = () => {
 
                   {/* 카드 본문 */}
                   <div className="p-5 flex-1 flex flex-col">
-                    <h4
-                      className="font-bold text-base mb-3 leading-snug"
-                      style={{ color: project.accentColor }}
-                    >
+                    <h4 className="font-bold text-base mb-3 leading-snug text-[#1a1a2e] dark:text-white">
                       {project.title[language]}
                     </h4>
-
                     <p className="text-xs text-[#4a4a5a] dark:text-[#a0a0b0] leading-relaxed mb-4 flex-1">
                       {project.description[language]}
                     </p>
-
-                    <div className="flex flex-wrap gap-1.5 mb-4">
+                    <div className="flex flex-wrap gap-1.5">
                       {project.techStack.map((tech) => (
                         <span
                           key={tech}
@@ -699,24 +913,15 @@ const Projects = () => {
                         </span>
                       ))}
                     </div>
-
-                    {/* 이동 CTA */}
-                    <div
-                      className="flex items-center gap-1.5 text-xs font-semibold mt-auto"
-                      style={{ color: project.accentColor }}
-                    >
-                      <span>{language === 'ko' ? '데모 보기' : 'View Demo'}</span>
-                      <span>→</span>
-                    </div>
                   </div>
-                </button>
+                </div>
               ))}
 
-              {/* Coming Soon 카드 */}
+              {/* 바이브 Coming Soon 카드 */}
               <div className="rounded-2xl border-2 border-dashed border-black/[0.08] dark:border-white/[0.08] flex flex-col items-center justify-center py-16 px-6 text-center">
-                <span className="text-3xl mb-3">✦</span>
+                <span className="text-3xl mb-3">🌊</span>
                 <p className="text-xs font-semibold tracking-widest uppercase text-[#4a4a5a]/50 dark:text-[#a0a0b0]/50">
-                  {language === 'ko' ? '다음 프로젝트' : 'Next Project'}
+                  {language === 'ko' ? '다음 바이브 프로젝트' : 'Next Vibe Project'}
                 </p>
                 <p className="text-xs text-[#4a4a5a]/40 dark:text-[#a0a0b0]/40 mt-1">
                   {language === 'ko' ? '곧 추가됩니다' : 'Coming Soon'}
@@ -726,8 +931,8 @@ const Projects = () => {
           </div>
         )}
 
-      </div>
-    </section>
+      </Box>
+    </Box>
   )
 }
 

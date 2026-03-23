@@ -1,5 +1,11 @@
 import { useScrollAnimation } from '@hooks'
 import { useSettings } from '@/contexts/SettingsContext'
+import { Box, Typography, Paper, Chip } from '@mui/material'
+import Grid from '@mui/material/Grid'
+import WorkIcon from '@mui/icons-material/Work'
+import SchoolIcon from '@mui/icons-material/School'
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents'
+import CelebrationIcon from '@mui/icons-material/Celebration'
 
 interface ExperienceItem {
   id: string
@@ -9,6 +15,13 @@ interface ExperienceItem {
   periodKey: string
   descriptionKeys: string[]
   techStack?: string[]
+}
+
+interface FestivalItem {
+  nameKey: string
+  orgKey: string
+  yearKey: string
+  descKey: string
 }
 
 const Experience = () => {
@@ -28,21 +41,19 @@ const Experience = () => {
         'experience.work1.desc3',
         'experience.work1.desc4',
       ],
-      techStack: ['React', 'TypeScript', 'Next.js', 'Tailwind CSS'],
+      techStack: ['React', 'TypeScript', 'Java', 'JSP', 'QlikSense'],
     },
     {
       id: '2',
-      type: 'work',
-      titleKey: 'experience.work2.title',
-      organizationKey: 'experience.work2.org',
-      periodKey: 'experience.work2.period',
+      type: 'education',
+      titleKey: 'experience.edu2.title',
+      organizationKey: 'experience.edu2.org',
+      periodKey: 'experience.edu2.period',
       descriptionKeys: [
-        'experience.work2.desc1',
-        'experience.work2.desc2',
-        'experience.work2.desc3',
-        'experience.work2.desc4',
+        'experience.edu2.desc1',
+        'experience.edu2.desc2',
+        'experience.edu2.desc3',
       ],
-      techStack: ['React', 'Redux', 'Styled Components', 'Node.js'],
     },
     {
       id: '3',
@@ -53,174 +64,267 @@ const Experience = () => {
       descriptionKeys: [
         'experience.edu1.desc1',
         'experience.edu1.desc2',
-        'experience.edu1.desc3',
       ],
     },
   ]
 
-  const certifications = [
-    { nameKey: 'experience.cert1.name', orgKey: 'experience.cert1.org', year: '2020' },
-    { nameKey: 'experience.cert2.name', orgKey: 'experience.cert2.org', year: '2022' },
+  const festivals: FestivalItem[] = [
+    {
+      nameKey: 'experience.festival1.name',
+      orgKey: 'experience.festival1.org',
+      yearKey: 'experience.festival1.year',
+      descKey: 'experience.festival1.desc',
+    },
+    {
+      nameKey: 'experience.festival2.name',
+      orgKey: 'experience.festival2.org',
+      yearKey: 'experience.festival2.year',
+      descKey: 'experience.festival2.desc',
+    },
   ]
 
   const workExperiences = experiences.filter((e) => e.type === 'work')
   const educationExperiences = experiences.filter((e) => e.type === 'education')
 
   const SectionTitle = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
-    <div className="flex items-center gap-3 mb-8">
-      <div className="p-2 rounded-xl bg-primary/10 text-primary flex">
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
+      <Box
+        sx={{
+          p: 1,
+          borderRadius: 2,
+          bgcolor: 'primary.main',
+          color: '#fff',
+          display: 'flex',
+          opacity: 0.85,
+        }}
+      >
         {icon}
-      </div>
-      <h3 className="text-lg font-bold text-[#1a1a2e] dark:text-white">{label}</h3>
-    </div>
+      </Box>
+      <Typography variant="h6" fontWeight={700}>{label}</Typography>
+    </Box>
   )
 
   const TimelineItem = ({ exp }: { exp: ExperienceItem }) => (
-    <div className="relative pl-8 mb-6 last:mb-0">
+    <Box sx={{ position: 'relative', pl: 3, mb: 3, '&:last-child': { mb: 0 } }}>
       {/* Timeline dot */}
-      <div className="absolute left-0 top-2 w-4 h-4 rounded-full bg-primary border-4 border-white dark:border-[#0a0a0f] z-10" />
-      <div className="p-5 rounded-2xl bg-[#f8f9fa] dark:bg-[#12121a] border border-black/[0.08] dark:border-white/[0.08] hover:border-primary/50 transition-all duration-300">
-        <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
-          <span className="font-bold text-[#1a1a2e] dark:text-white">{t(exp.titleKey)}</span>
-          <span className="text-xs px-2 py-1 rounded-lg bg-primary/10 text-primary font-medium">
-            {t(exp.periodKey)}
-          </span>
-        </div>
-        <p className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0] mb-3">
+      <Box
+        sx={{
+          position: 'absolute',
+          left: 0,
+          top: 8,
+          width: 16,
+          height: 16,
+          borderRadius: '50%',
+          bgcolor: 'primary.main',
+          border: '4px solid',
+          borderColor: 'background.default',
+          zIndex: 10,
+        }}
+      />
+      <Paper
+        elevation={0}
+        sx={{
+          p: 2.5,
+          borderRadius: 3,
+          border: '1px solid',
+          borderColor: 'divider',
+          '&:hover': { borderColor: 'primary.main', opacity: 0.9 },
+          transition: 'all 0.3s ease',
+          bgcolor: 'background.paper',
+        }}
+      >
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1, mb: 1 }}>
+          <Typography variant="body2" fontWeight={700}>{t(exp.titleKey)}</Typography>
+          <Chip
+            label={t(exp.periodKey)}
+            size="small"
+            sx={{
+              fontSize: '0.7rem',
+              fontWeight: 500,
+              color: 'primary.main',
+              bgcolor: 'primary.main',
+              opacity: 1,
+              '& .MuiChip-label': { color: '#fff', px: 1 },
+              background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+            }}
+          />
+        </Box>
+        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.5 }}>
           {t(exp.organizationKey)}
-        </p>
-        <ul className="list-none p-0 m-0 mb-3 flex flex-col gap-1.5">
+        </Typography>
+        <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0, mb: 1.5, display: 'flex', flexDirection: 'column', gap: 0.75 }}>
           {exp.descriptionKeys.map((descKey, i) => (
-            <li key={i} className="flex items-start gap-2">
-              <span className="text-primary mt-0.5 leading-none flex-shrink-0">•</span>
-              <span className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0] leading-relaxed">{t(descKey)}</span>
-            </li>
+            <Box component="li" key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+              <Box sx={{ color: 'primary.main', mt: 0.25, lineHeight: 1, flexShrink: 0 }}>•</Box>
+              <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.6 }}>{t(descKey)}</Typography>
+            </Box>
           ))}
-        </ul>
+        </Box>
         {exp.techStack && (
-          <div className="flex flex-wrap gap-1.5">
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
             {exp.techStack.map((tech) => (
-              <span
+              <Chip
                 key={tech}
-                className="text-xs px-2 py-0.5 rounded-md bg-white dark:bg-[#0a0a0f] border border-black/[0.08] dark:border-white/[0.08] text-[#4a4a5a] dark:text-[#a0a0b0]"
-              >
-                {tech}
-              </span>
+                label={tech}
+                size="small"
+                variant="outlined"
+                sx={{ fontSize: '0.7rem', borderColor: 'divider', color: 'text.secondary', height: 20 }}
+              />
             ))}
-          </div>
+          </Box>
         )}
-      </div>
-    </div>
+      </Paper>
+    </Box>
   )
 
   return (
-    <section
+    <Box
+      component="section"
       id="experience"
       ref={ref}
-      className="py-20 md:py-32 bg-white dark:bg-[#0a0a0f]"
+      sx={{ py: { xs: 10, md: 16 }, bgcolor: 'background.default' }}
     >
-      <div className="max-w-6xl mx-auto px-4 md:px-8">
+      <Box sx={{ maxWidth: 1152, mx: 'auto', px: { xs: 2, md: 4 } }}>
         {/* Header */}
-        <div
-          className="text-center mb-16 transition-all duration-700"
-          style={{
+        <Box
+          sx={{
+            textAlign: 'center',
+            mb: 8,
+            transition: 'all 0.7s ease',
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
           }}
         >
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">
+          <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 600, letterSpacing: '0.2em' }}>
             {t('experience.label')}
-          </p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-2 mb-4">
+          </Typography>
+          <Typography
+            variant="h2"
+            sx={{ fontSize: { xs: '1.875rem', md: '2.25rem', lg: '3rem' }, fontWeight: 700, mt: 1, mb: 2 }}
+          >
             {t('experience.title1')}{' '}
-            <span className="gradient-text">{t('experience.title2')}</span>
-          </h2>
-          <p className="text-[#4a4a5a] dark:text-[#a0a0b0] max-w-2xl mx-auto">
+            <Box component="span" className="gradient-text">{t('experience.title2')}</Box>
+          </Typography>
+          <Typography color="text.secondary" sx={{ maxWidth: 512, mx: 'auto' }}>
             {t('experience.description')}
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <Grid container spacing={6}>
           {/* Work Experience */}
-          <div
-            className="transition-all duration-700"
-            style={{
+          <Grid
+            size={{ xs: 12, lg: 6 }}
+            sx={{
+              transition: 'all 0.7s ease 100ms',
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
-              transitionDelay: '100ms',
             }}
           >
             <SectionTitle
-              icon={
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                </svg>
-              }
+              icon={<WorkIcon sx={{ fontSize: 20 }} />}
               label={t('experience.workTitle')}
             />
-            <div className="relative">
+            <Box sx={{ position: 'relative' }}>
               {/* Timeline line */}
-              <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-black/[0.08] dark:bg-white/[0.08]" />
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: 7,
+                  top: 8,
+                  bottom: 8,
+                  width: 2,
+                  bgcolor: 'divider',
+                }}
+              />
               {workExperiences.map((exp) => (
                 <TimelineItem key={exp.id} exp={exp} />
               ))}
-            </div>
-          </div>
+            </Box>
+          </Grid>
 
-          {/* Education & Certifications */}
-          <div
-            className="transition-all duration-700"
-            style={{
+          {/* Education & Festivals */}
+          <Grid
+            size={{ xs: 12, lg: 6 }}
+            sx={{
+              transition: 'all 0.7s ease 200ms',
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
-              transitionDelay: '200ms',
             }}
           >
             <SectionTitle
-              icon={
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                  <path d="M6 12v5c3 3 9 3 12 0v-5" />
-                </svg>
-              }
+              icon={<SchoolIcon sx={{ fontSize: 20 }} />}
               label={t('experience.eduTitle')}
             />
-            <div className="relative mb-10">
-              <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-black/[0.08] dark:bg-white/[0.08]" />
+            <Box sx={{ position: 'relative', mb: 5 }}>
+              <Box sx={{ position: 'absolute', left: 7, top: 8, bottom: 8, width: 2, bgcolor: 'divider' }} />
               {educationExperiences.map((exp) => (
                 <TimelineItem key={exp.id} exp={exp} />
               ))}
-            </div>
+            </Box>
 
-            {/* Certifications */}
+            {/* Festivals / Events */}
             <SectionTitle
-              icon={
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="8" r="7" />
-                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-                </svg>
-              }
-              label={t('experience.certTitle')}
+              icon={<CelebrationIcon sx={{ fontSize: 20 }} />}
+              label={t('experience.festivalTitle')}
             />
-            <div className="flex flex-col gap-3">
-              {/* {certifications.map((cert, index) => (
-                <div
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+              {festivals.map((festival, index) => (
+                <Paper
                   key={index}
-                  className="flex items-center justify-between p-4 rounded-xl bg-[#f8f9fa] dark:bg-[#12121a] border border-black/[0.08] dark:border-white/[0.08] hover:border-primary/50 transition-all duration-300"
+                  elevation={0}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    p: 2,
+                    borderRadius: 3,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    '&:hover': { borderColor: 'primary.main' },
+                    transition: 'all 0.3s ease',
+                    bgcolor: 'background.paper',
+                    flexWrap: 'wrap',
+                    gap: 1,
+                  }}
                 >
-                  <div>
-                    <p className="text-sm font-medium text-[#1a1a2e] dark:text-white">{t(cert.nameKey)}</p>
-                    <p className="text-xs text-[#4a4a5a] dark:text-[#a0a0b0]">{t(cert.orgKey)}</p>
-                  </div>
-                  <span className="text-sm text-primary font-medium">{cert.year}</span>
-                </div>
-              ))} */}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Box
+                      sx={{
+                        p: 0.75,
+                        borderRadius: 1.5,
+                        bgcolor: 'primary.main',
+                        color: '#fff',
+                        display: 'flex',
+                        opacity: 0.85,
+                      }}
+                    >
+                      <EmojiEventsIcon sx={{ fontSize: 16 }} />
+                    </Box>
+                    <Box>
+                      <Typography variant="body2" fontWeight={600}>{t(festival.nameKey)}</Typography>
+                      <Typography variant="caption" color="text.secondary">{t(festival.descKey)}</Typography>
+                    </Box>
+                  </Box>
+                  <Chip
+                    label={t(festival.yearKey)}
+                    size="small"
+                    sx={{
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      color: 'primary.main',
+                      '& .MuiChip-label': { color: 'inherit' },
+                      bgcolor: 'transparent',
+                      border: '1px solid',
+                      borderColor: 'primary.main',
+                    }}
+                  />
+                </Paper>
+              ))}
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
+    </Box>
   )
 }
 

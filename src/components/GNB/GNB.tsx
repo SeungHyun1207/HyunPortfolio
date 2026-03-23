@@ -1,6 +1,14 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useSettings } from '@/contexts/SettingsContext'
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  Button,
+  Typography,
+} from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
 import FullMenu from './FullMenu'
 
 export interface MenuItem {
@@ -35,9 +43,6 @@ const GNB = () => {
     return () => { document.body.style.overflow = '' }
   }, [isFullMenuOpen])
 
-  // 섹션 스크롤 핸들러
-  // - 메인(/) : scrollIntoView — URL 변화 없음
-  // - 서브 페이지 : navigate('/') 후 state로 스크롤 위치 전달
   const handleSectionClick = useCallback((sectionId: string) => {
     if (location.pathname === '/') {
       document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
@@ -48,54 +53,86 @@ const GNB = () => {
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          scrolled
-            ? 'bg-white/90 dark:bg-[#12121a]/90 backdrop-blur-xl border-b border-black/[0.08] dark:border-white/[0.08]'
-            : 'bg-transparent'
-        }`}
+      <AppBar
+        position="fixed"
+        elevation={0}
+        sx={{
+          bgcolor: scrolled ? 'background.paper' : 'transparent',
+          backdropFilter: scrolled ? 'blur(20px)' : 'none',
+          borderBottom: scrolled ? '1px solid' : 'none',
+          borderColor: 'divider',
+          transition: 'all 0.3s ease',
+          backgroundImage: 'none',
+        }}
       >
-        <div className="max-w-[1200px] mx-auto px-4 md:px-8 h-16 flex items-center">
+        <Toolbar sx={{ maxWidth: 1200, mx: 'auto', width: '100%', px: { xs: 2, md: 4 }, minHeight: 64 }}>
           {/* Logo */}
-          <Link to="/" className="flex-shrink-0 no-underline">
-            <span className="gradient-text font-bold text-2xl hover:opacity-80 transition-opacity duration-150">
-              Hyun
-            </span>
+          <Link to="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
+            <Typography
+              className="gradient-text"
+              sx={{ fontWeight: 700, fontSize: '1.5rem', '&:hover': { opacity: 0.8 }, transition: 'opacity 0.15s' }}
+            >
+              SeungHyun
+            </Typography>
           </Link>
 
           {/* Center Nav (Desktop) */}
-          <nav className="hidden md:flex flex-1 justify-center gap-1">
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, flex: 1, justifyContent: 'center', gap: 0.5 }}>
             {menuItems.map((item) => (
-              <button
+              <Button
                 key={item.sectionId}
-                type="button"
                 onClick={() => handleSectionClick(item.sectionId)}
-                className="relative px-4 py-2 text-sm font-medium text-[#4a4a5a] dark:text-[#a0a0b0] hover:text-[#1a1a2e] dark:hover:text-white transition-colors duration-200 group bg-transparent border-none cursor-pointer"
+                sx={{
+                  position: 'relative',
+                  color: 'text.secondary',
+                  fontWeight: 500,
+                  fontSize: '0.875rem',
+                  px: 2,
+                  py: 1,
+                  '&:hover': { color: 'text.primary', bgcolor: 'transparent' },
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    bottom: 4,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 0,
+                    height: 2,
+                    bgcolor: 'primary.main',
+                    borderRadius: 1,
+                    transition: 'width 0.3s ease',
+                  },
+                  '&:hover::after': { width: '70%' },
+                }}
               >
                 {t(item.labelKey)}
-                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-[70%]" />
-              </button>
+              </Button>
             ))}
-          </nav>
+          </Box>
 
           {/* Right - Menu Button */}
-          <div className="ml-auto">
-            <button
+          <Box sx={{ ml: 'auto' }}>
+            <Button
               onClick={() => setIsFullMenuOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-[#4a4a5a] dark:text-[#a0a0b0] border border-black/[0.08] dark:border-white/[0.08] rounded-lg hover:border-primary hover:text-[#1a1a2e] dark:hover:text-white transition-all duration-200"
+              variant="outlined"
+              startIcon={<MenuIcon sx={{ width: 16, height: 16 }} />}
               aria-label={t('nav.openMenu')}
+              sx={{
+                color: 'text.secondary',
+                borderColor: 'divider',
+                fontSize: '0.875rem',
+                fontWeight: 500,
+                py: 0.75,
+                px: 1.5,
+                '&:hover': { borderColor: 'primary.main', color: 'text.primary', bgcolor: 'transparent' },
+                minWidth: 'auto',
+              }}
             >
-              <span className="hidden sm:inline">{t('nav.menu')}</span>
-              {/* Hamburger icon */}
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header>
+              <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('nav.menu')}</Box>
+            </Button>
+          </Box>
+        </Toolbar>
+      </AppBar>
 
       <FullMenu
         isOpen={isFullMenuOpen}

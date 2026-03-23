@@ -1,26 +1,28 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { SettingsProvider } from '@/contexts/SettingsContext'
+import { ThemeProvider } from '@mui/material/styles'
+import { SettingsProvider, useSettings } from '@/contexts/SettingsContext'
+import { createAppTheme } from '@/theme'
 import App from '@/App'
 import '@styles/global.css'
 
 /**
- * React 애플리케이션 진입점
- *
- * 설정:
- * - StrictMode: 개발 모드에서 잠재적 문제 감지
- * - BrowserRouter: HTML5 History API 기반 라우팅
- * - SettingsProvider: 테마/언어 전역 상태 관리
- *
- * 배포 옵션:
- * - basename="/portfolio" : 서브 디렉토리 배포 시 사용
+ * MUI 테마를 SettingsContext의 theme 상태와 동기화하는 래퍼 컴포넌트
  */
+const MUIThemeWrapper = ({ children }: { children: React.ReactNode }) => {
+  const { theme } = useSettings()
+  const muiTheme = createAppTheme(theme)
+  return <ThemeProvider theme={muiTheme}>{children}</ThemeProvider>
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <SettingsProvider>
       <BrowserRouter>
-        <App />
+        <MUIThemeWrapper>
+          <App />
+        </MUIThemeWrapper>
       </BrowserRouter>
     </SettingsProvider>
   </StrictMode>,
