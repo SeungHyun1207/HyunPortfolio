@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import Hero from '@components/Hero'
-import About from '@components/About'
-import Skills from '@components/Skills'
-import Projects from '@components/Projects'
-import Experience from '@components/Experience'
-import Contact from '@components/Contact'
+import Hero from '@views/pages/home/Hero'
+import About from '@views/pages/home/About'
+import Skills from '@views/pages/home/Skills'
+import Projects from '@views/pages/home/Projects'
+import Experience from '@views/pages/home/Experience'
+import Contact from '@views/pages/home/Contact'
 
 /**
  * Home 페이지

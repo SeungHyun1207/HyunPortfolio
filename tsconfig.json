@@ -18,17 +18,19 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@components/*": ["src/components/*"],
-      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/views/components/*"],
+      "@pages/*": ["src/views/pages/*"],
+      "@layouts": ["src/views/layouts/MainLayout.tsx"],
+      "@layouts/*": ["src/views/layouts/*"],
       "@views/*": ["src/views/*"],
+      "@assets/*": ["src/assets/*"],
       "@styles/*": ["src/styles/*"],
       "@hooks": ["src/hooks/index.ts"],
       "@hooks/*": ["src/hooks/*"],
       "@utils": ["src/utils/index.ts"],
       "@utils/*": ["src/utils/*"],
       "@types": ["src/types/index.ts"],
-      "@types/*": ["src/types/*"],
-      "@layouts/*": ["src/layouts/*"]
+      "@types/*": ["src/types/*"]
     }
   },
   "include": ["src"],

@@ -1,32 +1,18 @@
-import { Outlet } from 'react-router-dom'
-import GNB from '@components/GNB'
-import Settings from '@components/Settings'
-import { useSettings } from '@/contexts/SettingsContext'
-import { Box, Typography, Divider } from '@mui/material'
+/**
+ *  공통 Footer
+ */
 
-const MainLayout = () => {
-  const { t } = useSettings()
+import { useSettings } from "@/contexts/SettingsContext";
+import { Box, Divider, styled, Typography } from "@mui/material";
 
-  return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <GNB />
-      <Settings />
+const Footer = () => {
 
-      <Box component="main" sx={{ flex: 1, pt: '64px' }}>
-        <Outlet />
-      </Box>
+    const { t } = useSettings()
 
-      {/* Footer */}
-      <Box
-        component="footer"
-        sx={{
-          borderTop: '1px solid',
-          borderColor: 'divider',
-          bgcolor: 'background.paper',
-        }}
-      >
-        <Box sx={{ maxWidth: 1152, mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
-          <Box
+    return (
+        <FooterWrap>
+          <Box sx={{ maxWidth: 1152, mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
+            <Box
             sx={{
               display: 'flex',
               flexDirection: { xs: 'column', md: 'row' },
@@ -34,7 +20,7 @@ const MainLayout = () => {
               justifyContent: 'space-between',
               gap: 2,
             }}
-          >
+            >
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: { xs: 'center', md: 'flex-start' }, gap: 0.5 }}>
               <Typography className="gradient-text" sx={{ fontSize: '1.25rem', fontWeight: 700 }}>
                 SeungHyun
@@ -82,9 +68,18 @@ const MainLayout = () => {
             &copy; {new Date().getFullYear()} SeungHyun. {t('footer.rights')}
           </Typography>
         </Box>
-      </Box>
-    </Box>
-  )
+        </FooterWrap>
+    )
+
 }
 
-export default MainLayout
+
+export default Footer;
+
+
+const FooterWrap = styled("footer")({
+    borderTop : '1px solid',
+    borderColor : 'divider',
+    bgcolor : 'background.paper',
+})
+

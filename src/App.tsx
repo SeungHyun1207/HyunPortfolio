@@ -1,4 +1,4 @@
-import MainLayout from '@/layouts/MainLayout';
+import MainLayout from '@/views/layouts/MainLayout';
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import PrivateProjectRouters from './views/routers/privateProject/PrivateProjectRouters';
