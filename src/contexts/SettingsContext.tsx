@@ -1,71 +1,71 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
-type ThemeMode = 'dark' | 'light'
-type Language = 'ko' | 'en'
+type ThemeMode = 'dark' | 'light';
+type Language = 'ko' | 'en';
 
 interface SettingsContextType {
-  theme: ThemeMode
-  language: Language
-  setTheme: (theme: ThemeMode) => void
-  setLanguage: (language: Language) => void
-  t: (key: string) => string
+  theme: ThemeMode;
+  language: Language;
+  setTheme: (theme: ThemeMode) => void;
+  setLanguage: (language: Language) => void;
+  t: (key: string) => string;
 }
 
-const SettingsContext = createContext<SettingsContextType | null>(null)
+const SettingsContext = createContext<SettingsContextType | null>(null);
 
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setThemeState] = useState<ThemeMode>(() => {
     if (typeof window !== 'undefined') {
-      return (localStorage.getItem('theme') as ThemeMode) || 'dark'
+      return (localStorage.getItem('theme') as ThemeMode) || 'dark';
     }
-    return 'dark'
-  })
+    return 'dark';
+  });
 
   const [language, setLanguageState] = useState<Language>(() => {
     if (typeof window !== 'undefined') {
-      return (localStorage.getItem('language') as Language) || 'ko'
+      return (localStorage.getItem('language') as Language) || 'ko';
     }
-    return 'ko'
-  })
+    return 'ko';
+  });
 
   const setTheme = (newTheme: ThemeMode) => {
-    setThemeState(newTheme)
-    localStorage.setItem('theme', newTheme)
-  }
+    setThemeState(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
 
   const setLanguage = (newLanguage: Language) => {
-    setLanguageState(newLanguage)
-    localStorage.setItem('language', newLanguage)
-  }
+    setLanguageState(newLanguage);
+    localStorage.setItem('language', newLanguage);
+  };
 
   const t = (key: string): string => {
-    return translations[language][key] ?? key
-  }
+    return translations[language][key] ?? key;
+  };
 
   // Tailwind dark mode: HTML 요소에 'dark' 클래스 토글
   useEffect(() => {
-    const root = document.documentElement
+    const root = document.documentElement;
     if (theme === 'dark') {
-      root.classList.add('dark')
+      root.classList.add('dark');
     } else {
-      root.classList.remove('dark')
+      root.classList.remove('dark');
     }
-  }, [theme])
+  }, [theme]);
 
   return (
     <SettingsContext.Provider value={{ theme, language, setTheme, setLanguage, t }}>
       {children}
     </SettingsContext.Provider>
-  )
-}
+  );
+};
 
 export const useSettings = () => {
-  const context = useContext(SettingsContext)
+  const context = useContext(SettingsContext);
   if (!context) {
-    throw new Error('useSettings must be used within a SettingsProvider')
+    throw new Error('useSettings must be used within a SettingsProvider');
   }
-  return context
-}
+  return context;
+};
 
 /**
  * 번역 데이터
@@ -93,28 +93,36 @@ const translations: Record<Language, Record<string, string>> = {
     // Hero
     'hero.greeting': '안녕하세요',
     'hero.intro': '저는',
-    'hero.introName' : '승현',
+    'hero.introName': '승현',
     'hero.introSuffix': '입니다.',
-    'hero.description': '사용자 경험을 최우선으로 생각하며,\n클린 코드와 모던 기술로 가치를 만드는 개발자입니다.',
+    'hero.description':
+      '사용자 경험을 최우선으로 생각하며,\n클린 코드와 모던 기술로 가치를 만드는 개발자입니다.',
     'hero.aboutMe': '소개 보기',
     'hero.contact': '연락하기',
     'hero.scroll': '스크롤',
 
     // About
     'about.label': '소개',
-    'about.title1': '열정을 코드로 표현하는',
+    'about.title1': '코드로 가치를 만드는',
     'about.title2': '프론트엔드 개발자',
-    'about.description1': '안녕하세요! 저는 사용자 중심의 웹 경험을 만드는 것에 열정을 가진 프론트엔드 개발자입니다. React, TypeScript를 주력으로 사용하며, 항상 최신 기술 트렌드를 학습하고 적용합니다.',
-    'about.description2': '클린 코드와 최적화된 성능, 그리고 직관적인 UI/UX를 통해 사용자와 비즈니스 모두에게 가치를 전달하는 것이 제 목표입니다.',
-    'about.yearsExp': '경력',
-    'about.projects': '프로젝트',
-    'about.clients': '고객사',
-    'about.cleanArchitecture': '클린 아키텍처',
-    'about.cleanArchitectureDesc': '유지보수성과 확장성을 고려한 설계',
-    'about.performanceFirst': '성능 최우선',
-    'about.performanceFirstDesc': '최적화된 렌더링과 빠른 로딩 속도',
-    'about.responsiveDesign': '반응형 디자인',
-    'about.responsiveDesignDesc': '모든 디바이스에서 완벽한 경험',
+    'about.description1':
+      'JavaScript · HTML · CSS로 시작해 4년간 프론트엔드 실무를 쌓아온 개발자입니다. 현재는 React · TypeScript · Vite를 주력으로 사용하며, LG전자 · KT DS 등 대기업 프로젝트에 참여해 복잡한 비즈니스 요구사항을 직관적인 사용자 경험으로 풀어내고 있습니다.',
+    'about.description2':
+      '단순히 동작하는 코드가 아닌, 팀이 함께 유지보수할 수 있는 구조를 고민합니다. 컴포넌트 설계부터 상태 관리, 성능 최적화까지 — 오래 쓸 수 있는 프론트엔드를 만드는 것을 즐깁니다.',
+    'about.description3':
+      'AI를 적극 활용해 아이디어를 빠르게 실험하고, 혼자서도 완성도 높은 프로덕트를 만들어냅니다. 기술의 한계보다 가능성에 집중하며, 끊임없이 새로운 것을 만들고 싶은 개발자입니다.',
+    'about.status.company': '(주)제타소프트 재직중',
+    'about.status.career': '프론트엔드 4년차',
+    'about.status.location': '서울시 거주',
+    'about.status.seeking': '이직 준비중',
+    'about.mainTech': '주력 기술',
+    'about.libraries': '주요 라이브러리',
+    'about.highlight1.title': '대기업 프로젝트 실무 경험',
+    'about.highlight1.desc': 'LG전자 · KT DS 등 SI/SM 프로젝트 다수 참여',
+    'about.highlight2.title': 'UI 컴포넌트 라이브러리 구축',
+    'about.highlight2.desc': '사내 표준 컴포넌트 설계 및 팀 전체 생산성 향상',
+    'about.highlight3.title': 'AI 협업 개발',
+    'about.highlight3.desc': 'AI를 활용한 빠른 프로토타이핑과 아이디어 실현',
 
     // Skills
     'skills.label': '기술',
@@ -182,7 +190,7 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.title2': '일해요',
     'contact.description': '프로젝트 협업이나 채용 관련 문의는 언제든지 환영합니다',
     'contact.infoTitle': '연락처 정보',
-    'contact.emailValue' : 'seunghyun_1207@naver.com',
+    'contact.emailValue': 'seunghyun_1207@naver.com',
     'contact.followMe': '팔로우',
     'contact.formTitle': '메시지 보내기',
     'contact.nameLabel': '이름',
@@ -230,28 +238,36 @@ const translations: Record<Language, Record<string, string>> = {
     // Hero
     'hero.greeting': 'Hello',
     'hero.intro': "I'm",
-    'hero.introName' : 'SeungHyun',
+    'hero.introName': 'SeungHyun',
     'hero.introSuffix': '',
-    'hero.description': 'A developer who prioritizes user experience\nand creates value with clean code and modern technology.',
+    'hero.description':
+      'A developer who prioritizes user experience\nand creates value with clean code and modern technology.',
     'hero.aboutMe': 'About Me',
     'hero.contact': 'Contact',
     'hero.scroll': 'Scroll',
 
     // About
     'about.label': 'About Me',
-    'about.title1': 'Expressing passion through code',
+    'about.title1': 'Building value through code,',
     'about.title2': 'Frontend Developer',
-    'about.description1': 'Hello! I am a frontend developer passionate about creating user-centered web experiences. I primarily work with React and TypeScript, always learning and applying the latest technology trends.',
-    'about.description2': 'My goal is to deliver value to both users and businesses through clean code, optimized performance, and intuitive UI/UX.',
-    'about.yearsExp': 'Years Exp',
-    'about.projects': 'Projects',
-    'about.clients': 'Clients',
-    'about.cleanArchitecture': 'Clean Architecture',
-    'about.cleanArchitectureDesc': 'Design considering maintainability and scalability',
-    'about.performanceFirst': 'Performance First',
-    'about.performanceFirstDesc': 'Optimized rendering and fast loading speed',
-    'about.responsiveDesign': 'Responsive Design',
-    'about.responsiveDesignDesc': 'Perfect experience on all devices',
+    'about.description1':
+      'A frontend developer with 4 years of hands-on experience, starting from JavaScript · HTML · CSS and growing into React · TypeScript · Vite. Participated in enterprise-level projects for LG Electronics and KT DS, turning complex business requirements into clean, intuitive user experiences.',
+    'about.description2':
+      'I focus on code that lasts — not just code that works. From component architecture to state management and performance optimization, I build frontends that teams can confidently maintain and scale.',
+    'about.description3':
+      'I actively leverage AI as a creative partner to rapidly experiment with ideas and ship polished products independently. I focus on possibilities over limitations, always looking to build something new.',
+    'about.status.company': 'ZettaSoft Inc. · Currently Employed',
+    'about.status.career': '4 Years Frontend Experience',
+    'about.status.location': 'Seoul, South Korea',
+    'about.status.seeking': 'Open to new opportunities',
+    'about.mainTech': 'Main Tech Stack',
+    'about.libraries': 'Key Libraries',
+    'about.highlight1.title': 'Enterprise Project Experience',
+    'about.highlight1.desc': 'Delivered projects for LG Electronics, KT DS & more',
+    'about.highlight2.title': 'UI Component Library',
+    'about.highlight2.desc': 'Designed in-house component system for team productivity',
+    'about.highlight3.title': 'AI-Powered Development',
+    'about.highlight3.desc': 'Rapid prototyping and product delivery with AI collaboration',
 
     // Skills
     'skills.label': 'Skills',
@@ -286,7 +302,8 @@ const translations: Record<Language, Record<string, string>> = {
     'experience.work1.org': 'ZettaSoft Inc.',
     'experience.work1.period': '2022.02 - Present',
     'experience.work1.desc1': 'Developed large-scale web applications using React and TypeScript',
-    'experience.work1.desc2': 'Participated in multiple projects for LG Electronics, KT DS, and others',
+    'experience.work1.desc2':
+      'Participated in multiple projects for LG Electronics, KT DS, and others',
     'experience.work1.desc3': 'QlikSense BI tool customization and migration',
     'experience.work1.desc4': 'Designed and developed in-house standard UI component library',
     'experience.edu1.title': 'Dept. of Computer Information & Communications',
@@ -303,7 +320,8 @@ const translations: Record<Language, Record<string, string>> = {
     'experience.festival1.name': 'AI FESTA 2025',
     'experience.festival1.org': 'AI FESTA',
     'experience.festival1.year': '2025',
-    'experience.festival1.desc': 'Explored latest AI trends and technologies, experienced various AI services',
+    'experience.festival1.desc':
+      'Explored latest AI trends and technologies, experienced various AI services',
     'experience.festival2.name': 'AI Conference 2026',
     'experience.festival2.org': 'AI Conference',
     'experience.festival2.year': '2026',
@@ -319,7 +337,7 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.title2': 'Work Together',
     'contact.description': 'Feel free to reach out for project collaboration or job opportunities',
     'contact.infoTitle': 'Contact Information',
-    'contact.emailValue' : 'seunghyun_1207@naver.com',
+    'contact.emailValue': 'seunghyun_1207@naver.com',
     'contact.followMe': 'Follow Me',
     'contact.formTitle': 'Send Message',
     'contact.nameLabel': 'Name',
@@ -345,6 +363,6 @@ const translations: Record<Language, Record<string, string>> = {
     'footer.rights': 'All rights reserved.',
     'footer.role': 'Frontend Developer',
   },
-}
+};
 
-export default SettingsContext
+export default SettingsContext;
