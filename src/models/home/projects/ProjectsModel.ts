@@ -22,7 +22,7 @@ export interface PersonalProject {
   badge: string;
   accentColor: string;
   path?: string;
-  status: 'live' | 'wip' | 'planned';
+  status: 'completed' | 'in-progress' | 'planned';
 }
 
 export interface VibeProject {

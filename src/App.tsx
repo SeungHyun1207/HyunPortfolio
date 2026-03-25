@@ -1,6 +1,7 @@
 import MainLayout from '@/views/layouts/MainLayout';
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import PersonalProjectRouters from './views/routers/personalProject/PersonalProjectRouters';
 import VibeProjectRouters from './views/routers/vibeProject/VibeProjectRouters';
 
 /**
@@ -65,6 +66,7 @@ function App() {
         {/* MainLayout이 적용되는 라우트 그룹 */}
         <Route path="" element={<MainLayout />}>
           <Route index element={<Home />} />
+          <Route path="/personalProject/*" element={<PersonalProjectRouters />} />
           <Route path="/vibeProject/*" element={<VibeProjectRouters />} />
         </Route>
 

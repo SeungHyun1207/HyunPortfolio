@@ -15,19 +15,20 @@ import { translations } from './projects.i18n';
 
 const PERSONAL_PROJECTS: PersonalProject[] = [
   {
-    id: 'company-dashboard',
-    title: { ko: '회사 전용 대시보드', en: 'Company Admin Dashboard' },
+    id: 'intranet',
+    title: { ko: '사내관리시스템', en: 'In-house Management System' },
     description: {
-      ko: '사내 업무 현황을 한눈에 파악할 수 있는 관리자 대시보드. KPI 지표 시각화, 부서별 현황 차트, 공지 관리, 일정 캘린더를 통합 제공합니다.',
-      en: 'An admin dashboard for real-time business monitoring. Includes KPI visualization, department charts, notice management, and a schedule calendar.',
+      ko: '직원 및 관리자가 사용하는 사내 통합 관리 시스템. KPI 지표 시각화, 부서별 현황 차트, 공지 관리, 일정 캘린더를 통합 제공합니다.',
+      en: 'An integrated in-house management system for employees and admins. Includes KPI visualization, department charts, notice management, and a schedule calendar.',
     },
     techStack: ['React', 'TypeScript', 'MUI', 'Recharts'],
     icon: '🏢',
-    badge: 'Dashboard',
+    badge: 'Management',
     accentColor: '#6366f1',
-    status: 'wip',
+    status: 'in-progress',
+    path: '/personalProject/intranet',
   },
-]
+];
 
 const VIBE_PROJECTS: VibeProject[] = [
   {
@@ -1026,14 +1027,36 @@ const Projects = () => {
                             borderRadius: 1,
                             fontSize: '0.6rem',
                             fontWeight: 700,
-                            ...(project.status === 'live'
-                              ? { color: '#4ade80', bgcolor: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.3)' }
-                              : project.status === 'wip'
-                                ? { color: '#fb923c', bgcolor: 'rgba(251,146,60,0.12)', border: '1px solid rgba(251,146,60,0.3)' }
-                                : { color: '#94a3b8', bgcolor: 'rgba(148,163,184,0.12)', border: '1px solid rgba(148,163,184,0.3)' }),
+                            ...(project.status === 'completed'
+                              ? {
+                                  color: '#4ade80',
+                                  bgcolor: 'rgba(74,222,128,0.12)',
+                                  border: '1px solid rgba(74,222,128,0.3)',
+                                }
+                              : project.status === 'in-progress'
+                                ? {
+                                    color: '#fb923c',
+                                    bgcolor: 'rgba(251,146,60,0.12)',
+                                    border: '1px solid rgba(251,146,60,0.3)',
+                                  }
+                                : {
+                                    color: '#94a3b8',
+                                    bgcolor: 'rgba(148,163,184,0.12)',
+                                    border: '1px solid rgba(148,163,184,0.3)',
+                                  }),
                           }}
                         >
-                          {project.status === 'live' ? 'LIVE' : project.status === 'wip' ? 'WIP' : 'PLANNED'}
+                          {project.status === 'completed'
+                            ? language === 'ko'
+                              ? '개발완료'
+                              : 'Completed'
+                            : project.status === 'in-progress'
+                              ? language === 'ko'
+                                ? '개발중'
+                                : 'In Progress'
+                              : language === 'ko'
+                                ? '계획중'
+                                : 'Planned'}
                         </Box>
                         {/* 카테고리 뱃지 */}
                         <Box
@@ -1073,14 +1096,26 @@ const Projects = () => {
                       >
                         {project.description[language]}
                       </Typography>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: project.path ? 2 : 0 }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: 0.75,
+                          mb: project.path ? 2 : 0,
+                        }}
+                      >
                         {project.techStack.map((tech) => (
                           <Chip
                             key={tech}
                             label={tech}
                             size="small"
                             variant="outlined"
-                            sx={{ fontSize: '0.7rem', borderColor: 'divider', color: 'text.secondary', height: 20 }}
+                            sx={{
+                              fontSize: '0.7rem',
+                              borderColor: 'divider',
+                              color: 'text.secondary',
+                              height: 20,
+                            }}
                           />
                         ))}
                       </Box>
@@ -1130,7 +1165,11 @@ const Projects = () => {
                   >
                     {language === 'ko' ? '다음 프로젝트' : 'Next Project'}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.4, mt: 0.5 }}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ opacity: 0.4, mt: 0.5 }}
+                  >
                     {language === 'ko' ? '곧 추가됩니다' : 'Coming Soon'}
                   </Typography>
                 </Paper>

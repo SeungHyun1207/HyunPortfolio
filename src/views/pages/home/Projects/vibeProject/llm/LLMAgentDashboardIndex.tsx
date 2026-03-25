@@ -19,7 +19,7 @@ import {
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 import { useState, useCallback } from "react";
-import type { ChatRoom, AIMessage, ModelId, ModelOption } from "@models/projects/llm/LLMAgentDashboardModel";
+import type { ChatRoom, AIMessage, ModelId, ModelOption } from "@models/vibeProject/llm/LLMAgentDashboardModel";
 import { AIMessageMock, ChatRoomMock } from "@/mocks/projects/llm/LLMAgentMockData";
 
 // ─── Mock 초기 데이터 ──────────────────────────────────────────────────────────
