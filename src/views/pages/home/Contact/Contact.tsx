@@ -202,7 +202,7 @@ const Contact = () => {
                 <TextField
                   id="email"
                   type="email"
-                  placeholder="example@email.com"
+                  placeholder={t('emailPlaceholder')}
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required

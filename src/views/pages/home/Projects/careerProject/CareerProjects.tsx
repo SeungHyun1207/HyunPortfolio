@@ -11,7 +11,7 @@ import { Box, Button, Chip, Paper, Tab, Tabs, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { translations } from './projects.i18n';
+import { translations } from './CareerProjects.i18n';
 
 const PERSONAL_PROJECTS: PersonalProject[] = [
   {
@@ -85,7 +85,7 @@ const VIBE_PROJECTS: VibeProject[] = [
   },
 ];
 
-const Projects = () => {
+const CareerProjects = () => {
   const { t, language } = usePageTranslation(translations);
   const navigate = useNavigate();
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
@@ -340,11 +340,11 @@ const Projects = () => {
     },
   ];
 
-  const filters: { label: { ko: string; en: string }; value: FilterType }[] = [
-    { label: { ko: '전체', en: 'All' }, value: 'all' },
-    { label: { ko: 'React', en: 'React' }, value: 'react' },
-    { label: { ko: 'Java', en: 'Java' }, value: 'java' },
-    { label: { ko: '기타', en: 'Other' }, value: 'other' },
+  const filters: { labelKey: string; value: FilterType }[] = [
+    { labelKey: 'filterAll', value: 'all' },
+    { labelKey: 'filterReact', value: 'react' },
+    { labelKey: 'filterJava', value: 'java' },
+    { labelKey: 'filterOther', value: 'other' },
   ];
 
   const filteredProjects =
@@ -508,15 +508,15 @@ const Projects = () => {
                     mb: 0.5,
                   }}
                 >
-                  Career Journey
+                  {t('careerJourneyLabel')}
                 </Typography>
                 <Typography sx={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff', mb: 0.5 }}>
-                  {language === 'ko' ? '2022 → 현재까지의 여정' : '2022 → Present Journey'}
+                  {t('careerJourneyTitle')}
                 </Typography>
                 <Typography sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)' }}>
                   {language === 'ko'
-                    ? `총 ${projects.length}개 프로젝트 · 3년+`
-                    : `${projects.length} projects · 3+ years`}
+                    ? `총 ${projects.length}${t('careerJourneySummary')}`
+                    : `${projects.length}${t('careerJourneySummary')}`}
                 </Typography>
               </Box>
 
@@ -553,8 +553,7 @@ const Projects = () => {
                     <Typography
                       sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.25)', flexShrink: 0 }}
                     >
-                      {group.items.length}
-                      {language === 'ko' ? '개' : ' proj'}
+                      {group.items.length}{t('yearProjectSuffix')}
                     </Typography>
                   </Box>
 
@@ -751,9 +750,7 @@ const Projects = () => {
                   <Typography
                     sx={{ fontSize: '0.78rem', fontWeight: 500, color: 'rgba(255,255,255,0.6)' }}
                   >
-                    {language === 'ko'
-                      ? '현재 진행 중 · 성장 계속'
-                      : 'Currently Active · Still Growing'}
+                    {t('currentlyActive')}
                   </Typography>
                 </Box>
               </Box>
@@ -769,12 +766,10 @@ const Projects = () => {
               }}
             >
               <Typography variant="h5" fontWeight={700} mb={0.5}>
-                {language === 'ko' ? '프로젝트 상세' : 'Project Details'}
+                {t('projectDetailTitle')}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {language === 'ko'
-                  ? '각 프로젝트의 목표와 기여 내용을 확인하세요'
-                  : 'Explore goals and contributions of each project'}
+                {t('projectDetailDesc')}
               </Typography>
             </Box>
 
@@ -816,7 +811,7 @@ const Projects = () => {
                         }),
                   }}
                 >
-                  {filter.label[language]}
+                  {t(filter.labelKey)}
                 </Button>
               ))}
             </Box>
@@ -926,7 +921,7 @@ const Projects = () => {
                         ))}
                       </Box>
                       <Typography variant="caption" color="text.secondary" mb={2}>
-                        {language === 'ko' ? '담당: ' : 'Role: '}
+                        {t('roleLabel')}
                         <Box component="span" sx={{ color: 'text.primary', fontWeight: 500 }}>
                           {project.role[language]}
                         </Box>
@@ -967,12 +962,10 @@ const Projects = () => {
             {/* 소제목 */}
             <Box sx={{ textAlign: 'center', mb: 5 }}>
               <Typography variant="h5" fontWeight={700} mb={1}>
-                {language === 'ko' ? '개인 프로젝트' : 'Personal Projects'}
+                {t('personalProjectsTitle')}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {language === 'ko'
-                  ? '직접 기획하고 개발한 사이드 프로젝트입니다.'
-                  : 'Side projects I planned and built on my own.'}
+                {t('personalProjectsDesc')}
               </Typography>
             </Box>
 
@@ -1047,16 +1040,10 @@ const Projects = () => {
                           }}
                         >
                           {project.status === 'completed'
-                            ? language === 'ko'
-                              ? '개발완료'
-                              : 'Completed'
+                            ? t('statusCompleted')
                             : project.status === 'in-progress'
-                              ? language === 'ko'
-                                ? '개발중'
-                                : 'In Progress'
-                              : language === 'ko'
-                                ? '계획중'
-                                : 'Planned'}
+                              ? t('statusInProgress')
+                              : t('statusPlanned')}
                         </Box>
                         {/* 카테고리 뱃지 */}
                         <Box
@@ -1125,7 +1112,7 @@ const Projects = () => {
                           fontWeight={600}
                           sx={{ color: project.accentColor, mt: 'auto' }}
                         >
-                          {language === 'ko' ? '데모 보기 →' : 'View Demo →'}
+                          {t('viewDemo')}
                         </Typography>
                       )}
                     </Box>
@@ -1163,14 +1150,14 @@ const Projects = () => {
                       opacity: 0.5,
                     }}
                   >
-                    {language === 'ko' ? '다음 프로젝트' : 'Next Project'}
+                    {t('nextProject')}
                   </Typography>
                   <Typography
                     variant="caption"
                     color="text.secondary"
                     sx={{ opacity: 0.4, mt: 0.5 }}
                   >
-                    {language === 'ko' ? '곧 추가됩니다' : 'Coming Soon'}
+                    {t('comingSoon')}
                   </Typography>
                 </Paper>
               </Grid>
@@ -1191,7 +1178,7 @@ const Projects = () => {
             {/* 소제목 */}
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-[#1a1a2e] dark:text-white mb-2">
-                {language === 'ko' ? '바이브 프로젝트' : 'Vibe Projects'}
+                {t('vibeProjectsTitle')}
               </h3>
               <p className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0]">{t('vibeDesc')}</p>
             </div>
@@ -1265,7 +1252,7 @@ const Projects = () => {
                         className="text-xs font-semibold mt-auto"
                         style={{ color: project.accentColor }}
                       >
-                        {language === 'ko' ? '데모 보기 →' : 'View Demo →'}
+                        {t('viewDemo')}
                       </span>
                     )}
                   </div>
@@ -1276,10 +1263,10 @@ const Projects = () => {
               <div className="rounded-2xl border-2 border-dashed border-black/[0.08] dark:border-white/[0.08] flex flex-col items-center justify-center py-16 px-6 text-center">
                 <span className="text-3xl mb-3">🌊</span>
                 <p className="text-xs font-semibold tracking-widest uppercase text-[#4a4a5a]/50 dark:text-[#a0a0b0]/50">
-                  {language === 'ko' ? '다음 바이브 프로젝트' : 'Next Vibe Project'}
+                  {t('nextVibeProject')}
                 </p>
                 <p className="text-xs text-[#4a4a5a]/40 dark:text-[#a0a0b0]/40 mt-1">
-                  {language === 'ko' ? '곧 추가됩니다' : 'Coming Soon'}
+                  {t('comingSoon')}
                 </p>
               </div>
             </div>
@@ -1290,4 +1277,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default CareerProjects;

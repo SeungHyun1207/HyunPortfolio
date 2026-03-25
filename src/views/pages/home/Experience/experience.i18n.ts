@@ -25,7 +25,7 @@ export const translations = {
     edu2Period: '2019.03.04 - 2021.02.19',
     edu2Desc1: '컴퓨터공학 전공 학사 학위 취득',
     edu2Desc2: '알고리즘, 자료구조, 소프트웨어 공학 수강',
-    edu2Desc3: '졸업 프로젝트: AI 기반 추천 시스템 개발',
+    edu2Desc3: '졸업 프로젝트 : 리듬게임 제작',
     festival1Name: 'AI FESTA 2025',
     festival1Org: 'AI FESTA',
     festival1Year: '2025',
@@ -65,7 +65,7 @@ export const translations = {
     edu2Period: '2019.03.04 - 2021.02.19',
     edu2Desc1: "Bachelor's degree in Computer Science",
     edu2Desc2: 'Studied algorithms, data structures, and software engineering',
-    edu2Desc3: 'Graduation project: AI-based recommendation system',
+    edu2Desc3: 'Graduation project : Rhythmic game production',
     festival1Name: 'AI FESTA 2025',
     festival1Org: 'AI FESTA',
     festival1Year: '2025',
@@ -79,4 +79,4 @@ export const translations = {
     cert2Name: 'AWS Certified Developer',
     cert2Org: 'Amazon',
   },
-}
+};

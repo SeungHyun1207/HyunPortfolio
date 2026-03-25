@@ -1,6 +1,7 @@
 export const translations = {
   ko: {
     label: '소개',
+    profileAlt: '승현 프로필 이미지',
     title1: '코드로 가치를 만드는',
     title2: '프론트엔드 개발자',
     description1: 'JavaScript · HTML · CSS로 시작해 4년간 프론트엔드 실무를 쌓아온 개발자입니다. 현재는 React · TypeScript · Vite를 주력으로 사용하며, LG전자 · KT DS 등 대기업 프로젝트에 참여해 복잡한 비즈니스 요구사항을 직관적인 사용자 경험으로 풀어내고 있습니다.',
@@ -20,6 +21,7 @@ export const translations = {
   },
   en: {
     label: 'About Me',
+    profileAlt: 'SeungHyun Profile',
     title1: 'Building value through code,',
     title2: 'Frontend Developer',
     description1: 'A frontend developer with 4 years of hands-on experience, starting from JavaScript · HTML · CSS and growing into React · TypeScript · Vite. Participated in enterprise-level projects for LG Electronics and KT DS, turning complex business requirements into clean, intuitive user experiences.',

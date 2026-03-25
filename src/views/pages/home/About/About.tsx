@@ -15,9 +15,9 @@ const About = () => {
 
   // 현재 상태 정보 카드
   const statusCards = [
-    { icon: <WorkIcon sx={{ fontSize: 16 }} />, label: t('status.company') },
-    { icon: <CalendarTodayIcon sx={{ fontSize: 16 }} />, label: t('status.career') },
-    { icon: <LocationOnIcon sx={{ fontSize: 16 }} />, label: t('status.location') },
+    { icon: <WorkIcon sx={{ fontSize: 16 }} />, label: t('statusCompany') },
+    { icon: <CalendarTodayIcon sx={{ fontSize: 16 }} />, label: t('statusCareer') },
+    { icon: <LocationOnIcon sx={{ fontSize: 16 }} />, label: t('statusLocation') },
     // { icon: <SearchIcon sx={{ fontSize: 16 }} />, label: t('status.seeking') },
   ];
 
@@ -54,8 +54,8 @@ const About = () => {
           <path d="M8 21h8M12 17v4" />
         </svg>
       ),
-      titleKey: 'about.highlight1.title',
-      descKey: 'about.highlight1.desc',
+      titleKey: 'highlight1Title',
+      descKey: 'highlight1Desc',
     },
     {
       icon: (
@@ -71,8 +71,8 @@ const About = () => {
           <path d="M2 12l10 5 10-5" />
         </svg>
       ),
-      titleKey: 'about.highlight2.title',
-      descKey: 'about.highlight2.desc',
+      titleKey: 'highlight2Title',
+      descKey: 'highlight2Desc',
     },
     {
       icon: (
@@ -87,8 +87,8 @@ const About = () => {
           <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
         </svg>
       ),
-      titleKey: 'about.highlight3.title',
-      descKey: 'about.highlight3.desc',
+      titleKey: 'highlight3Title',
+      descKey: 'highlight3Desc',
     },
   ];
 
@@ -137,7 +137,7 @@ const About = () => {
                   <Box
                     component="img"
                     src={ProfileImg}
-                    alt="SeungHyun Profile"
+                    alt={t('profileAlt')}
                     sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                   />
                 </Paper>

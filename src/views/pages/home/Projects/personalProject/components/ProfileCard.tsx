@@ -1,7 +1,7 @@
+import useUserInfo from '@/stores/common/useUserInfo';
 import { FlexBox } from '@/views/layouts/CommonLayoutComponents';
 import ProfileImg from '@assets/img/Profile.jpg';
 import { styled } from '@mui/material';
-import useUserInfo from '@/stores/common/useUserInfo';
 
 const ProfileCard = () => {
   const { currentUser: _currentUser } = useUserInfo();
@@ -9,7 +9,7 @@ const ProfileCard = () => {
   return (
     <ProfileWrap>
       <ProfileImage src={ProfileImg} alt="SeungHyun Profile" />
-      <ProfileInfo></ProfileInfo>
+      <ProfileInfo>{_currentUser?.name}</ProfileInfo>
     </ProfileWrap>
   );
 };
