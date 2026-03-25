@@ -11,25 +11,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from "react";
-
-// ─── 타입 ──────────────────────────────────────────────────────────────────────
-
-type AlgoId = "bubble" | "selection" | "insertion" | "merge" | "quick";
-type BarState = "default" | "comparing" | "swapping" | "sorted" | "pivot";
-
-interface Bar {
-  value: number;
-  state: BarState;
-}
-
-interface AlgoOption {
-  id: AlgoId;
-  label: string;
-  color: string;
-  timeComplexity: string;
-  spaceComplexity: string;
-  description: string;
-}
+import type { AlgoId, BarState, Bar, AlgoOption, Step } from "@models/vibeProject/algo/AlgoVisualizerModel";
 
 // ─── 알고리즘 메타 ─────────────────────────────────────────────────────────────
 
@@ -77,8 +59,6 @@ const ALGORITHMS: AlgoOption[] = [
 ];
 
 // ─── 애니메이션 스텝 생성기 ────────────────────────────────────────────────────
-
-type Step = { arr: Bar[] };
 
 function cloneBars(bars: Bar[]): Bar[] {
   return bars.map((b) => ({ ...b }));

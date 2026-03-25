@@ -1,7 +1,7 @@
 import MainLayout from '@/views/layouts/MainLayout';
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import PrivateProjectRouters from './views/routers/privateProject/PrivateProjectRouters';
+import VibeProjectRouters from './views/routers/vibeProject/VibeProjectRouters';
 
 /**
  * Lazy Loading 페이지 컴포넌트
@@ -65,7 +65,7 @@ function App() {
         {/* MainLayout이 적용되는 라우트 그룹 */}
         <Route path="" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="/privateProject/*" element={<PrivateProjectRouters />} />
+          <Route path="/vibeProject/*" element={<VibeProjectRouters />} />
         </Route>
 
         {/* 404 - 모든 미매칭 경로 */}

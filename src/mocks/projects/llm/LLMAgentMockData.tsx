@@ -1,4 +1,4 @@
-import type { ChatRoom, AIMessage } from "@/models/projects/llm/LLMAgentDashboardModel";
+import type { ChatRoom, AIMessage } from "@models/projects/llm/LLMAgentDashboardModel";
 
 // -----------------------------------------------------------------------------
 // AIMessage Mock — 대화 단위 초기값

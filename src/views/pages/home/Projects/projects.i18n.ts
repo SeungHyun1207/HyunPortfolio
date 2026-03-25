@@ -1,0 +1,28 @@
+export const translations = {
+  ko: {
+    label: '포트폴리오',
+    title1: '주요',
+    title2: '프로젝트',
+    description: '다양한 기술 스택을 활용하여 구현한 프로젝트들입니다',
+    careerTab: '경력 프로젝트',
+    personalTab: '개인 프로젝트',
+    vibeTab: '바이브 프로젝트',
+    filterAll: '전체',
+    personalEmptyTitle: '개인 프로젝트 준비 중',
+    personalEmptyDesc: '사이드 프로젝트와 개인 작업물을 차근차근 추가할 예정입니다.',
+    vibeDesc: 'AI 바이브 코딩으로 만든 실험적 프로젝트들입니다',
+  },
+  en: {
+    label: 'Portfolio',
+    title1: 'Featured',
+    title2: 'Projects',
+    description: 'Projects implemented using various tech stacks',
+    careerTab: 'Career Projects',
+    personalTab: 'Personal Projects',
+    vibeTab: 'Vibe Projects',
+    filterAll: 'All',
+    personalEmptyTitle: 'Personal Projects Coming Soon',
+    personalEmptyDesc: "I'll be adding my side projects and personal work here soon.",
+    vibeDesc: 'Experimental projects built with AI vibe coding',
+  },
+}

@@ -1,5 +1,5 @@
 // =============================================================================
-// AI 채팅 타입 정의
+// LLM Agent Dashboard 전체 타입 정의
 // 파일 경로: src/types/aiMessage.ts
 //
 // 구조 설계:
@@ -288,4 +288,22 @@ export interface ChatRoom {
    * 새 방 생성 시 빈 배열([])로 초기화
    */
   messages: AIMessage[];
+}
+
+// -----------------------------------------------------------------------------
+// ModelId / ModelOption — AI 모델 선택
+// -----------------------------------------------------------------------------
+
+/**
+ * 지원하는 AI 모델 ID
+ */
+export type ModelId = 'gpt-4o' | 'claude-3.7' | 'gemini-2.0' | 'llama-3.3'
+
+/**
+ * 모델 선택 버튼에 사용되는 옵션 타입
+ */
+export interface ModelOption {
+  id: ModelId
+  label: string
+  color: string
 }

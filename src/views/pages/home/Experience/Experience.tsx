@@ -1,5 +1,7 @@
 import { useScrollAnimation } from '@hooks'
-import { useSettings } from '@/contexts/SettingsContext'
+import { usePageTranslation } from '@hooks/usePageTranslation'
+import { translations } from './experience.i18n'
+import type { ExperienceItem, FestivalItem } from '@models/home/experience/ExperienceModel'
 import { Box, Typography, Paper, Chip } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import WorkIcon from '@mui/icons-material/Work'
@@ -7,79 +9,50 @@ import SchoolIcon from '@mui/icons-material/School'
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents'
 import CelebrationIcon from '@mui/icons-material/Celebration'
 
-interface ExperienceItem {
-  id: string
-  type: 'work' | 'education'
-  titleKey: string
-  organizationKey: string
-  periodKey: string
-  descriptionKeys: string[]
-  techStack?: string[]
-}
-
-interface FestivalItem {
-  nameKey: string
-  orgKey: string
-  yearKey: string
-  descKey: string
-}
-
 const Experience = () => {
-  const { t } = useSettings()
+  const { t } = usePageTranslation(translations)
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 })
 
   const experiences: ExperienceItem[] = [
     {
       id: '1',
       type: 'work',
-      titleKey: 'experience.work1.title',
-      organizationKey: 'experience.work1.org',
-      periodKey: 'experience.work1.period',
-      descriptionKeys: [
-        'experience.work1.desc1',
-        'experience.work1.desc2',
-        'experience.work1.desc3',
-        'experience.work1.desc4',
-      ],
+      titleKey: 'work1Title',
+      organizationKey: 'work1Org',
+      periodKey: 'work1Period',
+      descriptionKeys: ['work1Desc1', 'work1Desc2', 'work1Desc3', 'work1Desc4'],
       techStack: ['React', 'TypeScript', 'Java', 'JSP', 'QlikSense'],
     },
     {
       id: '2',
       type: 'education',
-      titleKey: 'experience.edu2.title',
-      organizationKey: 'experience.edu2.org',
-      periodKey: 'experience.edu2.period',
-      descriptionKeys: [
-        'experience.edu2.desc1',
-        'experience.edu2.desc2',
-        'experience.edu2.desc3',
-      ],
+      titleKey: 'edu2Title',
+      organizationKey: 'edu2Org',
+      periodKey: 'edu2Period',
+      descriptionKeys: ['edu2Desc1', 'edu2Desc2', 'edu2Desc3'],
     },
     {
       id: '3',
       type: 'education',
-      titleKey: 'experience.edu1.title',
-      organizationKey: 'experience.edu1.org',
-      periodKey: 'experience.edu1.period',
-      descriptionKeys: [
-        'experience.edu1.desc1',
-        'experience.edu1.desc2',
-      ],
+      titleKey: 'edu1Title',
+      organizationKey: 'edu1Org',
+      periodKey: 'edu1Period',
+      descriptionKeys: ['edu1Desc1', 'edu1Desc2'],
     },
   ]
 
   const festivals: FestivalItem[] = [
     {
-      nameKey: 'experience.festival1.name',
-      orgKey: 'experience.festival1.org',
-      yearKey: 'experience.festival1.year',
-      descKey: 'experience.festival1.desc',
+      nameKey: 'festival1Name',
+      orgKey: 'festival1Org',
+      yearKey: 'festival1Year',
+      descKey: 'festival1Desc',
     },
     {
-      nameKey: 'experience.festival2.name',
-      orgKey: 'experience.festival2.org',
-      yearKey: 'experience.festival2.year',
-      descKey: 'experience.festival2.desc',
+      nameKey: 'festival2Name',
+      orgKey: 'festival2Org',
+      yearKey: 'festival2Year',
+      descKey: 'festival2Desc',
     },
   ]
 
@@ -196,17 +169,17 @@ const Experience = () => {
           }}
         >
           <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 600, letterSpacing: '0.2em' }}>
-            {t('experience.label')}
+            {t('label')}
           </Typography>
           <Typography
             variant="h2"
             sx={{ fontSize: { xs: '1.875rem', md: '2.25rem', lg: '3rem' }, fontWeight: 700, mt: 1, mb: 2 }}
           >
-            {t('experience.title1')}{' '}
-            <Box component="span" className="gradient-text">{t('experience.title2')}</Box>
+            {t('title1')}{' '}
+            <Box component="span" className="gradient-text">{t('title2')}</Box>
           </Typography>
           <Typography color="text.secondary" sx={{ maxWidth: 512, mx: 'auto' }}>
-            {t('experience.description')}
+            {t('description')}
           </Typography>
         </Box>
 
@@ -222,7 +195,7 @@ const Experience = () => {
           >
             <SectionTitle
               icon={<WorkIcon sx={{ fontSize: 20 }} />}
-              label={t('experience.workTitle')}
+              label={t('workTitle')}
             />
             <Box sx={{ position: 'relative' }}>
               {/* Timeline line */}
@@ -253,7 +226,7 @@ const Experience = () => {
           >
             <SectionTitle
               icon={<SchoolIcon sx={{ fontSize: 20 }} />}
-              label={t('experience.eduTitle')}
+              label={t('eduTitle')}
             />
             <Box sx={{ position: 'relative', mb: 5 }}>
               <Box sx={{ position: 'absolute', left: 7, top: 8, bottom: 8, width: 2, bgcolor: 'divider' }} />
@@ -265,7 +238,7 @@ const Experience = () => {
             {/* Festivals / Events */}
             <SectionTitle
               icon={<CelebrationIcon sx={{ fontSize: 20 }} />}
-              label={t('experience.festivalTitle')}
+              label={t('festivalTitle')}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               {festivals.map((festival, index) => (

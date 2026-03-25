@@ -1,9 +1,10 @@
-import { useSettings } from '@/contexts/SettingsContext'
 import { useEffect, useState } from 'react'
 import { Box, Typography, Button } from '@mui/material'
+import { usePageTranslation } from '@hooks/usePageTranslation'
+import { translations } from './hero.i18n'
 
 const Hero = () => {
-  const { t } = useSettings()
+  const { t } = usePageTranslation(translations)
   const [isVisible, setIsVisible] = useState(false)
   const roles = ['Frontend Developer', 'UI Engineer', 'React Specialist']
   const [currentRole, setCurrentRole] = useState(0)
@@ -97,7 +98,7 @@ const Hero = () => {
                 color: 'text.primary',
               }}
             >
-              {t('hero.greeting')}
+              {t('greeting')}
               <Box component="span" sx={{ color: 'primary.main' }}>!</Box>
             </Typography>
           </Box>
@@ -112,9 +113,9 @@ const Hero = () => {
               fontSize: { xs: '1rem', md: '4.5rem', lg: '3.5rem' },
             }}
           >
-            {t('hero.intro')}{' '}
-            <Box component="span" className="gradient-text">  {t('hero.introName')}</Box>
-            {t('hero.introSuffix')}
+            {t('intro')}{' '}
+            <Box component="span" className="gradient-text">  {t('introName')}</Box>
+            {t('introSuffix')}
           </Typography>
 
           {/* Typing Role */}
@@ -154,7 +155,7 @@ const Hero = () => {
               fontWeight: 400,
             }}
           >
-            {t('hero.description')}
+            {t('description')}
           </Typography>
 
           {/* CTA Buttons */}
@@ -190,7 +191,7 @@ const Hero = () => {
                 transition: 'all 0.3s ease',
               }}
             >
-              {t('hero.aboutMe')}
+              {t('aboutMe')}
             </Button>
             <Button
               component="a"
@@ -209,7 +210,7 @@ const Hero = () => {
                 transition: 'all 0.3s ease',
               }}
             >
-              {t('hero.contact')}
+              {t('contact')}
             </Button>
           </Box>
 
@@ -248,7 +249,7 @@ const Hero = () => {
                 textTransform: 'uppercase',
               }}
             >
-              {t('hero.scroll')}
+              {t('scroll')}
             </Typography>
           </Box>
         </Box>

@@ -1,55 +1,35 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useScrollAnimation } from '@hooks'
-import { useSettings } from '@/contexts/SettingsContext'
-import {
-  Box,
-  Typography,
-  Tabs,
-  Tab,
-  Paper,
-  Chip,
-  Button,
-} from '@mui/material'
-import Grid from '@mui/material/Grid'
+import { useScrollAnimation } from '@hooks';
+import { usePageTranslation } from '@hooks/usePageTranslation';
+import type {
+  FilterType,
+  PersonalProject,
+  Project,
+  TabType,
+  VibeProject,
+} from '@models/home/projects/ProjectsModel';
+import { Box, Button, Chip, Paper, Tab, Tabs, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { translations } from './projects.i18n';
 
-interface Project {
-  id: string
-  title: { ko: string; en: string }
-  period: string
-  startYear: number
-  client: string
-  role: { ko: string; en: string }
-  highlights: { ko: string[]; en: string[] }
-  techStack: string[]
-  category: 'react' | 'java' | 'other'
-}
+const PERSONAL_PROJECTS: PersonalProject[] = [
+  {
+    id: 'company-dashboard',
+    title: { ko: '회사 전용 대시보드', en: 'Company Admin Dashboard' },
+    description: {
+      ko: '사내 업무 현황을 한눈에 파악할 수 있는 관리자 대시보드. KPI 지표 시각화, 부서별 현황 차트, 공지 관리, 일정 캘린더를 통합 제공합니다.',
+      en: 'An admin dashboard for real-time business monitoring. Includes KPI visualization, department charts, notice management, and a schedule calendar.',
+    },
+    techStack: ['React', 'TypeScript', 'MUI', 'Recharts'],
+    icon: '🏢',
+    badge: 'Dashboard',
+    accentColor: '#6366f1',
+    status: 'wip',
+  },
+]
 
-type TabType = 'career' | 'personal' | 'vibe'
-type FilterType = 'all' | 'react' | 'java' | 'other'
-
-interface PrivateProject {
-  id: string
-  title: { ko: string; en: string }
-  description: { ko: string; en: string }
-  techStack: string[]
-  path: string
-  accentColor: string
-  badge: string
-  icon: string
-}
-
-interface VibeProject {
-  id: string
-  title: { ko: string; en: string }
-  description: { ko: string; en: string }
-  techStack: string[]
-  emoji: string
-  badge: string
-  accentColor: string
-}
-
-const PRIVATE_PROJECTS: PrivateProject[] = [
+const VIBE_PROJECTS: VibeProject[] = [
   {
     id: 'aiagent',
     title: { ko: 'AI Agent 대시보드', en: 'AI Agent Dashboard' },
@@ -58,7 +38,7 @@ const PRIVATE_PROJECTS: PrivateProject[] = [
       en: 'LLM-based multi-room admin chat dashboard. Supports GPT-4o / Claude / Gemini / Llama model switching, streaming simulation, and message feedback.',
     },
     techStack: ['React', 'TypeScript', 'chat-ui-kit'],
-    path: '/privateProject/aiagent',
+    path: '/vibeProject/aiagent',
     accentColor: '#00c8ff',
     badge: 'AI / Chat',
     icon: '🤖',
@@ -71,7 +51,7 @@ const PRIVATE_PROJECTS: PrivateProject[] = [
       en: 'Visualizes 5 sorting algorithms (Bubble, Selection, Insertion, Merge, Quick) with real-time bar animations.',
     },
     techStack: ['React', 'TypeScript', 'CSS Animation'],
-    path: '/privateProject/algo',
+    path: '/vibeProject/algo',
     accentColor: '#00ff88',
     badge: 'Algorithm',
     icon: '📊',
@@ -84,7 +64,7 @@ const PRIVATE_PROJECTS: PrivateProject[] = [
       en: 'Visualizes annual GitHub contributions as a heatmap. Displays total commits, longest streak, and peak day/month stats.',
     },
     techStack: ['React', 'TypeScript', 'SVG'],
-    path: '/privateProject/githeatmap',
+    path: '/vibeProject/githeatmap',
     accentColor: '#39d353',
     badge: 'Data Viz',
     icon: '🗓️',
@@ -97,34 +77,19 @@ const PRIVATE_PROJECTS: PrivateProject[] = [
       en: 'LocalStorage-powered snippet manager. Supports language filtering, tag search, clipboard copy, and full CRUD.',
     },
     techStack: ['React', 'TypeScript', 'LocalStorage'],
-    path: '/privateProject/snippet',
+    path: '/vibeProject/snippet',
     accentColor: '#f43f5e',
     badge: 'Productivity',
-    icon: '</> ',
+    icon: '</>',
   },
-]
-
-const VIBE_PROJECTS: VibeProject[] = [
-  {
-    id: 'vibe1',
-    title: { ko: '바이브 프로젝트 준비 중', en: 'Vibe Project Coming Soon' },
-    description: {
-      ko: 'AI 바이브 코딩으로 만들어가는 실험적 프로젝트입니다. 곧 추가될 예정입니다.',
-      en: 'An experimental project built with AI vibe coding. Coming soon.',
-    },
-    techStack: ['React', 'Tailwind CSS', 'AI'],
-    emoji: '🌊',
-    badge: 'Coming Soon',
-    accentColor: '#6366f1',
-  },
-]
+];
 
 const Projects = () => {
-  const { t, language } = useSettings()
-  const navigate = useNavigate()
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 })
-  const [activeTab, setActiveTab] = useState<TabType>('career')
-  const [activeFilter, setActiveFilter] = useState<FilterType>('all')
+  const { t, language } = usePageTranslation(translations);
+  const navigate = useNavigate();
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
+  const [activeTab, setActiveTab] = useState<TabType>('career');
+  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
 
   const projects: Project[] = [
     {
@@ -135,8 +100,16 @@ const Projects = () => {
       client: '의성군 농업기술센터',
       role: { ko: '프론트엔드 개발 및 퍼블리싱', en: 'Frontend Dev & Publishing' },
       highlights: {
-        ko: ['농업 센서 데이터 실시간 시각화 대시보드 구현', '현장 태블릿 환경을 고려한 반응형 UI 설계', 'React 컴포넌트 구조화로 유지보수성 확보'],
-        en: ['Real-time agricultural sensor data visualization dashboard', 'Responsive UI optimized for on-site tablet environments', 'Component-based architecture for maintainability'],
+        ko: [
+          '농업 센서 데이터 실시간 시각화 대시보드 구현',
+          '현장 태블릿 환경을 고려한 반응형 UI 설계',
+          'React 컴포넌트 구조화로 유지보수성 확보',
+        ],
+        en: [
+          'Real-time agricultural sensor data visualization dashboard',
+          'Responsive UI optimized for on-site tablet environments',
+          'Component-based architecture for maintainability',
+        ],
       },
       techStack: ['React', 'TypeScript'],
       category: 'react',
@@ -149,8 +122,16 @@ const Projects = () => {
       client: 'KT DS',
       role: { ko: 'LLM 프론트엔드 개발 및 퍼블리싱', en: 'LLM Frontend Dev & Publishing' },
       highlights: {
-        ko: ['LLM 스트리밍 응답 처리 및 채팅 UI 구현', '복잡한 인재 데이터 테이블·검색·필터 UI 개발', 'TypeScript로 LLM API 타입 안전성 확보'],
-        en: ['LLM streaming response handling and chat UI', 'Complex talent data table, search, and filter UI', 'Type-safe LLM API integration with TypeScript'],
+        ko: [
+          'LLM 스트리밍 응답 처리 및 채팅 UI 구현',
+          '복잡한 인재 데이터 테이블·검색·필터 UI 개발',
+          'TypeScript로 LLM API 타입 안전성 확보',
+        ],
+        en: [
+          'LLM streaming response handling and chat UI',
+          'Complex talent data table, search, and filter UI',
+          'Type-safe LLM API integration with TypeScript',
+        ],
       },
       techStack: ['React', 'TypeScript'],
       category: 'react',
@@ -163,8 +144,16 @@ const Projects = () => {
       client: 'LG전자',
       role: { ko: '프론트엔드 개발 및 퍼블리싱', en: 'Frontend Dev & Publishing' },
       highlights: {
-        ko: ['기존 컴포넌트 리팩토링 및 렌더링 성능 최적화', '사용자 피드백 기반 UX 개선 및 접근성 향상', '레거시 코드 TypeScript 마이그레이션'],
-        en: ['Component refactoring and rendering performance optimization', 'UX improvement based on user feedback', 'Legacy code migration to TypeScript'],
+        ko: [
+          '기존 컴포넌트 리팩토링 및 렌더링 성능 최적화',
+          '사용자 피드백 기반 UX 개선 및 접근성 향상',
+          '레거시 코드 TypeScript 마이그레이션',
+        ],
+        en: [
+          'Component refactoring and rendering performance optimization',
+          'UX improvement based on user feedback',
+          'Legacy code migration to TypeScript',
+        ],
       },
       techStack: ['React', 'TypeScript'],
       category: 'react',
@@ -177,8 +166,16 @@ const Projects = () => {
       client: 'LG전자',
       role: { ko: '프론트엔드 개발 및 퍼블리싱', en: 'Frontend Dev & Publishing' },
       highlights: {
-        ko: ['대규모 과제 데이터 테이블·필터링·정렬 UI 구현', '단계별 프로세스 관리 대시보드 및 차트 개발', '1차 완료 후 2차 기능 확장·고도화 연속 참여'],
-        en: ['Large-scale task data table, filtering and sorting UI', 'Process management dashboard and chart development', 'Continuous involvement from Phase 1 through Phase 2 expansion'],
+        ko: [
+          '대규모 과제 데이터 테이블·필터링·정렬 UI 구현',
+          '단계별 프로세스 관리 대시보드 및 차트 개발',
+          '1차 완료 후 2차 기능 확장·고도화 연속 참여',
+        ],
+        en: [
+          'Large-scale task data table, filtering and sorting UI',
+          'Process management dashboard and chart development',
+          'Continuous involvement from Phase 1 through Phase 2 expansion',
+        ],
       },
       techStack: ['React', 'TypeScript'],
       category: 'react',
@@ -191,22 +188,41 @@ const Projects = () => {
       client: 'LG전자 한영본부',
       role: { ko: '프론트엔드 개발 및 퍼블리싱', en: 'Frontend Dev & Publishing' },
       highlights: {
-        ko: ['KPI 지표 차트·그래프 시각화 컴포넌트 개발', '한·영 다국어 전환 지원 인터페이스 구현', '구축 완료 후 유지보수까지 연속 담당'],
-        en: ['KPI indicator chart and graph visualization components', 'Korean/English multi-language interface', 'Continuous ownership from development to maintenance'],
+        ko: [
+          'KPI 지표 차트·그래프 시각화 컴포넌트 개발',
+          '한·영 다국어 전환 지원 인터페이스 구현',
+          '구축 완료 후 유지보수까지 연속 담당',
+        ],
+        en: [
+          'KPI indicator chart and graph visualization components',
+          'Korean/English multi-language interface',
+          'Continuous ownership from development to maintenance',
+        ],
       },
       techStack: ['React', 'TypeScript'],
       category: 'react',
     },
     {
       id: '7',
-      title: { ko: '농협중앙회 빅데이터 플랫폼 포털 고도화', en: 'NH Co-op Big Data Portal Enhancement' },
+      title: {
+        ko: '농협중앙회 빅데이터 플랫폼 포털 고도화',
+        en: 'NH Co-op Big Data Portal Enhancement',
+      },
       period: '2023.06 ~ 2023.11',
       startYear: 2023,
       client: '농협중앙회',
       role: { ko: '개발', en: 'Development' },
       highlights: {
-        ko: ['빅데이터 조회·분석 화면 기능 고도화', '레거시 JSP 시스템 신규 기능 추가 및 버그 수정', '대용량 데이터 페이지네이션 및 검색 UI 개선'],
-        en: ['Big data query and analysis screen enhancement', 'Legacy JSP system new feature addition and bug fixes', 'Large dataset pagination and search UI improvement'],
+        ko: [
+          '빅데이터 조회·분석 화면 기능 고도화',
+          '레거시 JSP 시스템 신규 기능 추가 및 버그 수정',
+          '대용량 데이터 페이지네이션 및 검색 UI 개선',
+        ],
+        en: [
+          'Big data query and analysis screen enhancement',
+          'Legacy JSP system new feature addition and bug fixes',
+          'Large dataset pagination and search UI improvement',
+        ],
       },
       techStack: ['Java', 'JSP', 'jQuery'],
       category: 'java',
@@ -219,8 +235,16 @@ const Projects = () => {
       client: '(주)제타소프트',
       role: { ko: '개발', en: 'Development' },
       highlights: {
-        ko: ['사내 표준 재사용 UI 컴포넌트 라이브러리 설계·개발', '공통 모듈 구조화로 개발 생산성 향상 기여', '내부 개발팀 온보딩을 위한 컴포넌트 문서화'],
-        en: ['In-house standard reusable UI component library', 'Common module structure for improved dev productivity', 'Component documentation for internal team onboarding'],
+        ko: [
+          '사내 표준 재사용 UI 컴포넌트 라이브러리 설계·개발',
+          '공통 모듈 구조화로 개발 생산성 향상 기여',
+          '내부 개발팀 온보딩을 위한 컴포넌트 문서화',
+        ],
+        en: [
+          'In-house standard reusable UI component library',
+          'Common module structure for improved dev productivity',
+          'Component documentation for internal team onboarding',
+        ],
       },
       techStack: ['Java', 'JSP'],
       category: 'other',
@@ -233,8 +257,16 @@ const Projects = () => {
       client: '메트라이프생명',
       role: { ko: '업그레이드', en: 'Upgrade' },
       highlights: {
-        ko: ['분석 시스템 QlikSense 구버전 → 신버전 마이그레이션', '기존 대시보드 레이아웃 호환성 검증 및 유지', '업그레이드 후 QA 및 인수 테스트 지원'],
-        en: ['QlikSense legacy to latest version migration', 'Existing dashboard compatibility verification', 'Post-upgrade QA and acceptance testing support'],
+        ko: [
+          '분석 시스템 QlikSense 구버전 → 신버전 마이그레이션',
+          '기존 대시보드 레이아웃 호환성 검증 및 유지',
+          '업그레이드 후 QA 및 인수 테스트 지원',
+        ],
+        en: [
+          'QlikSense legacy to latest version migration',
+          'Existing dashboard compatibility verification',
+          'Post-upgrade QA and acceptance testing support',
+        ],
       },
       techStack: ['QlikSense', 'QlikView'],
       category: 'other',
@@ -247,8 +279,16 @@ const Projects = () => {
       client: '롯데물산',
       role: { ko: '개발', en: 'Development' },
       highlights: {
-        ko: ['QlikSense 커스텀 로그인 페이지 개발', 'SSO(Single Sign-On) 연동으로 통합 인증 구현', '기업 보안 정책에 부합하는 인증 흐름 설계'],
-        en: ['Custom QlikSense login page development', 'SSO integration for unified authentication', 'Authentication flow aligned with enterprise security policy'],
+        ko: [
+          'QlikSense 커스텀 로그인 페이지 개발',
+          'SSO(Single Sign-On) 연동으로 통합 인증 구현',
+          '기업 보안 정책에 부합하는 인증 흐름 설계',
+        ],
+        en: [
+          'Custom QlikSense login page development',
+          'SSO integration for unified authentication',
+          'Authentication flow aligned with enterprise security policy',
+        ],
       },
       techStack: ['Java', 'JSP', 'QlikSense'],
       category: 'java',
@@ -261,8 +301,16 @@ const Projects = () => {
       client: 'LX판토스',
       role: { ko: '개발', en: 'Development' },
       highlights: {
-        ko: ['관리자 전용 게시판·공지 CRUD 시스템 개발', '역할 기반 접근 제어(RBAC) UI 구현', '파일 첨부·다운로드 기능 개발'],
-        en: ['Admin-only bulletin board and notice CRUD system', 'Role-based access control (RBAC) UI', 'File attachment and download functionality'],
+        ko: [
+          '관리자 전용 게시판·공지 CRUD 시스템 개발',
+          '역할 기반 접근 제어(RBAC) UI 구현',
+          '파일 첨부·다운로드 기능 개발',
+        ],
+        en: [
+          'Admin-only bulletin board and notice CRUD system',
+          'Role-based access control (RBAC) UI',
+          'File attachment and download functionality',
+        ],
       },
       techStack: ['Java', 'JSP', 'jQuery'],
       category: 'java',
@@ -275,37 +323,44 @@ const Projects = () => {
       client: 'BNK시스템',
       role: { ko: '개발 및 문서작업', en: 'Development & Documentation' },
       highlights: {
-        ko: ['GoJS 라이브러리로 선후행관계 노드-엣지 그래프 구현', '복잡한 연관분석 데이터를 인터랙티브 다이어그램으로 시각화', '시스템 분석 문서 및 기술 명세 작성'],
-        en: ['Node-edge precedence relationship graph using GoJS', 'Complex correlation data visualized as interactive diagram', 'System analysis documentation and technical spec writing'],
+        ko: [
+          'GoJS 라이브러리로 선후행관계 노드-엣지 그래프 구현',
+          '복잡한 연관분석 데이터를 인터랙티브 다이어그램으로 시각화',
+          '시스템 분석 문서 및 기술 명세 작성',
+        ],
+        en: [
+          'Node-edge precedence relationship graph using GoJS',
+          'Complex correlation data visualized as interactive diagram',
+          'System analysis documentation and technical spec writing',
+        ],
       },
       techStack: ['Java', 'JSP', 'GoJS'],
       category: 'java',
     },
-  ]
+  ];
 
   const filters: { label: { ko: string; en: string }; value: FilterType }[] = [
     { label: { ko: '전체', en: 'All' }, value: 'all' },
     { label: { ko: 'React', en: 'React' }, value: 'react' },
     { label: { ko: 'Java', en: 'Java' }, value: 'java' },
     { label: { ko: '기타', en: 'Other' }, value: 'other' },
-  ]
+  ];
 
-  const filteredProjects = activeFilter === 'all'
-    ? projects
-    : projects.filter((p) => p.category === activeFilter)
+  const filteredProjects =
+    activeFilter === 'all' ? projects : projects.filter((p) => p.category === activeFilter);
 
   const getCategoryIcon = (category: Project['category']) => {
-    if (category === 'react') return '⚛️'
-    if (category === 'java') return '☕'
-    return '🔧'
-  }
+    if (category === 'react') return '⚛️';
+    if (category === 'java') return '☕';
+    return '🔧';
+  };
 
   const yearGroups = [
     { year: 2025, emoji: '🚀', items: projects.filter((p) => p.startYear === 2025) },
     { year: 2024, emoji: '⚡', items: projects.filter((p) => p.startYear === 2024) },
     { year: 2023, emoji: '🌱', items: projects.filter((p) => p.startYear === 2023) },
     { year: 2022, emoji: '🔰', items: projects.filter((p) => p.startYear === 2022) },
-  ]
+  ];
 
   return (
     <Box
@@ -315,7 +370,6 @@ const Projects = () => {
       sx={{ py: { xs: 10, md: 16 }, bgcolor: 'background.paper' }}
     >
       <Box sx={{ maxWidth: 1152, mx: 'auto', px: { xs: 2, md: 4 } }}>
-
         {/* 섹션 헤더 */}
         <Box
           sx={{
@@ -326,18 +380,28 @@ const Projects = () => {
             transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
           }}
         >
-          <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 600, letterSpacing: '0.2em' }}>
-            {t('projects.label')}
+          <Typography
+            variant="overline"
+            sx={{ color: 'primary.main', fontWeight: 600, letterSpacing: '0.2em' }}
+          >
+            {t('label')}
           </Typography>
           <Typography
             variant="h2"
-            sx={{ fontSize: { xs: '1.875rem', md: '2.25rem', lg: '3rem' }, fontWeight: 700, mt: 1, mb: 2 }}
+            sx={{
+              fontSize: { xs: '1.875rem', md: '2.25rem', lg: '3rem' },
+              fontWeight: 700,
+              mt: 1,
+              mb: 2,
+            }}
           >
-            {t('projects.title1')}{' '}
-            <Box component="span" className="gradient-text">{t('projects.title2')}</Box>
+            {t('title1')}{' '}
+            <Box component="span" className="gradient-text">
+              {t('title2')}
+            </Box>
           </Typography>
           <Typography color="text.secondary" sx={{ maxWidth: 512, mx: 'auto' }}>
-            {t('projects.description')}
+            {t('description')}
           </Typography>
         </Box>
 
@@ -375,10 +439,10 @@ const Projects = () => {
                   value={tab}
                   label={
                     tab === 'career'
-                      ? t('projects.careerTab')
+                      ? t('careerTab')
                       : tab === 'personal'
-                        ? t('projects.personalTab')
-                        : t('projects.vibeTab')
+                        ? t('personalTab')
+                        : t('vibeTab')
                   }
                   sx={{
                     minHeight: 36,
@@ -433,7 +497,16 @@ const Projects = () => {
 
               {/* 타임라인 헤더 */}
               <Box sx={{ textAlign: 'center', mb: 4, position: 'relative', zIndex: 10 }}>
-                <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.3em', color: 'rgba(129,140,248,0.8)', textTransform: 'uppercase', mb: 0.5 }}>
+                <Typography
+                  sx={{
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.3em',
+                    color: 'rgba(129,140,248,0.8)',
+                    textTransform: 'uppercase',
+                    mb: 0.5,
+                  }}
+                >
                   Career Journey
                 </Typography>
                 <Typography sx={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff', mb: 0.5 }}>
@@ -448,7 +521,10 @@ const Projects = () => {
 
               {/* 연도별 그룹 */}
               {yearGroups.map((group, groupIdx) => (
-                <Box key={group.year} sx={{ position: 'relative', zIndex: 10, mt: groupIdx > 0 ? 4 : 0 }}>
+                <Box
+                  key={group.year}
+                  sx={{ position: 'relative', zIndex: 10, mt: groupIdx > 0 ? 4 : 0 }}
+                >
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
                     <Box
                       sx={{
@@ -456,7 +532,8 @@ const Projects = () => {
                         py: 0.75,
                         borderRadius: 2,
                         flexShrink: 0,
-                        background: 'linear-gradient(135deg, rgba(99,102,241,0.28) 0%, rgba(168,85,247,0.28) 100%)',
+                        background:
+                          'linear-gradient(135deg, rgba(99,102,241,0.28) 0%, rgba(168,85,247,0.28) 100%)',
                         border: '1px solid rgba(99,102,241,0.45)',
                         boxShadow: '0 0 16px rgba(99,102,241,0.2)',
                       }}
@@ -465,9 +542,18 @@ const Projects = () => {
                         {group.emoji} {group.year}
                       </Typography>
                     </Box>
-                    <Box sx={{ flex: 1, height: 1, background: 'linear-gradient(90deg, rgba(99,102,241,0.5), transparent)' }} />
-                    <Typography sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.25)', flexShrink: 0 }}>
-                      {group.items.length}{language === 'ko' ? '개' : ' proj'}
+                    <Box
+                      sx={{
+                        flex: 1,
+                        height: 1,
+                        background: 'linear-gradient(90deg, rgba(99,102,241,0.5), transparent)',
+                      }}
+                    />
+                    <Typography
+                      sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.25)', flexShrink: 0 }}
+                    >
+                      {group.items.length}
+                      {language === 'ko' ? '개' : ' proj'}
                     </Typography>
                   </Box>
 
@@ -475,17 +561,39 @@ const Projects = () => {
                     {/* 세로 라인 */}
                     <div
                       className="timeline-line"
-                      style={{ position: 'absolute', left: '7px', top: 10, bottom: 10, width: 2, borderRadius: 2 }}
+                      style={{
+                        position: 'absolute',
+                        left: '7px',
+                        top: 10,
+                        bottom: 10,
+                        width: 2,
+                        borderRadius: 2,
+                      }}
                     />
                     {group.items.map((project, itemIdx) => (
                       <Box
                         key={project.id}
-                        sx={{ display: 'flex', alignItems: 'flex-start', gap: { xs: 2, md: 3 }, position: 'relative', mb: itemIdx < group.items.length - 1 ? 2.5 : 0 }}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: { xs: 2, md: 3 },
+                          position: 'relative',
+                          mb: itemIdx < group.items.length - 1 ? 2.5 : 0,
+                        }}
                       >
                         {/* 닷 */}
                         <div
                           className="timeline-dot"
-                          style={{ width: 12, height: 12, borderRadius: '50%', flexShrink: 0, marginTop: 16, marginLeft: 0, zIndex: 10, background: 'linear-gradient(135deg, #6366f1, #a855f7)' }}
+                          style={{
+                            width: 12,
+                            height: 12,
+                            borderRadius: '50%',
+                            flexShrink: 0,
+                            marginTop: 16,
+                            marginLeft: 0,
+                            zIndex: 10,
+                            background: 'linear-gradient(135deg, #6366f1, #a855f7)',
+                          }}
                         />
                         {/* 3D 카드 */}
                         <Box
@@ -501,31 +609,89 @@ const Projects = () => {
                             '&:hover': {
                               background: 'rgba(99,102,241,0.08)',
                               border: '1px solid rgba(99,102,241,0.45)',
-                              boxShadow: '0 8px 40px rgba(99,102,241,0.18), inset 0 1px 0 rgba(255,255,255,0.06)',
-                              transform: 'perspective(800px) rotateY(-3deg) translateX(6px) translateY(-2px)',
+                              boxShadow:
+                                '0 8px 40px rgba(99,102,241,0.18), inset 0 1px 0 rgba(255,255,255,0.06)',
+                              transform:
+                                'perspective(800px) rotateY(-3deg) translateX(6px) translateY(-2px)',
                             },
                           }}
                         >
-                          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1, mb: 1 }}>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'flex-start',
+                              justifyContent: 'space-between',
+                              gap: 1,
+                              mb: 1,
+                            }}
+                          >
                             <Box>
-                              <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, display: 'block', mb: 0.25, color: 'rgba(99,102,241,0.85)' }}>
+                              <Typography
+                                sx={{
+                                  fontSize: '0.75rem',
+                                  fontWeight: 600,
+                                  display: 'block',
+                                  mb: 0.25,
+                                  color: 'rgba(99,102,241,0.85)',
+                                }}
+                              >
                                 {project.client}
                               </Typography>
-                              <Typography sx={{ fontSize: '0.875rem', fontWeight: 700, color: '#fff', lineHeight: 1.3 }}>
+                              <Typography
+                                sx={{
+                                  fontSize: '0.875rem',
+                                  fontWeight: 700,
+                                  color: '#fff',
+                                  lineHeight: 1.3,
+                                }}
+                              >
                                 {project.title[language]}
                               </Typography>
                             </Box>
-                            <Box sx={{ flexShrink: 0, px: 1, py: 0.25, borderRadius: 1, border: '1px solid rgba(168,85,247,0.3)' }}>
-                              <Typography sx={{ fontSize: '0.6rem', fontWeight: 600, whiteSpace: 'nowrap', color: 'rgba(168,85,247,0.8)' }}>
+                            <Box
+                              sx={{
+                                flexShrink: 0,
+                                px: 1,
+                                py: 0.25,
+                                borderRadius: 1,
+                                border: '1px solid rgba(168,85,247,0.3)',
+                              }}
+                            >
+                              <Typography
+                                sx={{
+                                  fontSize: '0.6rem',
+                                  fontWeight: 600,
+                                  whiteSpace: 'nowrap',
+                                  color: 'rgba(168,85,247,0.8)',
+                                }}
+                              >
                                 {project.period}
                               </Typography>
                             </Box>
                           </Box>
                           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, mb: 1.5 }}>
                             {project.highlights[language].slice(0, 2).map((point, i) => (
-                              <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 0.75 }}>
-                                <Typography sx={{ fontSize: '0.6rem', mt: 0.5, flexShrink: 0, color: '#6366f1' }}>▹</Typography>
-                                <Typography sx={{ fontSize: '0.71rem', lineHeight: 1.6, color: 'rgba(255,255,255,0.5)' }}>
+                              <Box
+                                key={i}
+                                sx={{ display: 'flex', alignItems: 'flex-start', gap: 0.75 }}
+                              >
+                                <Typography
+                                  sx={{
+                                    fontSize: '0.6rem',
+                                    mt: 0.5,
+                                    flexShrink: 0,
+                                    color: '#6366f1',
+                                  }}
+                                >
+                                  ▹
+                                </Typography>
+                                <Typography
+                                  sx={{
+                                    fontSize: '0.71rem',
+                                    lineHeight: 1.6,
+                                    color: 'rgba(255,255,255,0.5)',
+                                  }}
+                                >
                                   {point}
                                 </Typography>
                               </Box>
@@ -572,26 +738,57 @@ const Projects = () => {
                     boxShadow: '0 0 24px rgba(99,102,241,0.12)',
                   }}
                 >
-                  <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#4ade80', boxShadow: '0 0 8px rgba(74,222,128,0.8)' }} />
-                  <Typography sx={{ fontSize: '0.78rem', fontWeight: 500, color: 'rgba(255,255,255,0.6)' }}>
-                    {language === 'ko' ? '현재 진행 중 · 성장 계속' : 'Currently Active · Still Growing'}
+                  <Box
+                    sx={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: '50%',
+                      bgcolor: '#4ade80',
+                      boxShadow: '0 0 8px rgba(74,222,128,0.8)',
+                    }}
+                  />
+                  <Typography
+                    sx={{ fontSize: '0.78rem', fontWeight: 500, color: 'rgba(255,255,255,0.6)' }}
+                  >
+                    {language === 'ko'
+                      ? '현재 진행 중 · 성장 계속'
+                      : 'Currently Active · Still Growing'}
                   </Typography>
                 </Box>
               </Box>
             </Box>
 
             {/* 프로젝트 상세 소제목 */}
-            <Box sx={{ textAlign: 'center', mb: 3, opacity: isVisible ? 1 : 0, transition: 'opacity 0.7s ease 200ms' }}>
+            <Box
+              sx={{
+                textAlign: 'center',
+                mb: 3,
+                opacity: isVisible ? 1 : 0,
+                transition: 'opacity 0.7s ease 200ms',
+              }}
+            >
               <Typography variant="h5" fontWeight={700} mb={0.5}>
                 {language === 'ko' ? '프로젝트 상세' : 'Project Details'}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {language === 'ko' ? '각 프로젝트의 목표와 기여 내용을 확인하세요' : 'Explore goals and contributions of each project'}
+                {language === 'ko'
+                  ? '각 프로젝트의 목표와 기여 내용을 확인하세요'
+                  : 'Explore goals and contributions of each project'}
               </Typography>
             </Box>
 
             {/* 필터 */}
-            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mb: 4, flexWrap: 'wrap', opacity: isVisible ? 1 : 0, transition: 'opacity 0.7s ease 250ms' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: 1,
+                mb: 4,
+                flexWrap: 'wrap',
+                opacity: isVisible ? 1 : 0,
+                transition: 'opacity 0.7s ease 250ms',
+              }}
+            >
               {filters.map((filter) => (
                 <Button
                   key={filter.value}
@@ -602,9 +799,20 @@ const Projects = () => {
                     borderRadius: 3,
                     fontWeight: 500,
                     ...(activeFilter === filter.value
-                      ? { background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)', color: '#fff', border: 'none' }
-                      : { borderColor: 'divider', color: 'text.secondary', '&:hover': { borderColor: 'primary.main', color: 'text.primary', bgcolor: 'transparent' } }
-                    ),
+                      ? {
+                          background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                          color: '#fff',
+                          border: 'none',
+                        }
+                      : {
+                          borderColor: 'divider',
+                          color: 'text.secondary',
+                          '&:hover': {
+                            borderColor: 'primary.main',
+                            color: 'text.primary',
+                            bgcolor: 'transparent',
+                          },
+                        }),
                   }}
                 >
                   {filter.label[language]}
@@ -657,7 +865,9 @@ const Projects = () => {
                         opacity: 0.96,
                       }}
                     >
-                      <Typography sx={{ fontSize: '1.5rem' }}>{getCategoryIcon(project.category)}</Typography>
+                      <Typography sx={{ fontSize: '1.5rem' }}>
+                        {getCategoryIcon(project.category)}
+                      </Typography>
                       <Chip
                         label={project.period}
                         size="small"
@@ -675,7 +885,16 @@ const Projects = () => {
 
                     {/* 카드 본문 */}
                     <Box sx={{ p: 2.5, flex: 1, display: 'flex', flexDirection: 'column' }}>
-                      <Typography variant="caption" sx={{ color: 'primary.main', fontWeight: 600, mb: 0.75, display: 'block', letterSpacing: '0.05em' }}>
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: 'primary.main',
+                          fontWeight: 600,
+                          mb: 0.75,
+                          display: 'block',
+                          letterSpacing: '0.05em',
+                        }}
+                      >
                         {project.client}
                       </Typography>
                       <Typography variant="body1" fontWeight={700} mb={2} lineHeight={1.3}>
@@ -684,8 +903,22 @@ const Projects = () => {
                       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mb: 2 }}>
                         {project.highlights[language].map((point, i) => (
                           <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-                            <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'primary.main', mt: 0.75, flexShrink: 0, opacity: 0.8 }} />
-                            <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                            <Box
+                              sx={{
+                                width: 6,
+                                height: 6,
+                                borderRadius: '50%',
+                                bgcolor: 'primary.main',
+                                mt: 0.75,
+                                flexShrink: 0,
+                                opacity: 0.8,
+                              }}
+                            />
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              sx={{ lineHeight: 1.6 }}
+                            >
                               {point}
                             </Typography>
                           </Box>
@@ -693,7 +926,9 @@ const Projects = () => {
                       </Box>
                       <Typography variant="caption" color="text.secondary" mb={2}>
                         {language === 'ko' ? '담당: ' : 'Role: '}
-                        <Box component="span" sx={{ color: 'text.primary', fontWeight: 500 }}>{project.role[language]}</Box>
+                        <Box component="span" sx={{ color: 'text.primary', fontWeight: 500 }}>
+                          {project.role[language]}
+                        </Box>
                       </Typography>
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mt: 'auto' }}>
                         {project.techStack.map((tech) => (
@@ -702,7 +937,12 @@ const Projects = () => {
                             label={tech}
                             size="small"
                             variant="outlined"
-                            sx={{ fontSize: '0.7rem', borderColor: 'divider', color: 'text.secondary', height: 20 }}
+                            sx={{
+                              fontSize: '0.7rem',
+                              borderColor: 'divider',
+                              color: 'text.secondary',
+                              height: 20,
+                            }}
                           />
                         ))}
                       </Box>
@@ -723,24 +963,25 @@ const Projects = () => {
               transition: 'all 0.7s ease 100ms',
             }}
           >
-            <Box sx={{ textAlign: 'center', mb: 4 }}>
+            {/* 소제목 */}
+            <Box sx={{ textAlign: 'center', mb: 5 }}>
               <Typography variant="h5" fontWeight={700} mb={1}>
                 {language === 'ko' ? '개인 프로젝트' : 'Personal Projects'}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 {language === 'ko'
-                  ? '직접 기획하고 개발한 사이드 프로젝트입니다. 카드를 클릭하면 데모로 이동합니다.'
-                  : 'Side projects designed and built from scratch. Click a card to view the live demo.'}
+                  ? '직접 기획하고 개발한 사이드 프로젝트입니다.'
+                  : 'Side projects I planned and built on my own.'}
               </Typography>
             </Box>
 
             <Grid container spacing={2.5}>
-              {PRIVATE_PROJECTS.map((project, index) => (
+              {PERSONAL_PROJECTS.map((project, index) => (
                 <Grid size={{ xs: 12, md: 6, lg: 4 }} key={project.id}>
                   <Paper
-                    component="button"
+                    component={project.path ? 'button' : 'div'}
                     elevation={0}
-                    onClick={() => navigate(project.path)}
+                    onClick={() => project.path && navigate(project.path)}
                     sx={{
                       width: '100%',
                       textAlign: 'left',
@@ -748,12 +989,14 @@ const Projects = () => {
                       overflow: 'hidden',
                       border: '1px solid',
                       borderColor: 'divider',
-                      cursor: 'pointer',
-                      '&:hover': {
-                        transform: 'translateY(-4px)',
-                        borderColor: `${project.accentColor}55`,
-                        boxShadow: `0 20px 40px ${project.accentColor}18`,
-                      },
+                      cursor: project.path ? 'pointer' : 'default',
+                      '&:hover': project.path
+                        ? {
+                            transform: 'translateY(-4px)',
+                            borderColor: `${project.accentColor}55`,
+                            boxShadow: `0 20px 40px ${project.accentColor}18`,
+                          }
+                        : {},
                       transition: `all 0.3s ease ${index * 60}ms`,
                       display: 'flex',
                       flexDirection: 'column',
@@ -774,31 +1017,63 @@ const Projects = () => {
                       }}
                     >
                       <Typography sx={{ fontSize: '1.5rem' }}>{project.icon}</Typography>
-                      <Box
-                        sx={{
-                          px: 1.25,
-                          py: 0.5,
-                          borderRadius: 2,
-                          color: project.accentColor,
-                          background: `${project.accentColor}18`,
-                          border: `1px solid ${project.accentColor}40`,
-                          fontSize: '0.65rem',
-                          fontWeight: 600,
-                        }}
-                      >
-                        {project.badge}
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        {/* 상태 뱃지 */}
+                        <Box
+                          sx={{
+                            px: 1,
+                            py: 0.25,
+                            borderRadius: 1,
+                            fontSize: '0.6rem',
+                            fontWeight: 700,
+                            ...(project.status === 'live'
+                              ? { color: '#4ade80', bgcolor: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.3)' }
+                              : project.status === 'wip'
+                                ? { color: '#fb923c', bgcolor: 'rgba(251,146,60,0.12)', border: '1px solid rgba(251,146,60,0.3)' }
+                                : { color: '#94a3b8', bgcolor: 'rgba(148,163,184,0.12)', border: '1px solid rgba(148,163,184,0.3)' }),
+                          }}
+                        >
+                          {project.status === 'live' ? 'LIVE' : project.status === 'wip' ? 'WIP' : 'PLANNED'}
+                        </Box>
+                        {/* 카테고리 뱃지 */}
+                        <Box
+                          sx={{
+                            px: 1.25,
+                            py: 0.5,
+                            borderRadius: 2,
+                            color: project.accentColor,
+                            background: `${project.accentColor}18`,
+                            border: `1px solid ${project.accentColor}40`,
+                            fontSize: '0.65rem',
+                            fontWeight: 600,
+                          }}
+                        >
+                          {project.badge}
+                        </Box>
                       </Box>
                     </Box>
 
                     {/* 카드 본문 */}
                     <Box sx={{ p: 2.5, flex: 1, display: 'flex', flexDirection: 'column' }}>
-                      <Typography variant="body1" fontWeight={700} mb={1.5} lineHeight={1.3} sx={{ color: project.accentColor }}>
+                      <Typography
+                        variant="body1"
+                        fontWeight={700}
+                        mb={1.5}
+                        lineHeight={1.3}
+                        sx={{ color: project.accentColor }}
+                      >
                         {project.title[language]}
                       </Typography>
-                      <Typography variant="caption" color="text.secondary" lineHeight={1.6} mb={2} sx={{ flex: 1 }}>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        lineHeight={1.6}
+                        mb={2}
+                        sx={{ flex: 1 }}
+                      >
                         {project.description[language]}
                       </Typography>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: 2 }}>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: project.path ? 2 : 0 }}>
                         {project.techStack.map((tech) => (
                           <Chip
                             key={tech}
@@ -809,9 +1084,15 @@ const Projects = () => {
                           />
                         ))}
                       </Box>
-                      <Typography variant="caption" fontWeight={600} sx={{ color: project.accentColor, mt: 'auto' }}>
-                        {language === 'ko' ? '데모 보기 →' : 'View Demo →'}
-                      </Typography>
+                      {project.path && (
+                        <Typography
+                          variant="caption"
+                          fontWeight={600}
+                          sx={{ color: project.accentColor, mt: 'auto' }}
+                        >
+                          {language === 'ko' ? '데모 보기 →' : 'View Demo →'}
+                        </Typography>
+                      )}
                     </Box>
                   </Paper>
                 </Grid>
@@ -837,7 +1118,16 @@ const Projects = () => {
                   }}
                 >
                   <Typography sx={{ fontSize: '1.875rem', mb: 1.5 }}>✦</Typography>
-                  <Typography variant="caption" sx={{ fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'text.secondary', opacity: 0.5 }}>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      fontWeight: 600,
+                      letterSpacing: '0.2em',
+                      textTransform: 'uppercase',
+                      color: 'text.secondary',
+                      opacity: 0.5,
+                    }}
+                  >
                     {language === 'ko' ? '다음 프로젝트' : 'Next Project'}
                   </Typography>
                   <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.4, mt: 0.5 }}>
@@ -849,7 +1139,7 @@ const Projects = () => {
           </Box>
         )}
 
-        {/* ══════ 바이브 프로젝트 탭 (Tailwind 사용) ══════ */}
+        {/* ══════ 바이브 프로젝트 탭 ══════ */}
         {activeTab === 'vibe' && (
           <div
             className="transition-all duration-700"
@@ -864,9 +1154,7 @@ const Projects = () => {
               <h3 className="text-2xl font-bold text-[#1a1a2e] dark:text-white mb-2">
                 {language === 'ko' ? '바이브 프로젝트' : 'Vibe Projects'}
               </h3>
-              <p className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0]">
-                {t('projects.vibeDesc')}
-              </p>
+              <p className="text-sm text-[#4a4a5a] dark:text-[#a0a0b0]">{t('vibeDesc')}</p>
             </div>
 
             {/* 바이브 카드 그리드 */}
@@ -874,15 +1162,32 @@ const Projects = () => {
               {VIBE_PROJECTS.map((project, index) => (
                 <div
                   key={project.id}
-                  className="rounded-2xl overflow-hidden bg-white dark:bg-[#0a0a0f] border border-black/[0.08] dark:border-white/[0.08] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(99,102,241,0.1)] transition-all duration-300 flex flex-col"
-                  style={{ transitionDelay: `${index * 60}ms` }}
+                  onClick={() => project.path && navigate(project.path)}
+                  className="rounded-2xl overflow-hidden bg-white dark:bg-[#0a0a0f] border border-black/[0.08] dark:border-white/[0.08] hover:-translate-y-1 transition-all duration-300 flex flex-col"
+                  style={{
+                    transitionDelay: `${index * 60}ms`,
+                    cursor: project.path ? 'pointer' : 'default',
+                    boxShadow: 'none',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (project.path) {
+                      (e.currentTarget as HTMLDivElement).style.boxShadow =
+                        `0 20px 40px ${project.accentColor}20`;
+                      (e.currentTarget as HTMLDivElement).style.borderColor =
+                        `${project.accentColor}44`;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
+                    (e.currentTarget as HTMLDivElement).style.borderColor = '';
+                  }}
                 >
                   {/* 카드 상단 바 */}
                   <div
                     className="py-4 px-5 flex items-center justify-between border-b border-black/[0.08] dark:border-white/[0.08]"
-                    style={{ background: 'rgba(99,102,241,0.06)' }}
+                    style={{ background: `${project.accentColor}0d` }}
                   >
-                    <span className="text-2xl">{project.emoji}</span>
+                    <span className="text-2xl">{project.icon}</span>
                     <span
                       className="text-[0.65rem] font-semibold px-2.5 py-1 rounded-lg"
                       style={{
@@ -897,13 +1202,16 @@ const Projects = () => {
 
                   {/* 카드 본문 */}
                   <div className="p-5 flex-1 flex flex-col">
-                    <h4 className="font-bold text-base mb-3 leading-snug text-[#1a1a2e] dark:text-white">
+                    <h4
+                      className="font-bold text-base mb-3 leading-snug"
+                      style={{ color: project.accentColor }}
+                    >
                       {project.title[language]}
                     </h4>
                     <p className="text-xs text-[#4a4a5a] dark:text-[#a0a0b0] leading-relaxed mb-4 flex-1">
                       {project.description[language]}
                     </p>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-1.5 mb-3">
                       {project.techStack.map((tech) => (
                         <span
                           key={tech}
@@ -913,6 +1221,14 @@ const Projects = () => {
                         </span>
                       ))}
                     </div>
+                    {project.path && (
+                      <span
+                        className="text-xs font-semibold mt-auto"
+                        style={{ color: project.accentColor }}
+                      >
+                        {language === 'ko' ? '데모 보기 →' : 'View Demo →'}
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
@@ -930,10 +1246,9 @@ const Projects = () => {
             </div>
           </div>
         )}
-
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Projects
+export default Projects;

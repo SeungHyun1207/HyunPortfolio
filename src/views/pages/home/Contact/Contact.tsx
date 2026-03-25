@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useScrollAnimation } from '@hooks'
-import { useSettings } from '@/contexts/SettingsContext'
+import { usePageTranslation } from '@hooks/usePageTranslation'
+import { translations } from './contact.i18n'
+import type { ContactInfoItem } from '@models/home/contact/ContactModel'
 import {
   Box,
   Typography,
@@ -13,29 +15,22 @@ import EmailIcon from '@mui/icons-material/Email'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 
-interface ContactInfoItem {
-  icon: React.ReactNode
-  label: string
-  value: string
-  href: string | null
-}
-
 const Contact = () => {
-  const { t } = useSettings()
+  const { t } = usePageTranslation(translations)
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 })
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    alert(t('contact.submitAlert'))
+    alert(t('submitAlert'))
     setFormData({ name: '', email: '', message: '' })
   }
 
   const contactInfo: ContactInfoItem[] = [
     {
       icon: <EmailIcon sx={{ fontSize: 20 }} />,
-      label: t('contact.emailLabel'),
-      value: t('contact.emailValue'),
+      label: t('emailLabel'),
+      value: t('emailValue'),
       href: null,
     },
     {
@@ -46,8 +41,8 @@ const Contact = () => {
     },
     {
       icon: <LocationOnIcon sx={{ fontSize: 20 }} />,
-      label: t('contact.location'),
-      value: t('contact.locationValue'),
+      label: t('location'),
+      value: t('locationValue'),
       href: null,
     },
   ]
@@ -71,17 +66,17 @@ const Contact = () => {
           }}
         >
           <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 600, letterSpacing: '0.2em' }}>
-            {t('contact.label')}
+            {t('label')}
           </Typography>
           <Typography
             variant="h2"
             sx={{ fontSize: { xs: '1.875rem', md: '2.25rem', lg: '3rem' }, fontWeight: 700, mt: 1, mb: 2 }}
           >
-            {t('contact.title1')}{' '}
-            <Box component="span" className="gradient-text">{t('contact.title2')}</Box>
+            {t('title1')}{' '}
+            <Box component="span" className="gradient-text">{t('title2')}</Box>
           </Typography>
           <Typography color="text.secondary" sx={{ maxWidth: 512, mx: 'auto' }}>
-            {t('contact.description')}
+            {t('description')}
           </Typography>
         </Box>
 
@@ -97,7 +92,7 @@ const Contact = () => {
           {/* Contact Info */}
           <Grid size={{ xs: 12, lg: 6 }}>
             <Typography variant="h6" fontWeight={700} mb={3}>
-              {t('contact.infoTitle')}
+              {t('infoTitle')}
             </Typography>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mb: 4 }}>
@@ -144,7 +139,7 @@ const Contact = () => {
             {/* Social Links */}
             <Box>
               <Typography variant="caption" color="text.secondary" mb={1.5} display="block">
-                {t('contact.followMe')}
+                {t('followMe')}
               </Typography>
               <Box sx={{ display: 'flex', gap: 1.5 }}>
                 {[
@@ -175,18 +170,18 @@ const Contact = () => {
           {/* Contact Form */}
           <Grid size={{ xs: 12, lg: 6 }}>
             <Typography variant="h6" fontWeight={700} mb={3}>
-              {t('contact.formTitle')}
+              {t('formTitle')}
             </Typography>
 
             <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <Box>
                 <Typography variant="caption" color="text.secondary" mb={0.75} display="block">
-                  {t('contact.nameLabel')}
+                  {t('nameLabel')}
                 </Typography>
                 <TextField
                   id="name"
                   type="text"
-                  placeholder={t('contact.namePlaceholder')}
+                  placeholder={t('namePlaceholder')}
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
@@ -202,7 +197,7 @@ const Contact = () => {
               </Box>
               <Box>
                 <Typography variant="caption" color="text.secondary" mb={0.75} display="block">
-                  {t('contact.emailLabel')}
+                  {t('emailLabel')}
                 </Typography>
                 <TextField
                   id="email"
@@ -223,11 +218,11 @@ const Contact = () => {
               </Box>
               <Box>
                 <Typography variant="caption" color="text.secondary" mb={0.75} display="block">
-                  {t('contact.messageLabel')}
+                  {t('messageLabel')}
                 </Typography>
                 <TextField
                   id="message"
-                  placeholder={t('contact.messagePlaceholder')}
+                  placeholder={t('messagePlaceholder')}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   required
@@ -260,7 +255,7 @@ const Contact = () => {
                   transition: 'all 0.3s ease',
                 }}
               >
-                {t('contact.submit')}
+                {t('submit')}
               </Button>
             </Box>
           </Grid>

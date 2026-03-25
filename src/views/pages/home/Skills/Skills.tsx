@@ -1,22 +1,18 @@
 import { useScrollAnimation } from '@hooks'
-import { useSettings } from '@/contexts/SettingsContext'
+import { usePageTranslation } from '@hooks/usePageTranslation'
+import { translations } from './skills.i18n'
+import type { Skill } from '@models/home/skills/SkillsModel'
 import {
   Box,
-  Typography,
-  Paper,
-  LinearProgress,
   Chip,
+  LinearProgress,
+  Paper,
+  Typography,
 } from '@mui/material'
 import Grid from '@mui/material/Grid'
 
-interface Skill {
-  name: string
-  level: number
-  category: string
-}
-
 const Skills = () => {
-  const { t } = useSettings()
+  const { t } = usePageTranslation(translations)
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.2 })
 
   const skills: Skill[] = [
@@ -25,7 +21,7 @@ const Skills = () => {
     { name: 'JavaScript', level: 95, category: 'frontend' },
     { name: 'Next.js', level: 80, category: 'frontend' },
     { name: 'HTML/CSS', level: 95, category: 'frontend' },
-    { name: 'Tailwind CSS', level: 85, category: 'frontend' },
+    { name: 'Tailwind CSS', level: 70, category: 'frontend' },
     { name: 'Node.js', level: 70, category: 'backend' },
     { name: 'Git', level: 85, category: 'tools' },
     { name: 'Figma', level: 75, category: 'tools' },
@@ -61,17 +57,17 @@ const Skills = () => {
           }}
         >
           <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 600, letterSpacing: '0.2em' }}>
-            {t('skills.label')}
+            {t('label')}
           </Typography>
           <Typography
             variant="h2"
             sx={{ fontSize: { xs: '1.875rem', md: '2.25rem', lg: '3rem' }, fontWeight: 700, mt: 1, mb: 2 }}
           >
-            {t('skills.title1')}{' '}
-            <Box component="span" className="gradient-text">{t('skills.title2')}</Box>
+            {t('title1')}{' '}
+            <Box component="span" className="gradient-text">{t('title2')}</Box>
           </Typography>
           <Typography color="text.secondary" sx={{ maxWidth: 512, mx: 'auto' }}>
-            {t('skills.description')}
+            {t('description')}
           </Typography>
         </Box>
 
@@ -126,7 +122,7 @@ const Skills = () => {
           {/* Tech Stack */}
           <Box sx={{ mb: 6 }}>
             <Typography variant="h6" fontWeight={600} textAlign="center" mb={3}>
-              {t('skills.mainTech')}
+              {t('mainTech')}
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1.5 }}>
               {techStack.map((tech, index) => (

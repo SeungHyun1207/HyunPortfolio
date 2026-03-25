@@ -19,7 +19,7 @@ import {
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 import { useState, useCallback } from "react";
-import type { ChatRoom, AIMessage } from "@/models/projects/llm/LLMAgentDashboardModel";
+import type { ChatRoom, AIMessage, ModelId, ModelOption } from "@models/projects/llm/LLMAgentDashboardModel";
 import { AIMessageMock, ChatRoomMock } from "@/mocks/projects/llm/LLMAgentMockData";
 
 // ─── Mock 초기 데이터 ──────────────────────────────────────────────────────────
@@ -116,15 +116,7 @@ const INITIAL_ROOMS: ChatRoom[] = [
   },
 ];
 
-// ─── 모델 타입 & 옵션 ──────────────────────────────────────────────────────────
-
-type ModelId = "gpt-4o" | "claude-3.7" | "gemini-2.0" | "llama-3.3";
-
-interface ModelOption {
-  id: ModelId;
-  label: string;
-  color: string;
-}
+// ─── 모델 옵션 ────────────────────────────────────────────────────────────────
 
 const MODELS: ModelOption[] = [
   { id: "gpt-4o",     label: "GPT-4o",     color: "#00ff88" },

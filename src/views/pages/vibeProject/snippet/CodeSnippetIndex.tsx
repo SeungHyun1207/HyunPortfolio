@@ -5,21 +5,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
-
-// ─── 타입 ──────────────────────────────────────────────────────────────────────
-
-type LangId =
-  | "typescript" | "javascript" | "react"
-  | "css" | "python" | "html" | "bash" | "sql" | "other";
-
-interface Snippet {
-  id: string;
-  title: string;
-  language: LangId;
-  code: string;
-  tags: string[];
-  createdAt: string;
-}
+import type { LangId, Snippet } from "@models/vibeProject/snippet/CodeSnippetModel";
 
 // ─── 언어 메타 ─────────────────────────────────────────────────────────────────
 
@@ -194,14 +180,7 @@ function saveSnippets(snippets: Snippet[]) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-type ModalMode = "add" | "edit";
-
-interface FormState {
-  title: string;
-  language: LangId;
-  code: string;
-  tags: string;      // comma-separated
-}
+import type { ModalMode, FormState } from "@models/vibeProject/snippet/CodeSnippetModel";
 
 const EMPTY_FORM: FormState = { title: "", language: "typescript", code: "", tags: "" };
 

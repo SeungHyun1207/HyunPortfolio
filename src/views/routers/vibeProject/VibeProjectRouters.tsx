@@ -1,24 +1,24 @@
 import LLMAgentDashboardIndex from "@/views/pages/projects/llm/LLMAgentDashboardIndex";
-import AlgoVisualizerIndex     from "@/views/pages/privateProject/algo/AlgoVisualizerIndex";
-import GitHubHeatmapIndex      from "@/views/pages/privateProject/githeatmap/GitHubHeatmapIndex";
-import CodeSnippetIndex        from "@/views/pages/privateProject/snippet/CodeSnippetIndex";
+import AlgoVisualizerIndex     from "@/views/pages/vibeProject/algo/AlgoVisualizerIndex";
+import GitHubHeatmapIndex      from "@/views/pages/vibeProject/githeatmap/GitHubHeatmapIndex";
+import CodeSnippetIndex        from "@/views/pages/vibeProject/snippet/CodeSnippetIndex";
 import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
 
 /**
- * 개인 프로젝트 공통 레이아웃 — 좌상단 고정 뒤로가기 버튼
+ * 바이브 프로젝트 공통 레이아웃 — 좌상단 고정 뒤로가기 버튼
  */
-const PrivateProjectLayout = () => {
+const VibeProjectLayout = () => {
     const navigate = useNavigate();
     return (
         <>
             <button
                 type="button"
-                onClick={() => navigate("/")}
+                onClick={() => window.history.length > 1 ? navigate(-1) : navigate("/")}
                 style={{
                     position: "fixed",
                     top: 17,          /* GNB h-16(64px) 수직 중앙: (64 - 30) / 2 = 17 */
                     left: 20,
-                    zIndex: 50,       /* GNB z-40 위 */
+                    zIndex: 1200,     /* MUI AppBar(1100) 위 */
                     display: "flex",
                     alignItems: "center",
                     gap: 6,
@@ -55,19 +55,19 @@ const PrivateProjectLayout = () => {
 };
 
 /**
- * PrivateProjectRouters
- * 개인 프로젝트 라우터
+ * VibeProjectRouters
+ * 바이브 프로젝트 라우터
  *
  * 경로 구조:
- * - /privateProject/aiagent    : AI Agent 대시보드
- * - /privateProject/algo       : Algorithm Visualizer
- * - /privateProject/githeatmap : GitHub Heatmap
- * - /privateProject/snippet    : Code Snippet Manager
+ * - /vibeProject/aiagent    : AI Agent 대시보드
+ * - /vibeProject/algo       : Algorithm Visualizer
+ * - /vibeProject/githeatmap : GitHub Heatmap
+ * - /vibeProject/snippet    : Code Snippet Manager
  */
-const PrivateProjectRouters = () => {
+const VibeProjectRouters = () => {
     return (
         <Routes>
-            <Route element={<PrivateProjectLayout />}>
+            <Route element={<VibeProjectLayout />}>
                 <Route path="aiagent"    element={<LLMAgentDashboardIndex />} />
                 <Route path="algo"       element={<AlgoVisualizerIndex />} />
                 <Route path="githeatmap" element={<GitHubHeatmapIndex />} />
@@ -77,4 +77,4 @@ const PrivateProjectRouters = () => {
     );
 };
 
-export default PrivateProjectRouters;
+export default VibeProjectRouters;

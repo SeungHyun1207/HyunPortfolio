@@ -1,23 +1,24 @@
-import { useSettings } from '@/contexts/SettingsContext';
 import ProfileImg from '@assets/img/Profile.jpg';
+import { usePageTranslation } from '@hooks/usePageTranslation';
+import { translations } from './about.i18n';
 import { useScrollAnimation } from '@hooks';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import WorkIcon from '@mui/icons-material/Work';
 import { Box, Chip, Paper, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
 const About = () => {
-  const { t } = useSettings();
+  const { t } = usePageTranslation(translations);
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.2 });
 
   // 현재 상태 정보 카드
   const statusCards = [
-    { icon: <WorkIcon sx={{ fontSize: 16 }} />, label: t('about.status.company') },
-    { icon: <CalendarTodayIcon sx={{ fontSize: 16 }} />, label: t('about.status.career') },
-    { icon: <LocationOnIcon sx={{ fontSize: 16 }} />, label: t('about.status.location') },
-    { icon: <SearchIcon sx={{ fontSize: 16 }} />, label: t('about.status.seeking') },
+    { icon: <WorkIcon sx={{ fontSize: 16 }} />, label: t('status.company') },
+    { icon: <CalendarTodayIcon sx={{ fontSize: 16 }} />, label: t('status.career') },
+    { icon: <LocationOnIcon sx={{ fontSize: 16 }} />, label: t('status.location') },
+    // { icon: <SearchIcon sx={{ fontSize: 16 }} />, label: t('status.seeking') },
   ];
 
   // 주력 기술
@@ -42,7 +43,13 @@ const About = () => {
   const highlights = [
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 20, height: 20 }}>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          style={{ width: 20, height: 20 }}
+        >
           <rect x="2" y="3" width="20" height="14" rx="2" />
           <path d="M8 21h8M12 17v4" />
         </svg>
@@ -52,7 +59,13 @@ const About = () => {
     },
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 20, height: 20 }}>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          style={{ width: 20, height: 20 }}
+        >
           <path d="M12 2L2 7l10 5 10-5-10-5z" />
           <path d="M2 17l10 5 10-5" />
           <path d="M2 12l10 5 10-5" />
@@ -63,7 +76,13 @@ const About = () => {
     },
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 20, height: 20 }}>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          style={{ width: 20, height: 20 }}
+        >
           <circle cx="12" cy="12" r="3" />
           <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
         </svg>
@@ -173,7 +192,7 @@ const About = () => {
               variant="overline"
               sx={{ color: 'primary.main', fontWeight: 600, letterSpacing: '0.2em' }}
             >
-              {t('about.label')}
+              {t('label')}
             </Typography>
 
             <Typography
@@ -186,22 +205,22 @@ const About = () => {
                 lineHeight: 1.25,
               }}
             >
-              {t('about.title1')}
+              {t('title1')}
               <br />
               <Box component="span" className="gradient-text">
-                {t('about.title2')}
+                {t('title2')}
               </Box>
             </Typography>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mb: 3.5 }}>
               <Typography color="text.secondary" sx={{ lineHeight: 1.8 }}>
-                {t('about.description1')}
+                {t('description1')}
               </Typography>
               <Typography color="text.secondary" sx={{ lineHeight: 1.8 }}>
-                {t('about.description2')}
+                {t('description2')}
               </Typography>
               <Typography color="text.secondary" sx={{ lineHeight: 1.8 }}>
-                {t('about.description3')}
+                {t('description3')}
               </Typography>
             </Box>
 
@@ -218,7 +237,7 @@ const About = () => {
                   mb: 1.2,
                 }}
               >
-                {t('about.mainTech')}
+                {t('mainTech')}
               </Typography>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                 {mainTechs.map((tech) => (
@@ -252,7 +271,7 @@ const About = () => {
                   mb: 1.2,
                 }}
               >
-                {t('about.libraries')}
+                {t('libraries')}
               </Typography>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                 {libraries.map((lib) => (
