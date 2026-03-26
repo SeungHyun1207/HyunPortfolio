@@ -45,19 +45,6 @@ const VIBE_PROJECTS: VibeProject[] = [
     icon: '🤖',
   },
   {
-    id: 'algo',
-    title: { ko: 'Algorithm Visualizer', en: 'Algorithm Visualizer' },
-    description: {
-      ko: '정렬 알고리즘 5종(Bubble / Selection / Insertion / Merge / Quick)을 실시간 막대 애니메이션으로 시각화합니다.',
-      en: 'Visualizes 5 sorting algorithms (Bubble, Selection, Insertion, Merge, Quick) with real-time bar animations.',
-    },
-    techStack: ['React', 'TypeScript', 'CSS Animation'],
-    path: '/vibeProject/algo',
-    accentColor: '#00ff88',
-    badge: 'Algorithm',
-    icon: '📊',
-  },
-  {
     id: 'githeatmap',
     title: { ko: 'GitHub Heatmap', en: 'GitHub Heatmap' },
     description: {

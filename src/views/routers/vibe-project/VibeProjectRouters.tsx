@@ -1,5 +1,4 @@
 import LLMAgentDashboardIndex from "@/views/pages/home/projects/vibe-project/llm/LLMAgentDashboardIndex";
-import AlgoVisualizerIndex     from "@/views/pages/home/projects/vibe-project/algo/AlgoVisualizerIndex";
 import GitHubHeatmapIndex      from "@/views/pages/home/projects/vibe-project/githeatmap/GitHubHeatmapIndex";
 import CodeSnippetIndex        from "@/views/pages/home/projects/vibe-project/snippet/CodeSnippetIndex";
 import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
@@ -69,7 +68,6 @@ const VibeProjectRouters = () => {
         <Routes>
             <Route element={<VibeProjectLayout />}>
                 <Route path="aiagent"    element={<LLMAgentDashboardIndex />} />
-                <Route path="algo"       element={<AlgoVisualizerIndex />} />
                 <Route path="githeatmap" element={<GitHubHeatmapIndex />} />
                 <Route path="snippet"    element={<CodeSnippetIndex />} />
             </Route>

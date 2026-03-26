@@ -279,7 +279,7 @@ const WorkCard = styled(CenterBox, {
   minWidth: 0,
   minHeight: '78px',
   ...(hasAlert && {
-    animation: `${pulseRing} 2.2s ease-out infinite`,
+    animation: `${pulseRing} 2s ease-out infinite`,
   }),
 }))
 

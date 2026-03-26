@@ -1,3 +1,4 @@
+import { keyframes } from '@emotion/react'
 import { AlignCenter, FlexBox, Title } from '@/views/layouts/CommonLayoutComponents'
 import { Chip, styled, Typography } from '@mui/material'
 import { MOCK_MAILS } from '../intranet/intranetMock'
@@ -102,6 +103,17 @@ const MailList = styled(FlexBox)({
   gap: '4px',
 })
 
+const unreadPulse = keyframes`
+  0%, 100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+  50% {
+    background-color: rgba(99, 102, 241, 0.18);
+    box-shadow: inset 3px 0 0 rgba(99, 102, 241, 0.7);
+  }
+`
+
 const MailItemWrap = styled(FlexBox, {
   shouldForwardProp: (prop) => prop !== 'isRead',
 })<{ isRead: boolean }>(({ theme, isRead }) => ({
@@ -114,8 +126,12 @@ const MailItemWrap = styled(FlexBox, {
   borderRadius: '4px',
   cursor: 'pointer',
   transition: 'background-color 0.15s ease',
+  ...(!isRead && {
+    animation: `${unreadPulse} 2s ease-in-out infinite`,
+  }),
   '&:hover': {
     backgroundColor: theme.palette.action.hover,
+    animationPlayState: 'paused',
   },
 }))
 
