@@ -1,39 +1,39 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
-export type UserRole = 'admin' | 'manager' | 'employee'
-export type UserStatus = 'active' | 'inactive' | 'on-leave'
-export type Department = '개발팀' | '기획팀' | '디자인팀' | '인사팀' | '영업팀'
+export type UserRole = 'admin' | 'manager' | 'employee';
+export type UserStatus = 'active' | 'inactive' | 'on-leave';
+export type Department = '개발팀' | '기획팀' | '디자인팀' | '인사팀' | '영업팀';
 
 export interface UserInfo {
-  id: string
-  name: string
-  email: string
-  role: UserRole
-  department: Department
-  position: string
-  status: UserStatus
-  joinedAt: string
-  avatarUrl?: string
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  department: Department;
+  position: string;
+  status: UserStatus;
+  joinedAt: string;
+  avatarUrl?: string;
 }
 
 interface UserInfoState {
-  currentUser: UserInfo | null
-  users: UserInfo[]
-  setCurrentUser: (user: UserInfo | null) => void
-  setUsers: (users: UserInfo[]) => void
+  currentUser: UserInfo | null;
+  users: UserInfo[];
+  setCurrentUser: (user: UserInfo | null) => void;
+  setUsers: (users: UserInfo[]) => void;
 }
 
 /** 샘플 직원 목록 */
 const SAMPLE_USERS: UserInfo[] = [
   {
     id: 'u001',
-    name: '김승현',
-    email: 'seunghyun.kim@company.com',
+    name: '강승현',
+    email: 'seunghyun.kang@company.com',
     role: 'admin',
     department: '개발팀',
-    position: '팀장',
+    position: '대리',
     status: 'active',
-    joinedAt: '2022-03-01',
+    joinedAt: '2022-02-01',
   },
   {
     id: 'u002',
@@ -75,13 +75,13 @@ const SAMPLE_USERS: UserInfo[] = [
     status: 'active',
     joinedAt: '2020-11-20',
   },
-]
+];
 
 const useUserInfo = create<UserInfoState>((set) => ({
   currentUser: SAMPLE_USERS[0],
   users: SAMPLE_USERS,
   setCurrentUser: (user) => set({ currentUser: user }),
   setUsers: (users) => set({ users }),
-}))
+}));
 
-export default useUserInfo
+export default useUserInfo;

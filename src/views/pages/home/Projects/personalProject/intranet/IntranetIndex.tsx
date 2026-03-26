@@ -1,25 +1,28 @@
-import { CenterBox } from '@/views/layouts/CommonLayoutComponents';
-import { Box, Button, styled, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Description, FlexBox, Title } from '@/views/layouts/CommonLayoutComponents';
+import { Box, styled } from '@mui/material';
 import ProfileCard from '../components/ProfileCard';
 
 const IntranetIndex = () => {
-  const navigate = useNavigate();
 
   return (
     <IntranetWrap>
-      <ProfileCard />
-      <Typography sx={{ fontSize: '4rem' }}>🏢</Typography>
+      <IntranetPageTitle>
+        <Title>🏢사내관리시스템</Title>
+        <Description>사내 통합 관리 시스템입니다.</Description>
+      </IntranetPageTitle>
 
-      <Typography
+      <ProfileCard />
+      {/* <Typography sx={{ fontSize: '4rem' }}></Typography> */}
+
+      {/* <Typography
         variant="h3"
         fontWeight={800}
         sx={{ textAlign: 'center', fontSize: { xs: '1.75rem', md: '2.5rem' } }}
       >
         사내관리시스템
-      </Typography>
+      </Typography> */}
 
-      <Typography
+      {/* <Typography
         variant="body1"
         color="text.secondary"
         sx={{ textAlign: 'center', maxWidth: 480 }}
@@ -27,9 +30,9 @@ const IntranetIndex = () => {
         직원 및 관리자가 사용하는 사내 통합 관리 시스템입니다.
         <br />
         현재 개발 진행 중입니다.
-      </Typography>
+      </Typography> */}
 
-      <Box
+      {/* <Box
         sx={{
           px: 2.5,
           py: 1,
@@ -42,21 +45,25 @@ const IntranetIndex = () => {
         }}
       >
         개발중
-      </Box>
+      </Box> */}
 
-      <Button variant="outlined" onClick={() => navigate(-1)} sx={{ mt: 2, borderRadius: 3 }}>
+      {/* <Button variant="outlined" onClick={() => navigate(-1)} sx={{ mt: 2, borderRadius: 3 }}>
         ← 돌아가기
-      </Button>
+      </Button> */}
     </IntranetWrap>
   );
 };
 
 export default IntranetIndex;
 
-const IntranetWrap = styled(CenterBox)({
-  minHeight: '100vh',
-  backgroundColor: 'background.default',
+const IntranetWrap = styled(FlexBox)({
+  minHeight: 'calc(100vh - 80px)',
+  padding: '32px',
   flexDirection: 'column',
-  gap: 3,
-  px: 2,
+});
+
+const IntranetPageTitle = styled(Box)({
+  marginBottom: '10px',
+  borderBottom: '1px solid #182030',
+  paddingBottom: '10px',
 });
