@@ -199,7 +199,7 @@ const ScheduleCard = ({ setting }: ScheduleCardProps) => {
         <IconButton size="small" onClick={goPrev}>
           <ChevronLeftIcon fontSize="small" />
         </IconButton>
-        <Typography sx={{ fontSize: '14px', fontWeight: 700, minWidth: '90px', textAlign: 'center' }}>
+        <Typography sx={{ fontSize: '14px', fontWeight: 700, minWidth: '90px', textAlign: 'center', color: 'text.primary' }}>
           {monthLabel}
         </Typography>
         <IconButton size="small" onClick={goNext}>
@@ -277,7 +277,7 @@ const ScheduleCard = ({ setting }: ScheduleCardProps) => {
             {selectedSchedules.map((s) => (
               <DetailItem key={s.id} dotColor={SCHEDULE_COLOR[s.type]}>
                 <Box sx={{ flex: 1, minWidth: 0 }}>
-                  <Typography sx={{ fontSize: '13px', fontWeight: 600 }}>{s.title}</Typography>
+                  <Typography sx={{ fontSize: '13px', fontWeight: 600, color: 'text.primary' }}>{s.title}</Typography>
                   {s.time && (
                     <Typography sx={{ fontSize: '11px', color: 'text.disabled' }}>{s.time}</Typography>
                   )}
@@ -300,7 +300,7 @@ const ScheduleCard = ({ setting }: ScheduleCardProps) => {
             {selectedVacations.map((v) => (
               <DetailItem key={v.id} dotColor={VACATION_STATUS_COLOR[v.status]}>
                 <Box sx={{ flex: 1, minWidth: 0 }}>
-                  <Typography sx={{ fontSize: '13px', fontWeight: 600 }}>
+                  <Typography sx={{ fontSize: '13px', fontWeight: 600, color: 'text.primary' }}>
                     {v.employeeName} · {v.type}
                   </Typography>
                   <Typography sx={{ fontSize: '11px', color: 'text.disabled' }}>
@@ -341,6 +341,7 @@ const ScheduleCardWrap = styled(FlexBox)(({ theme }) => ({
   width: '100%',
   flexDirection: 'column',
   backgroundColor: theme.palette.background.paper,
+  color: theme.palette.text.primary,
   overflow: 'hidden',
 }))
 

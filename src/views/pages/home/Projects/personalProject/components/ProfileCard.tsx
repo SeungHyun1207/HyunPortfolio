@@ -7,6 +7,7 @@ import {
   ArrowUpward as ArrowUpwardIcon,
   Settings as SettingsIcon,
 } from '@mui/icons-material'
+import { keyframes } from '@emotion/react'
 import {
   Button,
   Checkbox,
@@ -73,6 +74,16 @@ const ProfileCard = () => {
 
       default:
         return <WorkDesc>-</WorkDesc>
+    }
+  }
+
+  // 카드별 알림 카운트 (1 이상이면 애니메이션)
+  const getCardAlertCount = (id: WorkCardId): number => {
+    switch (id) {
+      case 'schedule': return MOCK_SCHEDULES.length
+      case 'mail':     return unreadMailCount
+      case 'approval': return MOCK_APPROVALS.length
+      default:         return 0
     }
   }
 
@@ -155,7 +166,7 @@ const ProfileCard = () => {
       ============================== */}
       <WorkList>
         {visibleCards.map((card) => (
-          <WorkCard key={card.id}>
+          <WorkCard key={card.id} hasAlert={getCardAlertCount(card.id) >= 1}>
             <WorkTitle>{card.label}</WorkTitle>
             {renderWorkCardContent(card.id)}
           </WorkCard>
@@ -220,6 +231,7 @@ const ProfileCardWrap = styled(FlexBox)(({ theme }) => ({
   padding: '16px',
   flexDirection: 'column',
   backgroundColor: theme.palette.background.paper,
+  color: theme.palette.text.primary,
 }))
 
 const ProfileInfoWrap = styled(FlexBox)({ gap: '12px' })
@@ -249,14 +261,26 @@ const WorkList = styled(FlexBox)({
   flexWrap: 'nowrap',
 })
 
-const WorkCard = styled(CenterBox)(({ theme }) => ({
+// 테두리가 퍼졌다 사라지는 pulse ring
+const pulseRing = keyframes`
+  0%   { box-shadow: 0 0 0 0px rgba(99, 102, 241, 0.55); }
+  60%  { box-shadow: 0 0 0 7px rgba(99, 102, 241, 0);    }
+  100% { box-shadow: 0 0 0 0px rgba(99, 102, 241, 0);    }
+`
+
+const WorkCard = styled(CenterBox, {
+  shouldForwardProp: (p) => p !== 'hasAlert',
+})<{ hasAlert?: boolean }>(({ theme, hasAlert }) => ({
   flex: 1,
-  border: `1px solid ${theme.palette.divider}`,
+  border: `1px solid ${hasAlert ? theme.palette.primary.main : theme.palette.divider}`,
   padding: '10px 6px',
   flexDirection: 'column',
   borderRadius: '10px',
   minWidth: 0,
   minHeight: '78px',
+  ...(hasAlert && {
+    animation: `${pulseRing} 2.2s ease-out infinite`,
+  }),
 }))
 
 const WorkTitle = styled(Typography)(({ theme }) => ({
@@ -269,12 +293,13 @@ const WorkTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
-const WorkDesc = styled(Typography)({
+const WorkDesc = styled(Typography)(({ theme }) => ({
   fontSize: '16px',
   fontWeight: 'bold',
   textAlign: 'center',
   lineHeight: 1.4,
-})
+  color: theme.palette.text.primary,
+}))
 
 const DrawerContent = styled(FlexBox)({
   flexDirection: 'column',

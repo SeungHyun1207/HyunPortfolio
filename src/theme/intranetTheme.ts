@@ -31,6 +31,8 @@ export const createIntranetTheme = (mode: 'light' | 'dark') =>
             divider: '#e2e8f0',
             action: {
               hover: '#f1f5f9',
+              selected: 'rgba(0,0,0,0.08)',
+              disabled: 'rgba(0,0,0,0.38)',
               disabledBackground: '#e2e8f0',
             },
           }
@@ -42,12 +44,14 @@ export const createIntranetTheme = (mode: 'light' | 'dark') =>
             text: {
               primary: '#f1f5f9',
               secondary: '#94a3b8',
-              disabled: '#64748b',
+              disabled: '#7a8a9e',
             },
-            divider: 'rgba(255,255,255,0.08)',
+            divider: 'rgba(255,255,255,0.10)',
             action: {
-              hover: 'rgba(255,255,255,0.05)',
-              disabledBackground: 'rgba(255,255,255,0.08)',
+              hover: 'rgba(255,255,255,0.06)',
+              selected: 'rgba(255,255,255,0.14)',
+              disabled: 'rgba(255,255,255,0.38)',
+              disabledBackground: 'rgba(255,255,255,0.10)',
             },
           }),
     },

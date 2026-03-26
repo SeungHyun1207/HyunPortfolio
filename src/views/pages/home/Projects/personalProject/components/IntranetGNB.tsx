@@ -214,7 +214,7 @@ const IntranetGNB = () => {
       <Drawer anchor="right" open={menuOpen} onClose={() => setMenuOpen(false)}>
         <DrawerWrap>
           <DrawerHeader>
-            <Typography sx={{ fontSize: '16px', fontWeight: 700 }}>전체 메뉴</Typography>
+            <Typography sx={{ fontSize: '16px', fontWeight: 700, color: 'text.primary' }}>전체 메뉴</Typography>
             <IconButton size="small" onClick={() => setMenuOpen(false)}>
               <CloseIcon fontSize="small" />
             </IconButton>
@@ -232,7 +232,7 @@ const IntranetGNB = () => {
                   </ListItemIcon>
                   <ListItemText
                     primary={item.label}
-                    primaryTypographyProps={{ fontSize: '14px', fontWeight: 500 }}
+                    primaryTypographyProps={{ fontSize: '14px', fontWeight: 500, color: 'text.primary' }}
                   />
                 </ListItemButton>
               ))}
@@ -252,7 +252,7 @@ const IntranetGNB = () => {
                     </ListItemIcon>
                     <ListItemText
                       primary={item.label}
-                      primaryTypographyProps={{ fontSize: '14px', fontWeight: 500 }}
+                      primaryTypographyProps={{ fontSize: '14px', fontWeight: 500, color: 'text.primary' }}
                     />
                   </ListItemButton>
                 ))}
@@ -267,7 +267,7 @@ const IntranetGNB = () => {
                 {initial}
               </ProfileAvatar>
               <Box>
-                <Typography sx={{ fontSize: '14px', fontWeight: 700 }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: 700, color: 'text.primary' }}>
                   {currentUser?.name}
                 </Typography>
                 <Typography sx={{ fontSize: '12px', color: 'text.secondary' }}>
@@ -294,6 +294,7 @@ const GNBWrap = styled(AlignCenter)(({ theme }) => ({
   padding: '0 24px',
   justifyContent: 'space-between',
   backgroundColor: theme.palette.background.paper,
+  color: theme.palette.text.primary,
   borderBottom: `1px solid ${theme.palette.divider}`,
   boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
   boxSizing: 'border-box',
@@ -367,7 +368,13 @@ const UnreadDot = styled(Box)({
 })
 
 /* ── 전체 메뉴 Drawer ── */
-const DrawerWrap = styled(FlexBox)({ width: '260px', height: '100%', flexDirection: 'column' })
+const DrawerWrap = styled(FlexBox)(({ theme }) => ({
+  width: '260px',
+  height: '100%',
+  flexDirection: 'column',
+  backgroundColor: theme.palette.background.paper,
+  color: theme.palette.text.primary,
+}))
 
 const DrawerHeader = styled(AlignCenter)({
   justifyContent: 'space-between',

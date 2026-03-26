@@ -32,11 +32,11 @@ const MailCard = () => {
           <MailItemWrap key={mail.id} isRead={mail.isRead}>
             {/* 발신자 + 시간 */}
             <MailMeta>
-              <Typography sx={{ fontSize: '13px', fontWeight: 600 }}>
+              <Typography sx={{ fontSize: '13px', fontWeight: 600, color: 'text.primary' }}>
                 {mail.sender}
                 {mail.isImportant && <ImportantStar>★</ImportantStar>}
               </Typography>
-              <Typography sx={{ fontSize: '11px', color: 'text.disabled' }}>
+              <Typography sx={{ fontSize: '11px', color: 'text.secondary' }}>
                 {mail.receivedAt}
               </Typography>
             </MailMeta>
@@ -88,6 +88,7 @@ const MailCardWrap = styled(FlexBox)(({ theme }) => ({
   padding: '16px',
   flexDirection: 'column',
   backgroundColor: theme.palette.background.paper,
+  color: theme.palette.text.primary,
 }))
 
 const MailCardHeader = styled(AlignCenter)(({ theme }) => ({

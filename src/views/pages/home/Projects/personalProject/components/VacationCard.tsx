@@ -70,7 +70,7 @@ const VacationCard = () => {
           <VacationItemWrap key={vacation.id}>
             {/* 타입 + 상태 뱃지 */}
             <VacationItemHeader>
-              <Typography sx={{ fontSize: '13px', fontWeight: 600 }}>
+              <Typography sx={{ fontSize: '13px', fontWeight: 600, color: 'text.primary' }}>
                 {vacation.type}
               </Typography>
               <Chip
@@ -117,6 +117,7 @@ const VacationCardWrap = styled(FlexBox)(({ theme }) => ({
   padding: '16px',
   flexDirection: 'column',
   backgroundColor: theme.palette.background.paper,
+  color: theme.palette.text.primary,
 }))
 
 const VacationCardHeader = styled(AlignCenter)(({ theme }) => ({

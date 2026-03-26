@@ -29,7 +29,7 @@ const ApprovalCard = () => {
         <Title sx={{ fontSize: '18px' }}>📋 결재 대기</Title>
         <AlignCenter sx={{ gap: '6px' }}>
           <CountChip label={`전체 ${totalCount}건`} size="small" />
-          <CountChip label={`대기 ${pendingCount}건`} size="small" color="warning" />
+          <CountChip label={`대기 ${pendingCount}건`} size="small" isPending />
         </AlignCenter>
       </ApprovalCardHeader>
 
@@ -48,6 +48,7 @@ const ApprovalCard = () => {
                 sx={{
                   fontSize: '13px',
                   fontWeight: 600,
+                  color: 'text.primary',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -55,7 +56,7 @@ const ApprovalCard = () => {
               >
                 {item.title}
               </Typography>
-              <Typography sx={{ fontSize: '11px', color: 'text.disabled' }}>
+              <Typography sx={{ fontSize: '11px', color: 'text.secondary' }}>
                 {item.requester} · {item.requestedAt}
               </Typography>
             </Box>
@@ -94,6 +95,7 @@ const ApprovalCardWrap = styled(FlexBox)(({ theme }) => ({
   padding: '16px',
   flexDirection: 'column',
   backgroundColor: theme.palette.background.paper,
+  color: theme.palette.text.primary,
 }))
 
 const ApprovalCardHeader = styled(AlignCenter)(({ theme }) => ({
@@ -102,12 +104,14 @@ const ApprovalCardHeader = styled(AlignCenter)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.divider}`,
 }))
 
-const CountChip = styled(Chip)(({ theme }) => ({
+const CountChip = styled(Chip, {
+  shouldForwardProp: (p) => p !== 'isPending',
+})<{ isPending?: boolean }>(({ theme, isPending }) => ({
   fontSize: '11px',
   height: '20px',
   fontWeight: 600,
-  backgroundColor: theme.palette.action.hover,
-  color: theme.palette.text.secondary,
+  backgroundColor: isPending ? '#f97316' : theme.palette.action.hover,
+  color: isPending ? '#fff' : theme.palette.text.secondary,
 }))
 
 const ApprovalList = styled(FlexBox)({

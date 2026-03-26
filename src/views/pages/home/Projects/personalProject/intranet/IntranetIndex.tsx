@@ -3,7 +3,7 @@ import { createIntranetTheme } from '@/theme/intranetTheme'
 import { FlexBox } from '@/views/layouts/CommonLayoutComponents'
 import { styled, ThemeProvider } from '@mui/material'
 import Grid from '@mui/material/Grid'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import ApprovalCard from '../components/ApprovalCard'
 import IntranetGNB from '../components/IntranetGNB'
 import MailCard from '../components/MailCard'
@@ -21,6 +21,10 @@ import VacationCard from '../components/VacationCard'
 const IntranetIndex = () => {
   const { theme: intranetMode } = useIntranetSettings()
   const intranetTheme = useMemo(() => createIntranetTheme(intranetMode), [intranetMode])
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [])
 
   return (
     <ThemeProvider theme={intranetTheme}>
@@ -70,6 +74,9 @@ const IntranetWrap = styled(FlexBox)(({ theme }) => ({
   minHeight: 'calc(100vh - 64px)',
   flexDirection: 'column',
   backgroundColor: theme.palette.background.default,
+  // 인트라넷 전용 ThemeProvider의 text.primary를 CSS 상속 루트로 설정
+  // (포트폴리오 body 색상을 덮어씀)
+  color: theme.palette.text.primary,
 }))
 
 const ContentArea = styled(FlexBox)({
