@@ -3,9 +3,9 @@ import path from 'path';
 import { defineConfig } from 'vite';
 
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react()],
-  base: '/HyunPortfolio/',
+  base: command === 'build' ? '/HyunPortfolio/' : '/',
   server: {
     open: true,
     port: 999,
@@ -40,4 +40,4 @@ export default defineConfig({
       '@models': path.resolve(__dirname, './src/models'),
     },
   },
-});
+}));
