@@ -1,7 +1,7 @@
-import LLMAgentDashboardIndex from "@/views/pages/home/projects/vibeProject/llm/LLMAgentDashboardIndex";
-import AlgoVisualizerIndex     from "@/views/pages/home/projects/vibeProject/algo/AlgoVisualizerIndex";
-import GitHubHeatmapIndex      from "@/views/pages/home/projects/vibeProject/githeatmap/GitHubHeatmapIndex";
-import CodeSnippetIndex        from "@/views/pages/home/projects/vibeProject/snippet/CodeSnippetIndex";
+import LLMAgentDashboardIndex from "@/views/pages/home/projects/vibe-project/llm/LLMAgentDashboardIndex";
+import AlgoVisualizerIndex     from "@/views/pages/home/projects/vibe-project/algo/AlgoVisualizerIndex";
+import GitHubHeatmapIndex      from "@/views/pages/home/projects/vibe-project/githeatmap/GitHubHeatmapIndex";
+import CodeSnippetIndex        from "@/views/pages/home/projects/vibe-project/snippet/CodeSnippetIndex";
 import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
 
 /**

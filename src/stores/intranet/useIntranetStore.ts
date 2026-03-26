@@ -3,7 +3,7 @@ import type {
   AttendanceRecord,
   WorkCardId,
   WorkCardSetting,
-} from '@models/personalProject/intranet/IntranetModel'
+} from '@models/personal-project/intranet/IntranetModel'
 
 // ==============================
 // 현재 시각을 'AM/PM HH:MM:SS' 포맷으로 변환

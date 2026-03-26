@@ -19,7 +19,7 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { MOCK_APPROVALS, MOCK_MAILS, MOCK_SCHEDULES, MOCK_VACATION_BALANCE } from '../intranet/intranetMock'
-import type { WorkCardId } from '@models/personalProject/intranet/IntranetModel'
+import type { WorkCardId } from '@models/personal-project/intranet/IntranetModel'
 
 // ==============================
 // ProfileCard 컴포넌트

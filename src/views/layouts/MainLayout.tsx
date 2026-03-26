@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
-import GNB from './GNB'
-import Settings from './Settings'
+import GNB from './gnb'
+import Settings from './settings'
 import { Box } from '@mui/material'
 import Footer from './Footer'
 

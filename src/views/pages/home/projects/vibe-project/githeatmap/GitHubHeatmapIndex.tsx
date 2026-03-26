@@ -59,7 +59,7 @@ function calcStats(days: ContributionDay[]) {
   }
 }
 
-import type { WeekRow } from '@models/vibeProject/githeatmap/GitHubHeatmapModel'
+import type { WeekRow } from '@models/vibe-project/githeatmap/GitHubHeatmapModel'
 
 function getMonthLabels(weeks: WeekRow[], months: string[]) {
   const labels: { label: string; weekIdx: number }[] = []

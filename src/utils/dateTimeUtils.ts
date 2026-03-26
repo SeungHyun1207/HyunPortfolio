@@ -1,5 +1,5 @@
 /**
- *  DateTimeUtils
+ *  dateTimeUtils
  *  사용방법 : dayjs(변환할 값).format(DateTimeFormat.YYYYMMDD)
  */
 

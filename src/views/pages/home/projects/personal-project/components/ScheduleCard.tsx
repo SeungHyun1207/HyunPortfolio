@@ -14,7 +14,7 @@ import type {
   ScheduleItem,
   TeamVacationItem,
   VacationViewScope,
-} from '@models/personalProject/intranet/IntranetModel'
+} from '@models/personal-project/intranet/IntranetModel'
 
 // ==============================
 // 일정 타입 색상

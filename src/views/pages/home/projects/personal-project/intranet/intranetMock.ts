@@ -6,7 +6,7 @@ import type {
   TeamVacationItem,
   VacationBalance,
   VacationItem,
-} from '@models/personalProject/intranet/IntranetModel'
+} from '@models/personal-project/intranet/IntranetModel'
 
 // ==============================
 // 메일 목 데이터 (5개)

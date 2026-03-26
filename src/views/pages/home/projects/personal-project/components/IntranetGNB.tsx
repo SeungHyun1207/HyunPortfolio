@@ -35,7 +35,7 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { MOCK_NOTIFICATIONS } from '../intranet/intranetMock'
-import type { NotificationItem } from '@models/personalProject/intranet/IntranetModel'
+import type { NotificationItem } from '@models/personal-project/intranet/IntranetModel'
 
 // ==============================
 // 전체 메뉴 아이템

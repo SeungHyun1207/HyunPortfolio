@@ -1,8 +1,8 @@
 import MainLayout from '@/views/layouts/MainLayout';
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import PersonalProjectRouters from './views/routers/personalProject/PersonalProjectRouters';
-import VibeProjectRouters from './views/routers/vibeProject/VibeProjectRouters';
+import PersonalProjectRouters from './views/routers/personal-project/PersonalProjectRouters';
+import VibeProjectRouters from './views/routers/vibe-project/VibeProjectRouters';
 
 /**
  * Lazy Loading 페이지 컴포넌트

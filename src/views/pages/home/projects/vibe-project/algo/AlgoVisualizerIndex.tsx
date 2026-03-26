@@ -11,7 +11,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import type { AlgoId, BarState, Bar, AlgoOption, Step } from "@models/vibeProject/algo/AlgoVisualizerModel";
+import type { AlgoId, BarState, Bar, AlgoOption, Step } from "@models/vibe-project/algo/AlgoVisualizerModel";
 
 // ─── 알고리즘 메타 ─────────────────────────────────────────────────────────────
 

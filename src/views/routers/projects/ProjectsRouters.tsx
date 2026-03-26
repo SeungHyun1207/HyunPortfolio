@@ -1,4 +1,4 @@
-import LLMAgentDashboardIndex from '@/views/pages/home/projects/vibeProject/llm/LLMAgentDashboardIndex';
+import LLMAgentDashboardIndex from '@/views/pages/home/projects/vibe-project/llm/LLMAgentDashboardIndex';
 import { Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 
 const ProjectLayout = () => {

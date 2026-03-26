@@ -1,4 +1,4 @@
-import IntranetIndex from '@/views/pages/home/projects/personalProject/intranet/IntranetIndex'
+import IntranetIndex from '@/views/pages/home/projects/personal-project/intranet/IntranetIndex'
 import { Route, Routes } from 'react-router-dom'
 
 /**

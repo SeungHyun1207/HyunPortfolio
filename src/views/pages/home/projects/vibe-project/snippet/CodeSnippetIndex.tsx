@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
-import type { LangId, Snippet } from "@models/vibeProject/snippet/CodeSnippetModel";
+import type { LangId, Snippet } from "@models/vibe-project/snippet/CodeSnippetModel";
 
 // ─── 언어 메타 ─────────────────────────────────────────────────────────────────
 
@@ -180,7 +180,7 @@ function saveSnippets(snippets: Snippet[]) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-import type { ModalMode, FormState } from "@models/vibeProject/snippet/CodeSnippetModel";
+import type { ModalMode, FormState } from "@models/vibe-project/snippet/CodeSnippetModel";
 
 const EMPTY_FORM: FormState = { title: "", language: "typescript", code: "", tags: "" };
 

@@ -1,7 +1,7 @@
 import { AlignCenter, FlexBox, Title } from '@/views/layouts/CommonLayoutComponents'
 import { Chip, LinearProgress, styled, Typography } from '@mui/material'
 import { MOCK_VACATION_BALANCE, MOCK_VACATIONS } from '../intranet/intranetMock'
-import type { VacationItem } from '@models/personalProject/intranet/IntranetModel'
+import type { VacationItem } from '@models/personal-project/intranet/IntranetModel'
 
 // ==============================
 // status badge 색상 매핑 (의미론적 색상 — 테마 무관)
