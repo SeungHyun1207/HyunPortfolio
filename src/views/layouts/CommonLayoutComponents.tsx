@@ -25,3 +25,18 @@ export const SettingBox = styled(Box)({
   width: '50px',
   height: '50px',
 });
+
+/**
+ * 진행중 뱃지 추후 뱃지 커스텀에 추가
+ */
+export const InProgressBadge = styled(CenterBox)({
+  width: '100px',
+  height: '40px',
+  borderRadius: '50px',
+  fontSize: '0.75rem',
+  fontWeight: 700,
+  color: '#fb923c',
+  backgroundColor: 'rgba(251,146,60,0.12)',
+  border: '1px solid rgba(251,146,60,0.3)',
+  textAlign: 'center',
+});
