@@ -32,6 +32,19 @@ const PERSONAL_PROJECTS: PersonalProject[] = [
 
 const VIBE_PROJECTS: VibeProject[] = [
   {
+    id: 'dashboard',
+    title: { ko: '포트폴리오 Analytics', en: 'Portfolio Analytics' },
+    description: {
+      ko: 'localStorage 기반 포트폴리오 방문 추적 대시보드. 실제 방문 데이터를 7일간 보관하며, 누적/오늘 방문수, 일별 추이, 섹션별 조회, 유입 경로를 SVG 차트로 시각화합니다.',
+      en: 'localStorage-based portfolio visit tracking dashboard. Stores real visit data for 7 days, visualizing total/today visits, daily trends, section views, and traffic sources with SVG charts.',
+    },
+    techStack: ['React', 'TypeScript', 'SVG'],
+    path: '/vibeProject/dashboard',
+    accentColor: '#f59e0b',
+    badge: 'Analytics',
+    icon: '📊',
+  },
+  {
     id: 'aiagent',
     title: { ko: 'AI Agent 대시보드', en: 'AI Agent Dashboard' },
     description: {
