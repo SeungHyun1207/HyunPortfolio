@@ -21,6 +21,7 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { useState, useCallback } from "react";
 import type { ChatRoom, AIMessage, ModelId, ModelOption } from "@models/vibe-project/llm/LLMAgentDashboardModel";
 import { AIMessageMock, ChatRoomMock } from "@/mocks/projects/llm/LLMAgentMockData";
+import { useVibeTheme } from "../_shared/useVibeTheme";
 
 // ─── Mock 초기 데이터 ──────────────────────────────────────────────────────────
 
@@ -141,6 +142,7 @@ function generateResponse(question: string): string {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const LLMAgentDashboardIndex = () => {
+  const C = useVibeTheme();
   const [rooms, setRooms] = useState<ChatRoom[]>(INITIAL_ROOMS);
   const [activeRoomId, setActiveRoomId] = useState<string>(INITIAL_ROOMS[0].chatRoomId);
   const [selectedModelId, setSelectedModelId] = useState<ModelId>("claude-3.7");
@@ -282,76 +284,76 @@ const LLMAgentDashboardIndex = () => {
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
 
         /* ── 전체 ── */
-        .cs-main-container { background: #07090d !important; }
+        .cs-main-container { background: ${C.bg} !important; }
 
         /* ── 사이드바 ── */
         .cs-sidebar {
-          background: #0c1018 !important;
-          border-right: 1px solid #182030 !important;
+          background: ${C.card} !important;
+          border-right: 1px solid ${C.border} !important;
           min-width: 240px !important;
           max-width: 240px !important;
         }
         .cs-conversation-list { background: transparent !important; }
         .cs-conversation {
           background: transparent !important;
-          border-bottom: 1px solid rgba(24,32,48,0.6) !important;
+          border-bottom: 1px solid ${C.border} !important;
           padding: 10px 14px !important;
           cursor: pointer !important;
           transition: background 0.1s !important;
         }
-        .cs-conversation:hover { background: rgba(255,255,255,0.03) !important; }
+        .cs-conversation:hover { background: ${C.isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'} !important; }
         .cs-conversation.cs-conversation--active {
-          background: #111822 !important;
-          border-left: 2px solid #00c8ff !important;
+          background: ${C.cardHover} !important;
+          border-left: 2px solid ${C.cyan} !important;
         }
         .cs-conversation__name {
-          color: #bfcfdf !important;
+          color: ${C.text} !important;
           font-size: 12px !important;
           font-weight: 600 !important;
           font-family: 'IBM Plex Mono', monospace !important;
         }
         .cs-conversation__info,
         .cs-conversation__info-content {
-          color: #465a72 !important;
+          color: ${C.textSec} !important;
           font-size: 11px !important;
           font-family: 'IBM Plex Mono', monospace !important;
         }
         .cs-conversation__last-activity {
-          color: #465a72 !important;
+          color: ${C.textSec} !important;
           font-size: 10px !important;
           font-family: 'IBM Plex Mono', monospace !important;
         }
 
         /* ── 채팅 컨테이너 ── */
-        .cs-chat-container { background: #07090d !important; }
+        .cs-chat-container { background: ${C.bg} !important; }
 
         /* ── 헤더 ── */
         .cs-conversation-header {
-          background: #0c1018 !important;
-          border-bottom: 1px solid #182030 !important;
+          background: ${C.card} !important;
+          border-bottom: 1px solid ${C.border} !important;
           padding: 10px 20px !important;
           min-height: 48px !important;
         }
         .cs-conversation-header__user-name {
-          color: #bfcfdf !important;
+          color: ${C.text} !important;
           font-size: 13px !important;
           font-weight: 600 !important;
           font-family: 'IBM Plex Mono', monospace !important;
         }
         .cs-conversation-header__info {
-          color: #465a72 !important;
+          color: ${C.textSec} !important;
           font-size: 11px !important;
           font-family: 'IBM Plex Mono', monospace !important;
         }
 
         /* ── 메시지 리스트 ── */
-        .cs-message-list { background: #07090d !important; padding: 16px !important; }
+        .cs-message-list { background: ${C.bg} !important; padding: 16px !important; }
 
         /* ── 메시지 — 사용자 ── */
         .cs-message--outgoing .cs-message__content {
-          background: #111822 !important;
-          border: 1px solid #1e2e42 !important;
-          color: #bfcfdf !important;
+          background: ${C.cardHover} !important;
+          border: 1px solid ${C.borderLight} !important;
+          color: ${C.text} !important;
           font-size: 13px !important;
           font-family: 'IBM Plex Mono', monospace !important;
           border-radius: 6px 6px 2px 6px !important;
@@ -361,9 +363,9 @@ const LLMAgentDashboardIndex = () => {
 
         /* ── 메시지 — AI ── */
         .cs-message--incoming .cs-message__content {
-          background: #0c1018 !important;
-          border: 1px solid #182030 !important;
-          color: #bfcfdf !important;
+          background: ${C.card} !important;
+          border: 1px solid ${C.border} !important;
+          color: ${C.text} !important;
           font-size: 13px !important;
           font-family: 'IBM Plex Mono', monospace !important;
           border-radius: 6px 6px 6px 2px !important;
@@ -373,14 +375,14 @@ const LLMAgentDashboardIndex = () => {
 
         /* ── 발신자 이름 & 시간 ── */
         .cs-message__sender-name {
-          color: #465a72 !important;
+          color: ${C.textSec} !important;
           font-size: 10px !important;
           font-family: 'IBM Plex Mono', monospace !important;
           text-transform: uppercase !important;
           letter-spacing: 0.06em !important;
         }
         .cs-message__sent-time {
-          color: #253545 !important;
+          color: ${C.textDim} !important;
           font-size: 10px !important;
           font-family: 'IBM Plex Mono', monospace !important;
         }
@@ -390,60 +392,60 @@ const LLMAgentDashboardIndex = () => {
 
         /* ── 구분선 ── */
         .cs-message-separator {
-          color: #253545 !important;
+          color: ${C.textDim} !important;
           font-size: 10px !important;
           font-family: 'IBM Plex Mono', monospace !important;
         }
         .cs-message-separator::before,
-        .cs-message-separator::after { background-color: #182030 !important; }
+        .cs-message-separator::after { background-color: ${C.border} !important; }
 
         /* ── 타이핑 인디케이터 ── */
         .cs-typing-indicator {
-          background: #0c1018 !important;
+          background: ${C.card} !important;
           padding: 6px 20px !important;
-          border-top: 1px solid #182030 !important;
+          border-top: 1px solid ${C.border} !important;
         }
-        .cs-typing-indicator__dot { background: #00c8ff !important; }
+        .cs-typing-indicator__dot { background: ${C.cyan} !important; }
         .cs-typing-indicator__text {
-          color: #465a72 !important;
+          color: ${C.textSec} !important;
           font-size: 11px !important;
           font-family: 'IBM Plex Mono', monospace !important;
         }
 
         /* ── 입력창 ── */
         .cs-message-input {
-          background: #0c1018 !important;
-          border-top: 1px solid #182030 !important;
+          background: ${C.card} !important;
+          border-top: 1px solid ${C.border} !important;
           padding: 10px 16px !important;
         }
         .cs-message-input__content-editor-wrapper {
-          background: #111822 !important;
-          border: 1px solid #1e2e42 !important;
+          background: ${C.cardHover} !important;
+          border: 1px solid ${C.borderLight} !important;
           border-radius: 4px !important;
         }
         .cs-message-input__content-editor {
-          color: #bfcfdf !important;
+          color: ${C.text} !important;
           font-size: 13px !important;
           font-family: 'IBM Plex Mono', monospace !important;
-          caret-color: #00c8ff !important;
+          caret-color: ${C.cyan} !important;
         }
         .cs-message-input__content-editor-container { padding: 8px 12px !important; }
         [data-placeholder]::before {
-          color: #465a72 !important;
+          color: ${C.textSec} !important;
           font-family: 'IBM Plex Mono', monospace !important;
           font-size: 12px !important;
         }
         .cs-button--send {
           background: transparent !important;
-          border: 1px solid #1e2e42 !important;
+          border: 1px solid ${C.borderLight} !important;
           border-radius: 4px !important;
           transition: all 0.15s !important;
         }
         .cs-button--send:hover {
-          border-color: #00c8ff !important;
-          background: rgba(0,200,255,0.08) !important;
+          border-color: ${C.cyan} !important;
+          background: ${C.cyan}14 !important;
         }
-        .cs-button--send svg { fill: #00c8ff !important; }
+        .cs-button--send svg { fill: ${C.cyan} !important; }
 
         /* ── 아바타 숨김 ── */
         .cs-avatar { display: none !important; }
@@ -451,7 +453,7 @@ const LLMAgentDashboardIndex = () => {
         /* ── 스크롤바 ── */
         .scrollbar-container::-webkit-scrollbar { width: 3px; }
         .scrollbar-container::-webkit-scrollbar-track { background: transparent; }
-        .scrollbar-container::-webkit-scrollbar-thumb { background: #253545; border-radius: 2px; }
+        .scrollbar-container::-webkit-scrollbar-thumb { background: ${C.borderLight}; border-radius: 2px; }
       `}</style>
 
       <MainContainer>
@@ -462,16 +464,16 @@ const LLMAgentDashboardIndex = () => {
           {/* 사이드바 헤더 */}
           <div style={{
             display: "flex", alignItems: "center", justifyContent: "space-between",
-            padding: "12px 14px", borderBottom: "1px solid #182030",
+            padding: "12px 14px", borderBottom: `1px solid ${C.border}`,
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <div style={{
-                width: 22, height: 22, background: "#00ff88", borderRadius: 3,
+                width: 22, height: 22, background: C.green, borderRadius: 3,
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
-                <span style={{ fontSize: 8, fontWeight: 800, color: "#07090d" }}>LLM</span>
+                <span style={{ fontSize: 8, fontWeight: 800, color: C.bg }}>LLM</span>
               </div>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#bfcfdf", letterSpacing: "0.04em" }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: C.text, letterSpacing: "0.04em" }}>
                 AgentDashboard
               </span>
             </div>
@@ -481,18 +483,18 @@ const LLMAgentDashboardIndex = () => {
               aria-label="새 대화 시작"
               style={{
                 width: 22, height: 22, borderRadius: 3, cursor: "pointer",
-                background: "transparent", border: "1px solid #182030",
-                color: "#465a72", fontSize: 16, lineHeight: 1,
+                background: "transparent", border: `1px solid ${C.border}`,
+                color: C.textSec, fontSize: 16, lineHeight: 1,
                 display: "flex", alignItems: "center", justifyContent: "center",
                 transition: "all 0.15s",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget).style.borderColor = "#00c8ff";
-                (e.currentTarget).style.color = "#00c8ff";
+                (e.currentTarget).style.borderColor = C.cyan;
+                (e.currentTarget).style.color = C.cyan;
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget).style.borderColor = "#182030";
-                (e.currentTarget).style.color = "#465a72";
+                (e.currentTarget).style.borderColor = C.border;
+                (e.currentTarget).style.color = C.textSec;
               }}
             >
               +
@@ -545,8 +547,8 @@ const LLMAgentDashboardIndex = () => {
                         fontSize: 10, fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600,
                         border: "1px solid",
                         background:   isActive ? `${model.color}18` : "transparent",
-                        borderColor:  isActive ? `${model.color}66` : "#182030",
-                        color:        isActive ? model.color : "#465a72",
+                        borderColor:  isActive ? `${model.color}66` : C.border,
+                        color:        isActive ? model.color : C.textSec,
                         transition: "all 0.15s",
                       }}
                     >
@@ -672,7 +674,7 @@ const LLMAgentDashboardIndex = () => {
                             {/* 응답 시간 */}
                             {msg.answerDateTime && msg.questionDateTime && (
                               <span style={{
-                                fontSize: 9, color: "#253545",
+                                fontSize: 9, color: C.textDim,
                                 fontFamily: "'IBM Plex Mono', monospace",
                               }}>
                                 {new Date(msg.answerDateTime).getTime() -

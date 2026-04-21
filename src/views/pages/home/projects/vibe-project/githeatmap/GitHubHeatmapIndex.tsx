@@ -13,6 +13,7 @@ import {
 } from '@services/githubService'
 import { usePageTranslation } from '@hooks/usePageTranslation'
 import { translations } from './githeatmap.i18n'
+import { useVibeTheme } from '../_shared/useVibeTheme'
 
 const CELL = 13
 const GAP = 2
@@ -20,12 +21,20 @@ const STEP = CELL + GAP
 
 // ─── 유틸 ────────────────────────────────────────────────────────────────────
 
-function getColor(count: number): string {
-  if (count === 0) return '#1a2332'
-  if (count <= 2) return '#0d4020'
-  if (count <= 5) return '#0f6030'
-  if (count <= 9) return '#14a040'
-  return '#00ff88'
+function getColor(count: number, isDark: boolean): string {
+  if (isDark) {
+    if (count === 0) return '#1a2332'
+    if (count <= 2) return '#0d4020'
+    if (count <= 5) return '#0f6030'
+    if (count <= 9) return '#14a040'
+    return '#00ff88'
+  }
+  // Light mode
+  if (count === 0) return '#ebedf0'
+  if (count <= 2) return '#9be9a8'
+  if (count <= 5) return '#40c463'
+  if (count <= 9) return '#30a14e'
+  return '#216e39'
 }
 
 function calcStats(days: ContributionDay[]) {
@@ -76,34 +85,41 @@ function getMonthLabels(weeks: WeekRow[], months: string[]) {
 
 // ─── 로딩 스켈레톤 ────────────────────────────────────────────────────────────
 
-const Skeleton = ({ w, h }: { w: number | string; h: number }) => (
-  <div style={{
-    width: w,
-    height: h,
-    borderRadius: 4,
-    background: 'linear-gradient(90deg, #182030 25%, #253545 50%, #182030 75%)',
-    backgroundSize: '200% 100%',
-    animation: 'shimmer 1.4s infinite',
-  }} />
-)
+const Skeleton = ({ w, h }: { w: number | string; h: number }) => {
+  const C = useVibeTheme()
+  return (
+    <div style={{
+      width: w,
+      height: h,
+      borderRadius: 4,
+      background: `linear-gradient(90deg, ${C.border} 25%, ${C.borderLight} 50%, ${C.border} 75%)`,
+      backgroundSize: '200% 100%',
+      animation: 'shimmer 1.4s infinite',
+    }} />
+  )
+}
 
 // ─── 에러 뷰 ─────────────────────────────────────────────────────────────────
 
-const ErrorView = ({ message, hint }: { message: string; hint: string }) => (
-  <div style={{
-    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-    height: 300, gap: 12, color: '#465a72',
-  }}>
-    <span style={{ fontSize: 32 }}>⚠️</span>
-    <p style={{ fontSize: 13, margin: 0 }}>{message}</p>
-    <p style={{ fontSize: 11, margin: 0, color: '#2a3a4a' }}>{hint}</p>
-  </div>
-)
+const ErrorView = ({ message, hint }: { message: string; hint: string }) => {
+  const C = useVibeTheme()
+  return (
+    <div style={{
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      height: 300, gap: 12, color: C.textSec,
+    }}>
+      <span style={{ fontSize: 32 }}>⚠️</span>
+      <p style={{ fontSize: 13, margin: 0 }}>{message}</p>
+      <p style={{ fontSize: 11, margin: 0, color: C.textDim }}>{hint}</p>
+    </div>
+  )
+}
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
 const GitHubHeatmapIndex = () => {
   const { t } = usePageTranslation(translations)
+  const C = useVibeTheme()
   const MONTHS = t('months').split(',')
   const DAYS = t('days').split(',')
   const username = import.meta.env.VITE_GITHUB_USERNAME as string
@@ -146,9 +162,9 @@ const GitHubHeatmapIndex = () => {
   return (
     <div style={{
       minHeight: 'calc(100vh - 80px)',
-      background: '#07090d',
+      background: C.bg,
       fontFamily: "'IBM Plex Mono', monospace",
-      color: '#bfcfdf',
+      color: C.text,
       padding: '32px',
     }}>
       <style>{`
@@ -157,11 +173,11 @@ const GitHubHeatmapIndex = () => {
       `}</style>
 
       {/* ── 페이지 타이틀 ────────────────────────────────────────────────── */}
-      <div style={{ marginBottom: 32, borderBottom: '1px solid #182030', paddingBottom: 24 }}>
-        <div style={{ fontSize: 22, fontWeight: 700, color: '#bfcfdf', marginBottom: 6 }}>
+      <div style={{ marginBottom: 32, borderBottom: `1px solid ${C.border}`, paddingBottom: 24 }}>
+        <div style={{ fontSize: 22, fontWeight: 700, color: C.text, marginBottom: 6 }}>
           {t('pageTitle')}
         </div>
-        <div style={{ fontSize: 11, color: '#465a72', lineHeight: 1.6 }}>
+        <div style={{ fontSize: 11, color: C.textSec, lineHeight: 1.6 }}>
           {t('pageDesc')}
         </div>
       </div>
@@ -170,28 +186,28 @@ const GitHubHeatmapIndex = () => {
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
           <div style={{
-            width: 22, height: 22, background: '#00ff88', borderRadius: 3,
+            width: 22, height: 22, background: C.green, borderRadius: 3,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
-            <span style={{ fontSize: 8, fontWeight: 800, color: '#07090d' }}>GIT</span>
+            <span style={{ fontSize: 8, fontWeight: 800, color: C.bg }}>GIT</span>
           </div>
-          <span style={{ fontSize: 18, fontWeight: 700, color: '#bfcfdf' }}>{username}</span>
+          <span style={{ fontSize: 18, fontWeight: 700, color: C.text }}>{username}</span>
           <span style={{
             fontSize: 10, padding: '2px 8px', borderRadius: 10,
-            border: '1px solid #00ff8866', color: '#00ff88', background: '#00ff8818',
+            border: `1px solid ${C.green}66`, color: C.green, background: `${C.green}18`,
           }}>
             {t('contributionGraph')}
           </span>
           {!isLoading && !isContribError && (
             <span style={{
               fontSize: 10, padding: '2px 8px', borderRadius: 10,
-              border: '1px solid #3178c644', color: '#3178c6', background: '#3178c618',
+              border: `1px solid ${C.cyan}44`, color: C.cyan, background: `${C.cyan}18`,
             }}>
               {t('live')}
             </span>
           )}
         </div>
-        <p style={{ fontSize: 11, color: '#465a72', margin: 0 }}>
+        <p style={{ fontSize: 11, color: C.textSec, margin: 0 }}>
           {new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
           {' — '}
           {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -206,24 +222,24 @@ const GitHubHeatmapIndex = () => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 10, marginBottom: 28 }}>
             {isLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} style={{ background: '#0c1018', border: '1px solid #182030', borderRadius: 6, padding: '12px 14px' }}>
+                <div key={i} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 6, padding: '12px 14px' }}>
                   <Skeleton w="60%" h={22} />
                   <div style={{ marginTop: 6 }}><Skeleton w="80%" h={10} /></div>
                 </div>
               ))
             ) : stats ? (
               [
-                { label: t('totalCommits'),   value: stats.total.toLocaleString(), color: '#00ff88' },
-                { label: t('longestStreak'),  value: `${stats.longestStreak}${t('dayUnit')}`,  color: '#00c8ff' },
-                { label: t('currentStreak'),  value: `${stats.currentStreak}${t('dayUnit')}`,  color: '#f43f5e' },
-                { label: t('peakDay'),        value: DAYS[stats.peakDayIdx],       color: '#ff8c00' },
-                { label: t('peakMonth'),      value: MONTHS[stats.peakMonthIdx],   color: '#c084fc' },
+                { label: t('totalCommits'),   value: stats.total.toLocaleString(), color: C.green },
+                { label: t('longestStreak'),  value: `${stats.longestStreak}${t('dayUnit')}`,  color: C.cyan },
+                { label: t('currentStreak'),  value: `${stats.currentStreak}${t('dayUnit')}`,  color: C.red },
+                { label: t('peakDay'),        value: DAYS[stats.peakDayIdx],       color: C.accent },
+                { label: t('peakMonth'),      value: MONTHS[stats.peakMonthIdx],   color: C.purple },
               ].map((s) => (
                 <div key={s.label} style={{
-                  background: '#0c1018', border: '1px solid #182030', borderRadius: 6, padding: '12px 14px',
+                  background: C.card, border: `1px solid ${C.border}`, borderRadius: 6, padding: '12px 14px',
                 }}>
                   <div style={{ fontSize: 18, fontWeight: 700, color: s.color, marginBottom: 2 }}>{s.value}</div>
-                  <div style={{ fontSize: 9, color: '#465a72', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s.label}</div>
+                  <div style={{ fontSize: 9, color: C.textSec, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s.label}</div>
                 </div>
               ))
             ) : null}
@@ -231,7 +247,7 @@ const GitHubHeatmapIndex = () => {
 
           {/* ── 히트맵 ─────────────────────────────────────────────────────── */}
           <div style={{
-            background: '#0c1018', border: '1px solid #182030', borderRadius: 6,
+            background: C.card, border: `1px solid ${C.border}`, borderRadius: 6,
             padding: '20px 20px 16px', marginBottom: 20, overflowX: 'auto', position: 'relative',
           }} data-heatmap="">
             {isLoading ? (
@@ -245,7 +261,7 @@ const GitHubHeatmapIndex = () => {
                 <div style={{ position: 'relative', height: 16, marginLeft: 28, marginBottom: 4 }}>
                   {monthLabels.map(({ label, weekIdx }) => (
                     <span key={`${label}-${weekIdx}`} style={{
-                      position: 'absolute', left: weekIdx * STEP, fontSize: 10, color: '#465a72',
+                      position: 'absolute', left: weekIdx * STEP, fontSize: 10, color: C.textSec,
                     }}>
                       {label}
                     </span>
@@ -258,7 +274,7 @@ const GitHubHeatmapIndex = () => {
                     {DAYS.map((day, i) => (
                       <div key={day} style={{
                         height: CELL, fontSize: 9,
-                        color: i % 2 === 1 ? '#465a72' : 'transparent',
+                        color: i % 2 === 1 ? C.textSec : 'transparent',
                         display: 'flex', alignItems: 'center', width: 24, flexShrink: 0,
                       }}>
                         {day}
@@ -275,7 +291,7 @@ const GitHubHeatmapIndex = () => {
                             key={di}
                             style={{
                               width: CELL, height: CELL, borderRadius: 2,
-                              background: day ? getColor(day.contributionCount) : 'transparent',
+                              background: day ? getColor(day.contributionCount, C.isDark) : 'transparent',
                               cursor: day ? 'pointer' : 'default',
                               transition: 'transform 0.1s',
                               flexShrink: 0,
@@ -303,9 +319,9 @@ const GitHubHeatmapIndex = () => {
                     {tooltip && (
                       <div style={{
                         position: 'absolute', left: tooltip.x, top: tooltip.y,
-                        transform: 'translateX(-50%)', background: '#182030',
-                        border: '1px solid #253545', borderRadius: 4, padding: '4px 8px',
-                        fontSize: 10, color: '#bfcfdf', whiteSpace: 'nowrap',
+                        transform: 'translateX(-50%)', background: C.border,
+                        border: `1px solid ${C.borderLight}`, borderRadius: 4, padding: '4px 8px',
+                        fontSize: 10, color: C.text, whiteSpace: 'nowrap',
                         pointerEvents: 'none', zIndex: 10,
                       }}>
                         {tooltip.text}
@@ -316,11 +332,11 @@ const GitHubHeatmapIndex = () => {
 
                 {/* 범례 */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 10, marginLeft: 28 }}>
-                  <span style={{ fontSize: 9, color: '#465a72', marginRight: 4 }}>{t('less')}</span>
+                  <span style={{ fontSize: 9, color: C.textSec, marginRight: 4 }}>{t('less')}</span>
                   {[0, 2, 5, 9, 15].map((v) => (
-                    <div key={v} style={{ width: CELL, height: CELL, borderRadius: 2, background: getColor(v) }} />
+                    <div key={v} style={{ width: CELL, height: CELL, borderRadius: 2, background: getColor(v, C.isDark) }} />
                   ))}
-                  <span style={{ fontSize: 9, color: '#465a72', marginLeft: 4 }}>{t('more')}</span>
+                  <span style={{ fontSize: 9, color: C.textSec, marginLeft: 4 }}>{t('more')}</span>
                 </div>
               </>
             )}
@@ -328,9 +344,9 @@ const GitHubHeatmapIndex = () => {
 
           {/* ── 언어 통계 ───────────────────────────────────────────────────── */}
           <div style={{
-            background: '#0c1018', border: '1px solid #182030', borderRadius: 6, padding: '16px 20px',
+            background: C.card, border: `1px solid ${C.border}`, borderRadius: 6, padding: '16px 20px',
           }}>
-            <div style={{ fontSize: 11, color: '#465a72', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            <div style={{ fontSize: 11, color: C.textSec, marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               {t('languageBreakdown')}
             </div>
 
@@ -356,8 +372,8 @@ const GitHubHeatmapIndex = () => {
                     <div key={s.lang} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                       <div style={{ width: 10, height: 10, borderRadius: '50%', background: s.color, flexShrink: 0 }} />
                       <div>
-                        <div style={{ fontSize: 11, color: '#bfcfdf', fontWeight: 600 }}>{s.lang}</div>
-                        <div style={{ fontSize: 9, color: '#465a72' }}>{s.percent}%</div>
+                        <div style={{ fontSize: 11, color: C.text, fontWeight: 600 }}>{s.lang}</div>
+                        <div style={{ fontSize: 9, color: C.textSec }}>{s.percent}%</div>
                       </div>
                     </div>
                   ))}

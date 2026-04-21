@@ -1,7 +1,10 @@
 import { useScrollAnimation } from '@hooks'
 import { usePageTranslation } from '@hooks/usePageTranslation'
 import { translations } from './experience.i18n'
-import type { ExperienceItem, FestivalItem } from '@models/home/experience/ExperienceModel'
+import type {
+  ExperienceItem,
+  FestivalItem,
+} from '@models/home/experience/ExperienceModel'
 import { Box, Typography, Paper, Chip } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import WorkIcon from '@mui/icons-material/Work'
@@ -41,6 +44,9 @@ const Experience = () => {
     },
   ]
 
+  /**
+   *  참여행사
+   */
   const festivals: FestivalItem[] = [
     {
       nameKey: 'festival1Name',
@@ -48,18 +54,18 @@ const Experience = () => {
       yearKey: 'festival1Year',
       descKey: 'festival1Desc',
     },
-    {
-      nameKey: 'festival2Name',
-      orgKey: 'festival2Org',
-      yearKey: 'festival2Year',
-      descKey: 'festival2Desc',
-    },
   ]
 
   const workExperiences = experiences.filter((e) => e.type === 'work')
   const educationExperiences = experiences.filter((e) => e.type === 'education')
 
-  const SectionTitle = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
+  const SectionTitle = ({
+    icon,
+    label,
+  }: {
+    icon: React.ReactNode
+    label: string
+  }) => (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
       <Box
         sx={{
@@ -73,7 +79,9 @@ const Experience = () => {
       >
         {icon}
       </Box>
-      <Typography variant="h6" fontWeight={700}>{label}</Typography>
+      <Typography variant="h6" fontWeight={700}>
+        {label}
+      </Typography>
     </Box>
   )
 
@@ -106,8 +114,19 @@ const Experience = () => {
           bgcolor: 'background.paper',
         }}
       >
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1, mb: 1 }}>
-          <Typography variant="body2" fontWeight={700}>{t(exp.titleKey)}</Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            gap: 1,
+            mb: 1,
+          }}
+        >
+          <Typography variant="body2" fontWeight={700}>
+            {t(exp.titleKey)}
+          </Typography>
           <Chip
             label={t(exp.periodKey)}
             size="small"
@@ -122,14 +141,48 @@ const Experience = () => {
             }}
           />
         </Box>
-        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.5 }}>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: 'block', mb: 1.5 }}
+        >
           {t(exp.organizationKey)}
         </Typography>
-        <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0, mb: 1.5, display: 'flex', flexDirection: 'column', gap: 0.75 }}>
+        <Box
+          component="ul"
+          sx={{
+            listStyle: 'none',
+            p: 0,
+            m: 0,
+            mb: 1.5,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 0.75,
+          }}
+        >
           {exp.descriptionKeys.map((descKey, i) => (
-            <Box component="li" key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-              <Box sx={{ color: 'primary.main', mt: 0.25, lineHeight: 1, flexShrink: 0 }}>•</Box>
-              <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.6 }}>{t(descKey)}</Typography>
+            <Box
+              component="li"
+              key={i}
+              sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}
+            >
+              <Box
+                sx={{
+                  color: 'primary.main',
+                  mt: 0.25,
+                  lineHeight: 1,
+                  flexShrink: 0,
+                }}
+              >
+                •
+              </Box>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ lineHeight: 1.6 }}
+              >
+                {t(descKey)}
+              </Typography>
             </Box>
           ))}
         </Box>
@@ -141,7 +194,12 @@ const Experience = () => {
                 label={tech}
                 size="small"
                 variant="outlined"
-                sx={{ fontSize: '0.7rem', borderColor: 'divider', color: 'text.secondary', height: 20 }}
+                sx={{
+                  fontSize: '0.7rem',
+                  borderColor: 'divider',
+                  color: 'text.secondary',
+                  height: 20,
+                }}
               />
             ))}
           </Box>
@@ -168,15 +226,29 @@ const Experience = () => {
             transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
           }}
         >
-          <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 600, letterSpacing: '0.2em' }}>
+          <Typography
+            variant="overline"
+            sx={{
+              color: 'primary.main',
+              fontWeight: 600,
+              letterSpacing: '0.2em',
+            }}
+          >
             {t('label')}
           </Typography>
           <Typography
             variant="h2"
-            sx={{ fontSize: { xs: '1.875rem', md: '2.25rem', lg: '3rem' }, fontWeight: 700, mt: 1, mb: 2 }}
+            sx={{
+              fontSize: { xs: '1.875rem', md: '2.25rem', lg: '3rem' },
+              fontWeight: 700,
+              mt: 1,
+              mb: 2,
+            }}
           >
             {t('title1')}{' '}
-            <Box component="span" className="gradient-text">{t('title2')}</Box>
+            <Box component="span" className="gradient-text">
+              {t('title2')}
+            </Box>
           </Typography>
           <Typography color="text.secondary" sx={{ maxWidth: 512, mx: 'auto' }}>
             {t('description')}
@@ -229,7 +301,16 @@ const Experience = () => {
               label={t('eduTitle')}
             />
             <Box sx={{ position: 'relative', mb: 5 }}>
-              <Box sx={{ position: 'absolute', left: 7, top: 8, bottom: 8, width: 2, bgcolor: 'divider' }} />
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: 7,
+                  top: 8,
+                  bottom: 8,
+                  width: 2,
+                  bgcolor: 'divider',
+                }}
+              />
               {educationExperiences.map((exp) => (
                 <TimelineItem key={exp.id} exp={exp} />
               ))}
@@ -274,8 +355,12 @@ const Experience = () => {
                       <EmojiEventsIcon sx={{ fontSize: 16 }} />
                     </Box>
                     <Box>
-                      <Typography variant="body2" fontWeight={600}>{t(festival.nameKey)}</Typography>
-                      <Typography variant="caption" color="text.secondary">{t(festival.descKey)}</Typography>
+                      <Typography variant="body2" fontWeight={600}>
+                        {t(festival.nameKey)}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {t(festival.descKey)}
+                      </Typography>
                     </Box>
                   </Box>
                   <Chip

@@ -7,31 +7,46 @@ import {
   Box,
   Typography,
   Paper,
-  TextField,
   Button,
+  Chip,
 } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import EmailIcon from '@mui/icons-material/Email'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
+import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import PublicIcon from '@mui/icons-material/Public'
+import WorkOutlineIcon from '@mui/icons-material/WorkOutline'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead'
+import ContactMailIcon from '@mui/icons-material/ContactMail'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 
 const Contact = () => {
   const { t } = usePageTranslation(translations)
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 })
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
+  const [copied, setCopied] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    alert(t('submitAlert'))
-    setFormData({ name: '', email: '', message: '' })
+  const emailAddress = t('emailValue')
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(emailAddress)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    } catch {
+      /* 클립보드 접근 실패 시 무시 */
+    }
   }
 
+  // 연락 가능한 채널 (클릭 가능한 링크)
   const contactInfo: ContactInfoItem[] = [
     {
       icon: <EmailIcon sx={{ fontSize: 20 }} />,
       label: t('emailLabel'),
-      value: t('emailValue'),
-      href: null,
+      value: emailAddress,
+      href: `mailto:${emailAddress}`,
     },
     {
       icon: <GitHubIcon sx={{ fontSize: 20 }} />,
@@ -46,6 +61,18 @@ const Contact = () => {
       href: null,
     },
   ]
+
+  // 추가 프로필 정보 (표시 전용 배지)
+  const profileMeta = [
+    { icon: <CheckCircleIcon sx={{ fontSize: 16 }} />, label: t('availableLabel'),      value: t('availableValue'),        color: '#10b981' },
+    { icon: <MarkEmailReadIcon sx={{ fontSize: 16 }} />, label: t('responseTimeLabel'), value: t('responseTimeValue') },
+    { icon: <WorkOutlineIcon sx={{ fontSize: 16 }} />, label: t('careerLabel'),         value: t('careerValue') },
+    { icon: <PublicIcon sx={{ fontSize: 16 }} />, label: t('timezoneLabel'),            value: t('timezoneValue') },
+    { icon: <AccessTimeIcon sx={{ fontSize: 16 }} />, label: t('workingHoursLabel'),    value: t('workingHoursValue') },
+    { icon: <ContactMailIcon sx={{ fontSize: 16 }} />, label: t('preferredContactLabel'), value: t('preferredContactValue') },
+  ]
+
+  const interests = t('interestsValue').split('·').map(s => s.trim())
 
   return (
     <Box
@@ -89,13 +116,14 @@ const Contact = () => {
             transition: 'all 0.7s ease 100ms',
           }}
         >
-          {/* Contact Info */}
+          {/* ── Left: 연락처 정보 + 팔로우 ────────────────────────────── */}
           <Grid size={{ xs: 12, lg: 6 }}>
             <Typography variant="h6" fontWeight={700} mb={3}>
               {t('infoTitle')}
             </Typography>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mb: 4 }}>
+            {/* 주요 연락 채널 */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mb: 3 }}>
               {contactInfo.map((info, index) => (
                 <Paper
                   key={index}
@@ -111,7 +139,7 @@ const Contact = () => {
                     borderColor: 'divider',
                     transition: 'all 0.3s ease',
                     cursor: info.href ? 'pointer' : 'default',
-                    '&:hover': info.href ? { borderColor: 'primary.main' } : {},
+                    '&:hover': info.href ? { borderColor: 'primary.main', transform: 'translateX(4px)' } : {},
                     bgcolor: 'background.default',
                   }}
                 >
@@ -128,135 +156,131 @@ const Contact = () => {
                   >
                     {info.icon}
                   </Box>
-                  <Box>
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
                     <Typography variant="caption" color="text.secondary" display="block">{info.label}</Typography>
-                    <Typography variant="body2" fontWeight={500}>{info.value}</Typography>
+                    <Typography variant="body2" fontWeight={500} sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {info.value}
+                    </Typography>
                   </Box>
+                  {info.label === t('emailLabel') && (
+                    <Button
+                      size="small"
+                      onClick={(e) => { e.stopPropagation(); handleCopyEmail() }}
+                      startIcon={copied ? <CheckCircleIcon sx={{ fontSize: 14 }} /> : <ContentCopyIcon sx={{ fontSize: 14 }} />}
+                      sx={{
+                        flexShrink: 0,
+                        minWidth: 'auto',
+                        fontSize: '0.7rem',
+                        color: copied ? '#10b981' : 'text.secondary',
+                        borderColor: copied ? '#10b981' : 'divider',
+                        '&:hover': { borderColor: 'primary.main', color: 'primary.main' },
+                      }}
+                      variant="outlined"
+                    >
+                      {copied ? t('copied') : t('copyEmail')}
+                    </Button>
+                  )}
                 </Paper>
               ))}
             </Box>
 
             {/* Social Links */}
-            <Box>
-              <Typography variant="caption" color="text.secondary" mb={1.5} display="block">
-                {t('followMe')}
-              </Typography>
-              <Box sx={{ display: 'flex', gap: 1.5 }}>
-                {[
-                  { name: 'GitHub', href: 'https://github.com/SeungHyun1207' },
-                ].map((social) => (
-                  <Button
-                    key={social.name}
-                    component="a"
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variant="outlined"
-                    size="small"
-                    sx={{
-                      borderColor: 'divider',
-                      color: 'text.secondary',
-                      '&:hover': { borderColor: 'primary.main', color: 'primary.main', bgcolor: 'transparent' },
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    {social.name}
-                  </Button>
-                ))}
-              </Box>
+            <Typography variant="caption" color="text.secondary" mb={1.5} display="block" sx={{ fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              {t('followMe')}
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 1.5 }}>
+              {[
+                { name: 'GitHub', href: 'https://github.com/SeungHyun1207', icon: <GitHubIcon sx={{ fontSize: 16 }} /> },
+              ].map((social) => (
+                <Button
+                  key={social.name}
+                  component="a"
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="outlined"
+                  size="small"
+                  startIcon={social.icon}
+                  sx={{
+                    borderColor: 'divider',
+                    color: 'text.secondary',
+                    '&:hover': { borderColor: 'primary.main', color: 'primary.main', bgcolor: 'transparent' },
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  {social.name}
+                </Button>
+              ))}
             </Box>
           </Grid>
 
-          {/* Contact Form */}
+          {/* ── Right: Profile + 관심 분야 ────────────────────────────── */}
           <Grid size={{ xs: 12, lg: 6 }}>
             <Typography variant="h6" fontWeight={700} mb={3}>
-              {t('formTitle')}
+              Profile
             </Typography>
 
-            <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Box>
-                <Typography variant="caption" color="text.secondary" mb={0.75} display="block">
-                  {t('nameLabel')}
-                </Typography>
-                <TextField
-                  id="name"
-                  type="text"
-                  placeholder={t('namePlaceholder')}
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  fullWidth
+            {/* 프로필 메타 정보 */}
+            <Paper
+              elevation={0}
+              sx={{
+                p: 2,
+                mb: 3,
+                borderRadius: 3,
+                border: '1px solid',
+                borderColor: 'divider',
+                bgcolor: 'background.default',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1.2,
+              }}
+            >
+              {profileMeta.map((item, i) => (
+                <Box
+                  key={i}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1.5,
+                    pb: i < profileMeta.length - 1 ? 1.2 : 0,
+                    borderBottom: i < profileMeta.length - 1 ? '1px solid' : 'none',
+                    borderColor: 'divider',
+                  }}
+                >
+                  <Box sx={{ color: item.color ?? 'primary.main', display: 'flex', flexShrink: 0 }}>
+                    {item.icon}
+                  </Box>
+                  <Typography variant="caption" color="text.secondary" sx={{ minWidth: 88 }}>
+                    {item.label}
+                  </Typography>
+                  <Typography variant="body2" fontWeight={500} sx={{ color: item.color ?? 'text.primary' }}>
+                    {item.value}
+                  </Typography>
+                </Box>
+              ))}
+            </Paper>
+
+            {/* 관심 분야 태그 */}
+            <Typography variant="caption" color="text.secondary" mb={1.5} display="block" sx={{ fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              <FavoriteIcon sx={{ fontSize: 12, mr: 0.5, verticalAlign: 'middle', color: '#ef4444' }} />
+              {t('interestsLabel')}
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.8 }}>
+              {interests.map((tag) => (
+                <Chip
+                  key={tag}
+                  label={tag}
                   size="small"
                   sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: 3,
-                      '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' },
-                    },
+                    fontSize: '0.72rem',
+                    fontWeight: 500,
+                    color: 'primary.main',
+                    bgcolor: 'rgba(99,102,241,0.08)',
+                    border: '1px solid',
+                    borderColor: 'rgba(99,102,241,0.2)',
                   }}
                 />
-              </Box>
-              <Box>
-                <Typography variant="caption" color="text.secondary" mb={0.75} display="block">
-                  {t('emailLabel')}
-                </Typography>
-                <TextField
-                  id="email"
-                  type="email"
-                  placeholder={t('emailPlaceholder')}
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  fullWidth
-                  size="small"
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: 3,
-                      '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' },
-                    },
-                  }}
-                />
-              </Box>
-              <Box>
-                <Typography variant="caption" color="text.secondary" mb={0.75} display="block">
-                  {t('messageLabel')}
-                </Typography>
-                <TextField
-                  id="message"
-                  placeholder={t('messagePlaceholder')}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
-                  fullWidth
-                  multiline
-                  rows={5}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: 3,
-                      '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' },
-                    },
-                  }}
-                />
-              </Box>
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                sx={{
-                  py: 1.75,
-                  borderRadius: 3,
-                  fontWeight: 600,
-                  background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
-                  color: '#fff',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 8px 30px rgba(99,102,241,0.35)',
-                    background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
-                  },
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                {t('submit')}
-              </Button>
+              ))}
             </Box>
           </Grid>
         </Grid>

@@ -6,6 +6,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { LangId, Snippet } from "@models/vibe-project/snippet/CodeSnippetModel";
+import { useVibeTheme } from "../_shared/useVibeTheme";
 
 // ─── 언어 메타 ─────────────────────────────────────────────────────────────────
 
@@ -185,6 +186,7 @@ import type { ModalMode, FormState } from "@models/vibe-project/snippet/CodeSnip
 const EMPTY_FORM: FormState = { title: "", language: "typescript", code: "", tags: "" };
 
 const CodeSnippetIndex = () => {
+  const C = useVibeTheme();
   const [snippets, setSnippets]       = useState<Snippet[]>(() => loadSnippets());
   const [search, setSearch]           = useState("");
   const [filterLang, setFilterLang]   = useState<LangId | "all">("all");
@@ -267,9 +269,9 @@ const CodeSnippetIndex = () => {
   return (
     <div style={{
       minHeight: "calc(100vh - 80px)",
-      background: "#07090d",
+      background: C.bg,
       fontFamily: "'IBM Plex Mono', monospace",
-      color: "#bfcfdf",
+      color: C.text,
       display: "flex",
       flexDirection: "column",
     }}>
@@ -278,9 +280,9 @@ const CodeSnippetIndex = () => {
 
         .snip-btn {
           background: transparent;
-          border: 1px solid #1e2e42;
+          border: 1px solid ${C.borderLight};
           border-radius: 4px;
-          color: #465a72;
+          color: ${C.textSec};
           cursor: pointer;
           font-family: 'IBM Plex Mono', monospace;
           font-size: 11px;
@@ -288,17 +290,17 @@ const CodeSnippetIndex = () => {
           padding: 4px 10px;
           transition: all 0.15s;
         }
-        .snip-btn:hover { border-color: #00c8ff; color: #00c8ff; }
+        .snip-btn:hover { border-color: ${C.cyan}; color: ${C.cyan}; }
         .snip-btn.primary {
-          border-color: #00c8ff66; color: #00c8ff; background: #00c8ff18;
+          border-color: ${C.cyan}66; color: ${C.cyan}; background: ${C.cyan}18;
         }
-        .snip-btn.primary:hover { background: #00c8ff28; }
-        .snip-btn.danger { border-color: #f43f5e66; color: #f43f5e; background: #f43f5e18; }
+        .snip-btn.primary:hover { background: ${C.cyan}28; }
+        .snip-btn.danger { border-color: ${C.red}66; color: ${C.red}; background: ${C.red}18; }
         .snip-input {
-          background: #111822;
-          border: 1px solid #1e2e42;
+          background: ${C.cardHover};
+          border: 1px solid ${C.borderLight};
           border-radius: 4px;
-          color: #bfcfdf;
+          color: ${C.text};
           font-family: 'IBM Plex Mono', monospace;
           font-size: 12px;
           padding: 7px 10px;
@@ -307,13 +309,13 @@ const CodeSnippetIndex = () => {
           width: 100%;
           box-sizing: border-box;
         }
-        .snip-input:focus { border-color: #00c8ff; }
-        .snip-input::placeholder { color: #465a72; }
+        .snip-input:focus { border-color: ${C.cyan}; }
+        .snip-input::placeholder { color: ${C.textSec}; }
         .snip-select {
-          background: #111822;
-          border: 1px solid #1e2e42;
+          background: ${C.cardHover};
+          border: 1px solid ${C.borderLight};
           border-radius: 4px;
-          color: #bfcfdf;
+          color: ${C.text};
           font-family: 'IBM Plex Mono', monospace;
           font-size: 12px;
           padding: 7px 10px;
@@ -321,10 +323,10 @@ const CodeSnippetIndex = () => {
           cursor: pointer;
           transition: border-color 0.15s;
         }
-        .snip-select:focus { border-color: #00c8ff; }
+        .snip-select:focus { border-color: ${C.cyan}; }
         .snip-card {
-          background: #0c1018;
-          border: 1px solid #182030;
+          background: ${C.card};
+          border: 1px solid ${C.border};
           border-radius: 8px;
           display: flex;
           flex-direction: column;
@@ -332,13 +334,13 @@ const CodeSnippetIndex = () => {
           overflow: hidden;
         }
         .snip-card:hover {
-          border-color: #253545;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+          border-color: ${C.borderLight};
+          box-shadow: 0 8px 24px rgba(0,0,0,${C.isDark ? 0.3 : 0.08});
         }
         .overlay {
           position: fixed;
           inset: 0;
-          background: rgba(0,0,0,0.7);
+          background: rgba(0,0,0,${C.isDark ? 0.7 : 0.4});
           display: flex;
           align-items: center;
           justify-content: center;
@@ -346,8 +348,8 @@ const CodeSnippetIndex = () => {
           padding: 24px;
         }
         .modal {
-          background: #0c1018;
-          border: 1px solid #253545;
+          background: ${C.card};
+          border: 1px solid ${C.borderLight};
           border-radius: 8px;
           width: 100%;
           max-width: 600px;
@@ -360,13 +362,13 @@ const CodeSnippetIndex = () => {
         }
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #253545; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb { background: ${C.borderLight}; border-radius: 2px; }
       `}</style>
 
       {/* ── 헤더 ─────────────────────────────────────────────────────────────── */}
       <div style={{
-        background: "#0c1018",
-        borderBottom: "1px solid #182030",
+        background: C.card,
+        borderBottom: `1px solid ${C.border}`,
         padding: "12px 24px",
         display: "flex",
         alignItems: "center",
@@ -375,17 +377,17 @@ const CodeSnippetIndex = () => {
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <div style={{
-            width: 22, height: 22, background: "#f43f5e", borderRadius: 3,
+            width: 22, height: 22, background: C.red, borderRadius: 3,
             display: "flex", alignItems: "center", justifyContent: "center",
           }}>
             <span style={{ fontSize: 8, fontWeight: 800, color: "#fff" }}>{"</>"}</span>
           </div>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#bfcfdf" }}>
+          <span style={{ fontSize: 13, fontWeight: 700, color: C.text }}>
             Code Snippets
           </span>
           <span style={{
             fontSize: 10, padding: "2px 6px", borderRadius: 3,
-            border: "1px solid #253545", color: "#465a72",
+            border: `1px solid ${C.borderLight}`, color: C.textSec,
           }}>
             {snippets.length} total
           </span>
@@ -432,7 +434,7 @@ const CodeSnippetIndex = () => {
             gridColumn: "1 / -1",
             textAlign: "center",
             padding: "60px 0",
-            color: "#465a72",
+            color: C.textSec,
             fontSize: 12,
           }}>
             {search || filterLang !== "all"
@@ -447,7 +449,7 @@ const CodeSnippetIndex = () => {
                 {/* 카드 헤더 */}
                 <div style={{
                   padding: "10px 14px",
-                  borderBottom: "1px solid #182030",
+                  borderBottom: `1px solid ${C.border}`,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
@@ -463,7 +465,7 @@ const CodeSnippetIndex = () => {
                       {lang.label}
                     </span>
                     <span style={{
-                      fontSize: 12, fontWeight: 600, color: "#bfcfdf",
+                      fontSize: 12, fontWeight: 600, color: C.text,
                       overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                     }}>
                       {s.title}
@@ -473,7 +475,7 @@ const CodeSnippetIndex = () => {
                     <button
                       type="button"
                       className="snip-btn"
-                      style={copied === s.id ? { borderColor: "#00ff8866", color: "#00ff88" } : {}}
+                      style={copied === s.id ? { borderColor: `${C.green}66`, color: C.green } : {}}
                       onClick={() => handleCopy(s.id, s.code)}
                     >
                       {copied === s.id ? "✓ Copied" : "Copy"}
@@ -489,7 +491,7 @@ const CodeSnippetIndex = () => {
                   padding: "12px 14px",
                   fontSize: 11,
                   lineHeight: 1.6,
-                  color: "#7ca4c4",
+                  color: C.isDark ? "#7ca4c4" : C.textSec,
                   background: "transparent",
                   overflow: "hidden",
                   flex: 1,
@@ -498,7 +500,7 @@ const CodeSnippetIndex = () => {
                 }}>
                   {previewCode(s.code)}
                   {s.code.split("\n").length > 4 && (
-                    <span style={{ color: "#465a72" }}>
+                    <span style={{ color: C.textSec }}>
                       {"\n"}… +{s.code.split("\n").length - 4} more lines
                     </span>
                   )}
@@ -508,7 +510,7 @@ const CodeSnippetIndex = () => {
                 {s.tags.length > 0 && (
                   <div style={{
                     padding: "8px 14px",
-                    borderTop: "1px solid #182030",
+                    borderTop: `1px solid ${C.border}`,
                     display: "flex",
                     flexWrap: "wrap",
                     gap: 4,
@@ -518,7 +520,7 @@ const CodeSnippetIndex = () => {
                         key={tag}
                         style={{
                           fontSize: 9, padding: "2px 6px", borderRadius: 3,
-                          background: "#182030", color: "#465a72", cursor: "pointer",
+                          background: C.border, color: C.textSec, cursor: "pointer",
                         }}
                         onClick={() => setSearch(tag)}
                       >
@@ -538,7 +540,7 @@ const CodeSnippetIndex = () => {
         <div className="overlay" onClick={(e) => e.target === e.currentTarget && closeModal()}>
           <div className="modal">
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ fontSize: 13, fontWeight: 700, color: "#bfcfdf" }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: C.text }}>
                 {modal.mode === "add" ? "New Snippet" : "Edit Snippet"}
               </span>
               <button type="button" className="snip-btn" onClick={closeModal}>✕</button>
@@ -546,7 +548,7 @@ const CodeSnippetIndex = () => {
 
             {/* Title */}
             <div>
-              <label style={{ fontSize: 10, color: "#465a72", display: "block", marginBottom: 4 }}>TITLE</label>
+              <label style={{ fontSize: 10, color: C.textSec, display: "block", marginBottom: 4 }}>TITLE</label>
               <input
                 className="snip-input"
                 placeholder="e.g. useDebounce Hook"
@@ -557,7 +559,7 @@ const CodeSnippetIndex = () => {
 
             {/* Language */}
             <div>
-              <label style={{ fontSize: 10, color: "#465a72", display: "block", marginBottom: 4 }}>LANGUAGE</label>
+              <label style={{ fontSize: 10, color: C.textSec, display: "block", marginBottom: 4 }}>LANGUAGE</label>
               <select
                 className="snip-select"
                 value={form.language}
@@ -572,7 +574,7 @@ const CodeSnippetIndex = () => {
 
             {/* Code */}
             <div>
-              <label style={{ fontSize: 10, color: "#465a72", display: "block", marginBottom: 4 }}>CODE</label>
+              <label style={{ fontSize: 10, color: C.textSec, display: "block", marginBottom: 4 }}>CODE</label>
               <textarea
                 className="snip-input"
                 placeholder="Paste your code here…"
@@ -585,8 +587,8 @@ const CodeSnippetIndex = () => {
 
             {/* Tags */}
             <div>
-              <label style={{ fontSize: 10, color: "#465a72", display: "block", marginBottom: 4 }}>
-                TAGS <span style={{ color: "#253545" }}>(comma separated)</span>
+              <label style={{ fontSize: 10, color: C.textSec, display: "block", marginBottom: 4 }}>
+                TAGS <span style={{ color: C.textDim }}>(comma separated)</span>
               </label>
               <input
                 className="snip-input"
@@ -616,8 +618,8 @@ const CodeSnippetIndex = () => {
       {deleteId && (
         <div className="overlay" onClick={(e) => e.target === e.currentTarget && setDeleteId(null)}>
           <div className="modal" style={{ maxWidth: 360, gap: 12 }}>
-            <span style={{ fontSize: 13, fontWeight: 700, color: "#f43f5e" }}>Delete Snippet?</span>
-            <p style={{ fontSize: 11, color: "#465a72", margin: 0 }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: C.red }}>Delete Snippet?</span>
+            <p style={{ fontSize: 11, color: C.textSec, margin: 0 }}>
               이 작업은 되돌릴 수 없습니다.
             </p>
             <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>

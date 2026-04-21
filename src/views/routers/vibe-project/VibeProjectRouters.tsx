@@ -2,6 +2,7 @@ import LLMAgentDashboardIndex from "@/views/pages/home/projects/vibe-project/llm
 import GitHubHeatmapIndex      from "@/views/pages/home/projects/vibe-project/githeatmap/GitHubHeatmapIndex";
 import CodeSnippetIndex        from "@/views/pages/home/projects/vibe-project/snippet/CodeSnippetIndex";
 import DashboardIndex          from "@/views/pages/home/projects/vibe-project/dashboard/DashboardIndex";
+import { useVibeTheme }        from "@/views/pages/home/projects/vibe-project/_shared/useVibeTheme";
 import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
 
 /**
@@ -9,6 +10,9 @@ import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
  */
 const VibeProjectLayout = () => {
     const navigate = useNavigate();
+    const C = useVibeTheme();
+    const baseBorder = C.borderLight;
+    const baseColor = C.isDark ? "#7ca4c4" : C.textSec;
     return (
         <>
             <button
@@ -24,10 +28,10 @@ const VibeProjectLayout = () => {
                     gap: 6,
                     height: 30,
                     padding: "0 12px",
-                    background: "transparent",
-                    border: "1px solid #253545",
+                    background: C.card,
+                    border: `1px solid ${baseBorder}`,
                     borderRadius: 6,
-                    color: "#7ca4c4",
+                    color: baseColor,
                     fontSize: 11,
                     fontFamily: "'IBM Plex Mono', monospace",
                     fontWeight: 600,
@@ -36,12 +40,12 @@ const VibeProjectLayout = () => {
                     transition: "border-color 0.15s, color 0.15s",
                 }}
                 onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "#00c8ff";
-                    e.currentTarget.style.color = "#00c8ff";
+                    e.currentTarget.style.borderColor = C.cyan;
+                    e.currentTarget.style.color = C.cyan;
                 }}
                 onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = "#253545";
-                    e.currentTarget.style.color = "#7ca4c4";
+                    e.currentTarget.style.borderColor = baseBorder;
+                    e.currentTarget.style.color = baseColor;
                 }}
             >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
