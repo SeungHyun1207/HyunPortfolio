@@ -24,13 +24,16 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '22'
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build
+        env:
+          VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
+          VITE_GITHUB_USERNAME: ${{ secrets.VITE_GITHUB_USERNAME }}
         run: npm run build
 
       - name: Setup Pages

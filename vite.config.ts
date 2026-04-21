@@ -10,6 +10,26 @@ export default defineConfig(({ command }) => ({
     open: true,
     port: 999,
   },
+  build: {
+    /**
+     * 청크 분리 전략
+     * - react-vendor: React 런타임 (리렌더링 거의 없어 캐시 효율 ↑)
+     * - mui: MUI + Emotion (사이즈 큰 UI 라이브러리 분리)
+     * - chat: chat-ui-kit (바이브 프로젝트 /aiagent 에서만 사용)
+     * - query: @tanstack/react-query (바이브 프로젝트 일부에서만 사용)
+     */
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          mui: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+          chat: ['@chatscope/chat-ui-kit-react'],
+          query: ['@tanstack/react-query', 'axios'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
+  },
   resolve: {
     /**
      * Path Alias 설정

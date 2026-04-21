@@ -8,9 +8,61 @@
 
 | | |
 |--|--|
-| **포트폴리오** | 배포 링크 (예정) |
+| **포트폴리오** | https://seunghyun1207.github.io/HyunPortfolio/ |
 | **GitHub** | https://github.com/SeungHyun1207 |
 | **Blog** | https://hunseop2772.tistory.com |
+
+<br/>
+
+---
+
+## 🚀 로컬 개발 환경 설정
+
+### 요구사항
+- Node.js **20.19+** 또는 **22.x** (Vite 7 요구사항)
+- npm
+
+### 설치 & 실행
+
+```bash
+# 1. 저장소 클론
+git clone https://github.com/SeungHyun1207/HyunPortfolio.git
+cd HyunPortfolio
+
+# 2. 의존성 설치
+npm install
+
+# 3. 환경변수 설정 (.env.example 참고)
+cp .env.example .env
+# .env 파일을 열어 GitHub 토큰 / 유저명 입력
+
+# 4. dev 서버 실행 (http://localhost:999)
+npm run dev
+
+# 5. 프로덕션 빌드
+npm run build
+```
+
+### 환경 변수
+
+| 변수 | 설명 | 필수 |
+|------|------|------|
+| `VITE_GITHUB_TOKEN` | GitHub Personal Access Token (classic) — `read:user`, `public_repo` 권한 | GitHub Heatmap 기능 사용 시 |
+| `VITE_GITHUB_USERNAME` | GitHub 유저명 | GitHub Heatmap 기능 사용 시 |
+
+> **토큰 발급**: https://github.com/settings/tokens<br/>
+> `.env` 파일은 `.gitignore`에 포함되어 있어 git에 올라가지 않습니다.
+
+<br/>
+
+### 바이브 프로젝트
+
+- **/** — 메인 포트폴리오
+- **/personalProject/intranet** — 사내관리시스템 데모
+- **/vibeProject/dashboard** — 포트폴리오 Analytics (localStorage 기반 방문 추적)
+- **/vibeProject/aiagent** — LLM Agent 대시보드
+- **/vibeProject/githeatmap** — GitHub 컨트리뷰션 히트맵
+- **/vibeProject/snippet** — Code Snippet 매니저
 
 <br/>
 
