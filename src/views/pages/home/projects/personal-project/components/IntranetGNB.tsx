@@ -103,7 +103,7 @@ const IntranetGNB = () => {
 
         {/* ── 중앙: 회사 로고 ── */}
         <CenterSection>
-          <CompanyLogo>(주)제타소프트</CompanyLogo>
+          <CompanyLogo>회사명</CompanyLogo>
         </CenterSection>
 
         {/* ── 우측: 알림 / 전체메뉴 / 프로필 ── */}

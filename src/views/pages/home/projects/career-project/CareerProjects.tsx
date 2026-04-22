@@ -94,6 +94,72 @@ const CareerProjects = () => {
 
   const projects: Project[] = [
     {
+      id: '16',
+      title: { ko: '제타소프트 홈페이지 리뉴얼', en: 'ZettaSoft Homepage Renewal' },
+      period: '2026.01 ~ 2026.03',
+      startYear: 2026,
+      client: '(주)제타소프트',
+      role: { ko: '프론트엔드 리팩토링 및 스타일링 전환', en: 'Frontend Refactoring & Styling Migration' },
+      highlights: {
+        ko: [
+          '기존 CSS 방식에서 MUI 스타일링 방식으로 전면 전환',
+          'Claude Code 기반 AI 보조 워크플로우로 리팩토링 효율 향상',
+          'Google API 연동 코드 리팩토링 및 Tailwind CSS 프레임워크 적용 테스트',
+        ],
+        en: [
+          'Migrated from legacy CSS to MUI styling across the codebase',
+          'Leveraged Claude Code AI workflow to accelerate refactoring',
+          'Refactored Google API integration and prototyped Tailwind CSS adoption',
+        ],
+      },
+      techStack: ['React', 'TypeScript', 'MUI', 'Tailwind CSS'],
+      category: 'react',
+    },
+    {
+      id: '15',
+      title: { ko: '제타소프트 홈페이지 콘텐츠 자동화 시스템', en: 'ZettaSoft Homepage Content Automation' },
+      period: '2026.01 ~ 진행중',
+      startYear: 2026,
+      client: '(주)제타소프트',
+      role: { ko: '사내 도구 설계 및 개발', en: 'Internal Tool Design & Development' },
+      highlights: {
+        ko: [
+          '비개발자가 콘텐츠를 수정할 수 있는 엑셀 템플릿 설계',
+          '구글 스프레드시트 기반 로컬 프로젝트 텍스트 변경 파이프라인 구축',
+          '홈페이지 구조 명세서 작성으로 유지보수 프로세스 표준화',
+        ],
+        en: [
+          'Designed Excel template enabling non-developers to edit content',
+          'Built Google Sheets pipeline for automated text updates',
+          'Standardized maintenance via structured page specifications',
+        ],
+      },
+      techStack: ['Excel', 'Google Sheets API', 'Automation'],
+      category: 'other',
+    },
+    {
+      id: '14',
+      title: { ko: 'Figma MCP + Claude 디자인-개발 연계 워크플로우 구축', en: 'Figma MCP + Claude Dev Workflow' },
+      period: '2026.01',
+      startYear: 2026,
+      client: '사내 R&D',
+      role: { ko: 'MCP 기반 자동화 워크플로우 PoC', en: 'MCP-based Automation Workflow PoC' },
+      highlights: {
+        ko: [
+          'VSCode + Figma Personal Access Token 기반 API 연동 환경 구축',
+          'figma:discover / sync 명령으로 디자인→React 컴포넌트 자동 생성 검증',
+          'Model Context Protocol 실무 활용 및 디자인 변경→코드 반영 프로세스 정립',
+        ],
+        en: [
+          'Set up VSCode + Figma API integration via Personal Access Token',
+          'Validated design-to-React component auto-generation with figma:discover/sync',
+          'Established MCP-based design-to-code workflow for production use',
+        ],
+      },
+      techStack: ['Figma MCP', 'Claude Code', 'React', 'TypeScript'],
+      category: 'react',
+    },
+    {
       id: '13',
       title: { ko: '의성 노지스마트팜 데이터 포털 구축', en: 'Uiseong Smart Farm Data Portal' },
       period: '2025.09 ~ 2025.12',
@@ -357,6 +423,7 @@ const CareerProjects = () => {
   };
 
   const yearGroups = [
+    { year: 2026, emoji: '✨', items: projects.filter((p) => p.startYear === 2026) },
     { year: 2025, emoji: '🚀', items: projects.filter((p) => p.startYear === 2025) },
     { year: 2024, emoji: '⚡', items: projects.filter((p) => p.startYear === 2024) },
     { year: 2023, emoji: '🌱', items: projects.filter((p) => p.startYear === 2023) },

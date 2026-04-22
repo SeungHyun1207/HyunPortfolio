@@ -276,6 +276,364 @@ const codeSnippets: Record<string, { file: string; code: ReactNode }> = {
       </>
     ),
   },
+  'Node.js': {
+    file: 'server.ts',
+    code: (
+      <>
+        <span style={{ color: SC.keyword }}>import</span>{' '}
+        <span style={{ color: SC.name }}>express</span>{' '}
+        <span style={{ color: SC.keyword }}>from</span>{' '}
+        <span style={{ color: SC.string }}>"express"</span>;{'\n\n'}
+        <span style={{ color: SC.keyword }}>const</span>{' '}
+        <span style={{ color: SC.prop }}>app</span> ={' '}
+        <span style={{ color: SC.name }}>express</span>();{'\n'}
+        <span style={{ color: SC.prop }}>app</span>.
+        <span style={{ color: SC.name }}>use</span>(
+        <span style={{ color: SC.name }}>express</span>.
+        <span style={{ color: SC.name }}>json</span>());{'\n\n'}
+        <span style={{ color: SC.prop }}>app</span>.
+        <span style={{ color: SC.name }}>get</span>(
+        <span style={{ color: SC.string }}>"/api/users/:id"</span>,{' '}
+        <span style={{ color: SC.keyword }}>async</span> (req, res) =&gt; {'{'}
+        {'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>try</span> {'{'}
+        {'\n'}
+        {'    '}<span style={{ color: SC.keyword }}>const</span>{' '}
+        <span style={{ color: SC.prop }}>user</span> ={' '}
+        <span style={{ color: SC.keyword }}>await</span>{' '}
+        <span style={{ color: SC.name }}>db</span>.
+        <span style={{ color: SC.name }}>user</span>.
+        <span style={{ color: SC.name }}>findUnique</span>({'\n'}
+        {'      '}{'{ '}<span style={{ color: SC.prop }}>where</span>: {'{ '}
+        <span style={{ color: SC.prop }}>id</span>: +req.params.id {'} }'}
+        {'\n'}
+        {'    '});{'\n'}
+        {'    '}<span style={{ color: SC.prop }}>res</span>.
+        <span style={{ color: SC.name }}>json</span>(
+        <span style={{ color: SC.prop }}>user</span>);{'\n'}
+        {'  '}{'}'} <span style={{ color: SC.keyword }}>catch</span> (err) {'{'}
+        {'\n'}
+        {'    '}<span style={{ color: SC.prop }}>res</span>.
+        <span style={{ color: SC.name }}>status</span>(
+        <span style={{ color: SC.string }}>500</span>).
+        <span style={{ color: SC.name }}>json</span>({'{ '}
+        <span style={{ color: SC.prop }}>error</span>:{' '}
+        <span style={{ color: SC.string }}>"Server error"</span> {'}'});{'\n'}
+        {'  '}{'}'}
+        {'\n'}
+        {'}'});{'\n\n'}
+        <span style={{ color: SC.prop }}>app</span>.
+        <span style={{ color: SC.name }}>listen</span>(
+        <span style={{ color: SC.string }}>3000</span>);
+      </>
+    ),
+  },
+  'Java / Spring': {
+    file: 'UserController.java',
+    code: (
+      <>
+        <span style={{ color: SC.comment }}>// src/main/java/.../UserController.java</span>{'\n'}
+        <span style={{ color: SC.tag }}>@RestController</span>{'\n'}
+        <span style={{ color: SC.tag }}>@RequestMapping</span>(
+        <span style={{ color: SC.string }}>"/api/users"</span>){'\n'}
+        <span style={{ color: SC.keyword }}>public class</span>{' '}
+        <span style={{ color: SC.type }}>UserController</span> {'{'}
+        {'\n\n'}
+        {'  '}<span style={{ color: SC.keyword }}>private final</span>{' '}
+        <span style={{ color: SC.type }}>UserService</span>{' '}
+        <span style={{ color: SC.prop }}>userService</span>;{'\n\n'}
+        {'  '}<span style={{ color: SC.keyword }}>public</span>{' '}
+        <span style={{ color: SC.name }}>UserController</span>(
+        <span style={{ color: SC.type }}>UserService</span>{' '}
+        <span style={{ color: SC.prop }}>userService</span>) {'{'}
+        {'\n'}
+        {'    '}<span style={{ color: SC.keyword }}>this</span>.
+        <span style={{ color: SC.prop }}>userService</span> ={' '}
+        <span style={{ color: SC.prop }}>userService</span>;{'\n'}
+        {'  '}{'}'}
+        {'\n\n'}
+        {'  '}<span style={{ color: SC.tag }}>@GetMapping</span>(
+        <span style={{ color: SC.string }}>"/{'{'}id{'}'}"</span>){'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>public</span>{' '}
+        <span style={{ color: SC.type }}>ResponseEntity</span>&lt;
+        <span style={{ color: SC.type }}>User</span>&gt;{' '}
+        <span style={{ color: SC.name }}>getUser</span>({'\n'}
+        {'    '}<span style={{ color: SC.tag }}>@PathVariable</span>{' '}
+        <span style={{ color: SC.type }}>Long</span>{' '}
+        <span style={{ color: SC.prop }}>id</span>{'\n'}
+        {'  '}) {'{'}
+        {'\n'}
+        {'    '}<span style={{ color: SC.keyword }}>return</span>{' '}
+        <span style={{ color: SC.type }}>ResponseEntity</span>.
+        <span style={{ color: SC.name }}>ok</span>(
+        <span style={{ color: SC.prop }}>userService</span>.
+        <span style={{ color: SC.name }}>findById</span>(
+        <span style={{ color: SC.prop }}>id</span>));{'\n'}
+        {'  '}{'}'}
+        {'\n'}
+        {'}'}
+      </>
+    ),
+  },
+  JavaScript: {
+    file: 'utils.js',
+    code: (
+      <>
+        <span style={{ color: SC.comment }}>// 디바운스 유틸 + async/await 예제</span>{'\n'}
+        <span style={{ color: SC.keyword }}>const</span>{' '}
+        <span style={{ color: SC.name }}>debounce</span> = (fn, delay) =&gt; {'{'}
+        {'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>let</span>{' '}
+        <span style={{ color: SC.prop }}>timer</span>;{'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>return</span> (...args) =&gt; {'{'}
+        {'\n'}
+        {'    '}<span style={{ color: SC.name }}>clearTimeout</span>(
+        <span style={{ color: SC.prop }}>timer</span>);{'\n'}
+        {'    '}<span style={{ color: SC.prop }}>timer</span> ={' '}
+        <span style={{ color: SC.name }}>setTimeout</span>(() =&gt;{' '}
+        <span style={{ color: SC.name }}>fn</span>(...args), delay);{'\n'}
+        {'  '}{'}'};{'\n'}
+        {'}'};{'\n\n'}
+        <span style={{ color: SC.keyword }}>async function</span>{' '}
+        <span style={{ color: SC.name }}>fetchUser</span>(id) {'{'}
+        {'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>const</span>{' '}
+        <span style={{ color: SC.prop }}>res</span> ={' '}
+        <span style={{ color: SC.keyword }}>await</span>{' '}
+        <span style={{ color: SC.name }}>fetch</span>(`/api/users/${'${'}id{'}'}`);{'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>if</span> (!<span style={{ color: SC.prop }}>res</span>.<span style={{ color: SC.name }}>ok</span>){' '}
+        <span style={{ color: SC.keyword }}>throw new</span>{' '}
+        <span style={{ color: SC.type }}>Error</span>(<span style={{ color: SC.string }}>"Fetch failed"</span>);{'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>return</span>{' '}
+        <span style={{ color: SC.prop }}>res</span>.<span style={{ color: SC.name }}>json</span>();{'\n'}
+        {'}'}
+      </>
+    ),
+  },
+  'HTML/CSS': {
+    file: 'card.html',
+    code: (
+      <>
+        <span style={{ color: SC.tag }}>&lt;article</span>{' '}
+        <span style={{ color: SC.prop }}>class</span>=<span style={{ color: SC.string }}>"card"</span>
+        <span style={{ color: SC.tag }}>&gt;</span>{'\n'}
+        {'  '}<span style={{ color: SC.tag }}>&lt;img</span>{' '}
+        <span style={{ color: SC.prop }}>src</span>=<span style={{ color: SC.string }}>"/hero.jpg"</span>{' '}
+        <span style={{ color: SC.prop }}>alt</span>=<span style={{ color: SC.string }}>""</span>
+        <span style={{ color: SC.tag }}>/&gt;</span>{'\n'}
+        {'  '}<span style={{ color: SC.tag }}>&lt;h2&gt;</span>Portfolio
+        <span style={{ color: SC.tag }}>&lt;/h2&gt;</span>{'\n'}
+        {'  '}<span style={{ color: SC.tag }}>&lt;p&gt;</span>Frontend Developer
+        <span style={{ color: SC.tag }}>&lt;/p&gt;</span>{'\n'}
+        <span style={{ color: SC.tag }}>&lt;/article&gt;</span>{'\n\n'}
+        <span style={{ color: SC.comment }}>/* styles.css */</span>{'\n'}
+        <span style={{ color: SC.name }}>.card</span> {'{'}
+        {'\n'}
+        {'  '}<span style={{ color: SC.prop }}>display</span>:{' '}
+        <span style={{ color: SC.string }}>grid</span>;{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>gap</span>:{' '}
+        <span style={{ color: SC.string }}>1rem</span>;{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>padding</span>:{' '}
+        <span style={{ color: SC.string }}>1.5rem</span>;{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>border-radius</span>:{' '}
+        <span style={{ color: SC.string }}>12px</span>;{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>background</span>:{' '}
+        <span style={{ color: SC.keyword }}>linear-gradient</span>(
+        <span style={{ color: SC.string }}>135deg</span>, #6366f1, #a855f7);{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>transition</span>:{' '}
+        <span style={{ color: SC.string }}>transform</span>{' '}
+        <span style={{ color: SC.string }}>0.25s</span>;{'\n'}
+        {'}'}
+        {'\n'}
+        <span style={{ color: SC.name }}>.card</span>:<span style={{ color: SC.name }}>hover</span> {'{'}
+        {'\n'}
+        {'  '}<span style={{ color: SC.prop }}>transform</span>:{' '}
+        <span style={{ color: SC.keyword }}>translateY</span>(<span style={{ color: SC.string }}>-4px</span>);{'\n'}
+        {'}'}
+      </>
+    ),
+  },
+  MySQL: {
+    file: 'schema.sql',
+    code: (
+      <>
+        <span style={{ color: SC.comment }}>-- 사용자 테이블 생성 + 인덱스</span>{'\n'}
+        <span style={{ color: SC.keyword }}>CREATE TABLE</span>{' '}
+        <span style={{ color: SC.name }}>users</span> ({'\n'}
+        {'  '}<span style={{ color: SC.prop }}>id</span>{' '}
+        <span style={{ color: SC.type }}>BIGINT</span>{' '}
+        <span style={{ color: SC.keyword }}>UNSIGNED AUTO_INCREMENT PRIMARY KEY</span>,{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>email</span>{' '}
+        <span style={{ color: SC.type }}>VARCHAR</span>(<span style={{ color: SC.string }}>255</span>){' '}
+        <span style={{ color: SC.keyword }}>NOT NULL UNIQUE</span>,{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>name</span>{' '}
+        <span style={{ color: SC.type }}>VARCHAR</span>(<span style={{ color: SC.string }}>100</span>){' '}
+        <span style={{ color: SC.keyword }}>NOT NULL</span>,{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>role</span>{' '}
+        <span style={{ color: SC.type }}>ENUM</span>(<span style={{ color: SC.string }}>'admin'</span>,{' '}
+        <span style={{ color: SC.string }}>'user'</span>){' '}
+        <span style={{ color: SC.keyword }}>DEFAULT</span>{' '}
+        <span style={{ color: SC.string }}>'user'</span>,{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>created_at</span>{' '}
+        <span style={{ color: SC.type }}>TIMESTAMP</span>{' '}
+        <span style={{ color: SC.keyword }}>DEFAULT CURRENT_TIMESTAMP</span>
+        {'\n'}
+        ) <span style={{ color: SC.keyword }}>ENGINE</span>=InnoDB{' '}
+        <span style={{ color: SC.keyword }}>CHARSET</span>=utf8mb4;{'\n\n'}
+        <span style={{ color: SC.keyword }}>CREATE INDEX</span>{' '}
+        <span style={{ color: SC.name }}>idx_users_role</span>{' '}
+        <span style={{ color: SC.keyword }}>ON</span>{' '}
+        <span style={{ color: SC.name }}>users</span>(
+        <span style={{ color: SC.prop }}>role</span>,{' '}
+        <span style={{ color: SC.prop }}>created_at</span>);
+      </>
+    ),
+  },
+  Oracle: {
+    file: 'procedure.sql',
+    code: (
+      <>
+        <span style={{ color: SC.comment }}>-- PL/SQL 프로시저: 월별 매출 집계</span>{'\n'}
+        <span style={{ color: SC.keyword }}>CREATE OR REPLACE PROCEDURE</span>{' '}
+        <span style={{ color: SC.name }}>aggregate_monthly_sales</span>({'\n'}
+        {'  '}<span style={{ color: SC.prop }}>p_year</span>{' '}
+        <span style={{ color: SC.keyword }}>IN</span>{' '}
+        <span style={{ color: SC.type }}>NUMBER</span>
+        {'\n'}
+        ) <span style={{ color: SC.keyword }}>IS</span>{'\n'}
+        <span style={{ color: SC.keyword }}>BEGIN</span>
+        {'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>MERGE INTO</span>{' '}
+        <span style={{ color: SC.name }}>monthly_sales</span> m{'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>USING</span> ({'\n'}
+        {'    '}<span style={{ color: SC.keyword }}>SELECT</span>{' '}
+        <span style={{ color: SC.name }}>TO_CHAR</span>(o.order_date,{' '}
+        <span style={{ color: SC.string }}>'YYYY-MM'</span>){' '}
+        <span style={{ color: SC.keyword }}>AS</span> ym,{'\n'}
+        {'           '}<span style={{ color: SC.name }}>SUM</span>(o.amount){' '}
+        <span style={{ color: SC.keyword }}>AS</span> total{'\n'}
+        {'    '}<span style={{ color: SC.keyword }}>FROM</span>{' '}
+        <span style={{ color: SC.name }}>orders</span> o{'\n'}
+        {'    '}<span style={{ color: SC.keyword }}>WHERE</span>{' '}
+        <span style={{ color: SC.name }}>EXTRACT</span>(<span style={{ color: SC.keyword }}>YEAR FROM</span> o.order_date) ={' '}
+        <span style={{ color: SC.prop }}>p_year</span>{'\n'}
+        {'    '}<span style={{ color: SC.keyword }}>GROUP BY</span>{' '}
+        <span style={{ color: SC.name }}>TO_CHAR</span>(o.order_date,{' '}
+        <span style={{ color: SC.string }}>'YYYY-MM'</span>){'\n'}
+        {'  '}) <span style={{ color: SC.prop }}>src</span>{'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>ON</span> (m.ym = src.ym){'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>WHEN MATCHED THEN UPDATE SET</span>{' '}
+        m.total = src.total{'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>WHEN NOT MATCHED THEN INSERT</span>{' '}
+        (ym, total) <span style={{ color: SC.keyword }}>VALUES</span> (src.ym, src.total);{'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>COMMIT</span>;{'\n'}
+        <span style={{ color: SC.keyword }}>END</span>;
+      </>
+    ),
+  },
+  PostgreSQL: {
+    file: 'window.sql',
+    code: (
+      <>
+        <span style={{ color: SC.comment }}>-- 윈도우 함수로 카테고리별 매출 순위</span>{'\n'}
+        <span style={{ color: SC.keyword }}>SELECT</span>{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>category</span>,{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>product_name</span>,{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>revenue</span>,{'\n'}
+        {'  '}<span style={{ color: SC.name }}>RANK</span>() <span style={{ color: SC.keyword }}>OVER</span> ({'\n'}
+        {'    '}<span style={{ color: SC.keyword }}>PARTITION BY</span>{' '}
+        <span style={{ color: SC.prop }}>category</span>{'\n'}
+        {'    '}<span style={{ color: SC.keyword }}>ORDER BY</span>{' '}
+        <span style={{ color: SC.prop }}>revenue</span>{' '}
+        <span style={{ color: SC.keyword }}>DESC</span>
+        {'\n'}
+        {'  '}) <span style={{ color: SC.keyword }}>AS</span>{' '}
+        <span style={{ color: SC.name }}>rnk</span>,{'\n'}
+        {'  '}<span style={{ color: SC.name }}>SUM</span>(<span style={{ color: SC.prop }}>revenue</span>){' '}
+        <span style={{ color: SC.keyword }}>OVER</span> (
+        <span style={{ color: SC.keyword }}>PARTITION BY</span>{' '}
+        <span style={{ color: SC.prop }}>category</span>){' '}
+        <span style={{ color: SC.keyword }}>AS</span>{' '}
+        <span style={{ color: SC.name }}>cat_total</span>
+        {'\n'}
+        <span style={{ color: SC.keyword }}>FROM</span>{' '}
+        <span style={{ color: SC.name }}>product_sales</span>
+        {'\n'}
+        <span style={{ color: SC.keyword }}>WHERE</span>{' '}
+        <span style={{ color: SC.prop }}>sale_date</span> &gt;={' '}
+        <span style={{ color: SC.name }}>NOW</span>() - <span style={{ color: SC.keyword }}>INTERVAL</span>{' '}
+        <span style={{ color: SC.string }}>'30 days'</span>
+        {'\n'}
+        <span style={{ color: SC.keyword }}>ORDER BY</span>{' '}
+        <span style={{ color: SC.prop }}>category</span>,{' '}
+        <span style={{ color: SC.name }}>rnk</span>;
+      </>
+    ),
+  },
+  Git: {
+    file: 'commands.sh',
+    code: (
+      <>
+        <span style={{ color: SC.comment }}># feature 브랜치 워크플로우</span>{'\n'}
+        <span style={{ color: SC.name }}>git</span> checkout -b feature/analytics-dashboard{'\n'}
+        <span style={{ color: SC.name }}>git</span> add .{'\n'}
+        <span style={{ color: SC.name }}>git</span> commit -m <span style={{ color: SC.string }}>"feat : Analytics 대시보드 추가"</span>
+        {'\n'}
+        <span style={{ color: SC.name }}>git</span> push origin feature/analytics-dashboard{'\n\n'}
+        <span style={{ color: SC.comment }}># main 동기화 + rebase로 깔끔한 히스토리</span>{'\n'}
+        <span style={{ color: SC.name }}>git</span> fetch origin{'\n'}
+        <span style={{ color: SC.name }}>git</span> rebase origin/main{'\n\n'}
+        <span style={{ color: SC.comment }}># 병합 후 로컬/원격 브랜치 정리</span>{'\n'}
+        <span style={{ color: SC.name }}>git</span> branch -d feature/analytics-dashboard{'\n'}
+        <span style={{ color: SC.name }}>git</span> push origin --delete feature/analytics-dashboard{'\n'}
+        <span style={{ color: SC.name }}>git</span> fetch --prune{'\n\n'}
+        <span style={{ color: SC.comment }}># 잘못된 커밋 되돌리기 (안전)</span>{'\n'}
+        <span style={{ color: SC.name }}>git</span> revert &lt;commit-hash&gt;
+      </>
+    ),
+  },
+  SQL: {
+    file: 'query.sql',
+    code: (
+      <>
+        <span style={{ color: SC.comment }}>-- 월별 매출 상위 10개 상품 조회</span>{'\n'}
+        <span style={{ color: SC.keyword }}>SELECT</span>{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>p</span>.<span style={{ color: SC.name }}>product_id</span>,{'\n'}
+        {'  '}<span style={{ color: SC.prop }}>p</span>.<span style={{ color: SC.name }}>name</span>,{'\n'}
+        {'  '}<span style={{ color: SC.name }}>COUNT</span>(<span style={{ color: SC.prop }}>o</span>.<span style={{ color: SC.name }}>order_id</span>){' '}
+        <span style={{ color: SC.keyword }}>AS</span>{' '}
+        <span style={{ color: SC.name }}>order_cnt</span>,{'\n'}
+        {'  '}<span style={{ color: SC.name }}>SUM</span>(<span style={{ color: SC.prop }}>o</span>.<span style={{ color: SC.name }}>amount</span>){' '}
+        <span style={{ color: SC.keyword }}>AS</span>{' '}
+        <span style={{ color: SC.name }}>revenue</span>{'\n'}
+        <span style={{ color: SC.keyword }}>FROM</span>{' '}
+        <span style={{ color: SC.name }}>products</span>{' '}
+        <span style={{ color: SC.prop }}>p</span>{'\n'}
+        <span style={{ color: SC.keyword }}>INNER JOIN</span>{' '}
+        <span style={{ color: SC.name }}>orders</span>{' '}
+        <span style={{ color: SC.prop }}>o</span>{'\n'}
+        {'  '}<span style={{ color: SC.keyword }}>ON</span>{' '}
+        <span style={{ color: SC.prop }}>p</span>.<span style={{ color: SC.name }}>product_id</span> ={' '}
+        <span style={{ color: SC.prop }}>o</span>.<span style={{ color: SC.name }}>product_id</span>
+        {'\n'}
+        <span style={{ color: SC.keyword }}>WHERE</span>{' '}
+        <span style={{ color: SC.prop }}>o</span>.<span style={{ color: SC.name }}>created_at</span>{' '}
+        &gt;= <span style={{ color: SC.string }}>'2025-01-01'</span>{'\n'}
+        <span style={{ color: SC.keyword }}>GROUP BY</span>{' '}
+        <span style={{ color: SC.prop }}>p</span>.<span style={{ color: SC.name }}>product_id</span>,{' '}
+        <span style={{ color: SC.prop }}>p</span>.<span style={{ color: SC.name }}>name</span>
+        {'\n'}
+        <span style={{ color: SC.keyword }}>HAVING</span>{' '}
+        <span style={{ color: SC.name }}>SUM</span>(<span style={{ color: SC.prop }}>o</span>.<span style={{ color: SC.name }}>amount</span>){' '}
+        &gt; <span style={{ color: SC.string }}>100000</span>{'\n'}
+        <span style={{ color: SC.keyword }}>ORDER BY</span>{' '}
+        <span style={{ color: SC.name }}>revenue</span>{' '}
+        <span style={{ color: SC.keyword }}>DESC</span>{'\n'}
+        <span style={{ color: SC.keyword }}>LIMIT</span>{' '}
+        <span style={{ color: SC.string }}>10</span>;
+      </>
+    ),
+  },
 }
 
 const Skills = () => {
@@ -283,28 +641,36 @@ const Skills = () => {
   const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.2 })
   const [selectedTech, setSelectedTech] = useState<string>('React')
 
+  /**
+   * 기술 스택 — "기술 스택" 카드(프로그레스 바)와 "주로 사용하는 기술" 뱃지의 공용 소스.
+   * 각 항목은 코드 스니펫(codeSnippets)과 1:1 매칭되어야 합니다.
+   */
   const skills: Skill[] = [
-    { name: 'React', level: 90, category: 'frontend' },
-    { name: 'TypeScript', level: 85, category: 'frontend' },
-    { name: 'JavaScript', level: 95, category: 'frontend' },
-    { name: 'Next.js', level: 80, category: 'frontend' },
-    { name: 'HTML/CSS', level: 95, category: 'frontend' },
-    { name: 'Tailwind CSS', level: 70, category: 'frontend' },
-    { name: 'Node.js', level: 70, category: 'backend' },
-    { name: 'Git', level: 85, category: 'tools' },
-    { name: 'Figma', level: 75, category: 'tools' },
+    // Frontend
+    { name: 'React',         level: 90, category: 'frontend', icon: '⚛️' },
+    { name: 'TypeScript',    level: 85, category: 'frontend', icon: '🔷' },
+    { name: 'JavaScript',    level: 95, category: 'frontend', icon: '🟨' },
+    { name: 'Next.js',       level: 80, category: 'frontend', icon: '▲'  },
+    { name: 'HTML/CSS',      level: 95, category: 'frontend', icon: '🎨' },
+    { name: 'Tailwind CSS',  level: 70, category: 'frontend', icon: '💨' },
+    { name: 'Vite',          level: 80, category: 'frontend', icon: '⚡' },
+    { name: 'Zustand',       level: 75, category: 'frontend', icon: '🐻' },
+    { name: 'React Query',   level: 75, category: 'frontend', icon: '🔄' },
+    { name: 'Framer Motion', level: 60, category: 'frontend', icon: '✨' },
+    // Backend
+    { name: 'Node.js',       level: 70, category: 'backend',  icon: '🟢' },
+    { name: 'Java / Spring', level: 65, category: 'backend',  icon: '☕' },
+    // Database
+    { name: 'SQL',           level: 75, category: 'backend',  icon: '🗄️' },
+    { name: 'MySQL',         level: 70, category: 'backend',  icon: '🐬' },
+    { name: 'Oracle',        level: 65, category: 'backend',  icon: '🔶' },
+    { name: 'PostgreSQL',    level: 60, category: 'backend',  icon: '🐘' },
+    // Tools
+    { name: 'Git',           level: 85, category: 'tools',    icon: '🔧' },
   ]
 
-  const techStack = [
-    { name: 'React', icon: '⚛️' },
-    { name: 'TypeScript', icon: '🔷' },
-    { name: 'Next.js', icon: '▲' },
-    { name: 'Vite', icon: '⚡' },
-    { name: 'Tailwind CSS', icon: '🎨' },
-    { name: 'Zustand', icon: '🐻' },
-    { name: 'React Query', icon: '🔄' },
-    { name: 'Framer Motion', icon: '✨' },
-  ]
+  // "주로 사용하는 기술" 뱃지 — skills 배열을 그대로 사용 (단일 소스)
+  const techStack = skills
 
   return (
     <Box
